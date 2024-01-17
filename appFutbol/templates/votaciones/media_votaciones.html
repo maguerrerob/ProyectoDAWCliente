@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Media votaciones</h1>
+    {% for partido in mayores.partido_votado.all %}
+        <ul>
+            <li>
+                <p>Estilo del partido: {{ partido.estilo }}</p>
+            </li>
+        </ul>
+    {% endfor %}
+</body>
+</html>

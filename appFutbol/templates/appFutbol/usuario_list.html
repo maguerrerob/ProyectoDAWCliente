@@ -1,0 +1,21 @@
+{% extends "principal.html" %}
+
+{% block cabecera %}
+    <h1>Listado de usuarios AUTOMATIC-CRUD</h1>
+{% endblock %}
+
+{% block contenido %}
+    {% if object_list %}
+        {% for usuario in object_list %}
+            <ul>
+                <li>
+                    <p>{{ usuario.nombre }}</p>
+                    <a href="{% url 'appFutbol-usuario-update' usuario.id %}">EDITAR</a>
+                    <a href="{% url 'appFutbol-usuario-logic-delete' usuario.id %}">ELIMINAR</a>
+                </li>
+            </ul>
+        {% endfor %}
+    {% else %}
+        <p>Lo sentimos no existen datos</p>
+    {% endif %}
+{% endblock %}

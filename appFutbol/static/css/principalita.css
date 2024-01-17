@@ -1,0 +1,51 @@
+.login{
+    position: relative;
+}
+
+.login:hover > .submenu{
+    display: block;
+    animation: elementoFijo 5s; /* Duración de 3 segundos */
+}
+
+.submenu{
+    position: absolute;
+    display: none;
+    padding: 10px;
+    border: solid 1px black;
+    background-color: whitesmoke;
+    border-radius: 15px;
+    top: 30px;
+
+}
+
+.submenu > form{
+    top: 5%;
+    left: 10%;
+    border: none;
+}
+
+.submenu > a{
+    text-decoration: none;
+    font-size: 14px;
+}
+
+footer{
+    background-color: rgb(221, 221, 221);
+    display: flex;
+    justify-content: space-evenly;
+    border-top: solid gray 1px;
+    padding-bottom: 35px;
+    margin-top: 20px;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+}
+
+footer > div > a{
+    text-decoration: none;
+    color: rgb(49, 49, 49);
+}
+
+footer > div > p{
+    color: rgb(49, 49, 49);
+}

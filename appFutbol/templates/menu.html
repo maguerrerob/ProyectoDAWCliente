@@ -1,0 +1,105 @@
+{% load static %}
+
+<nav class="navbar navbar-expand-lg bg-warning px-4">
+    <a class="navbar-brand text-dark" href="#">
+        <i class="fa-sharp fa-regular fa-futbol"></i>
+    </a>
+    <button class="navbar-toggler" type="button" 
+      data-bs-toggle="collapse" 
+      data-bs-target="#accionesPartidos" 
+      aria-controls="navbarAccionesPartidos" 
+      aria-expanded="false" 
+      aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="accionesPartidos">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+                <a class="nav-link active link-dark" aria-current="page" href="{% url 'index' %}">Inicio</a>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link link-dark dropdown-toggle" href="#" 
+                    id="accionesUsuariosLink" 
+                    role="button" 
+                    data-bs-toggle="dropdown" 
+                    aria-expanded="false">
+                    Usuarios
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="accionesUsuariosLink">
+                    <li><a class="dropdown-item" href="{% url 'usuarios_creados' %}">Ver usuarios</a></li>
+                    <li><a class="dropdown-item" href="#">Crear usuario</a></li>
+                    <li><a class="dropdown-item" href="{% url 'usuario_buscar_avanzado' %}">Busqueda Avanzada de usuarios</a></li>
+                </ul>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link link-dark dropdown-toggle" href="#" 
+                    id="accionesRecintoLink" 
+                    role="button" 
+                    data-bs-toggle="dropdown" 
+                    aria-expanded="false">
+                    Recinto
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="accionesRecintoLink">
+                    <li><a class="dropdown-item" href="{% url 'listar_recintos' %}">Ver recintos</a></li>
+                    <li><a class="dropdown-item" href="{% url 'recinto_create' %}">Crear recinto</a></li>
+                    <li><a class="dropdown-item" href="{% url 'recinto_buscar_avanzado' %}">Busqueda Avanzada de recintos</a></li>
+                </ul>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link link-dark dropdown-toggle" href="#" 
+                    id="accionesPartidosLink" 
+                    role="button" 
+                    data-bs-toggle="dropdown" 
+                    aria-expanded="false">
+                    Partidos
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="accionesPartidosLink">
+                    <li><a class="dropdown-item" href="{% url 'partidos_realizados' %}">Ver partidos</a></li>
+                    <li><a class="dropdown-item" href="{% url 'partido_create' %}">Crear partido</a></li>
+                    <li><a class="dropdown-item" href="{% url 'partido_buscar_avanzado' %}">Busqueda Avanzada de partidos</a></li>
+                </ul>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link link-dark dropdown-toggle" href="#" 
+                    id="accionesPromocionLink" 
+                    role="button" 
+                    data-bs-toggle="dropdown" 
+                    aria-expanded="false">
+                    Promociones
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="accionesPromocionLink">
+                    <li><a class="dropdown-item" href="{% url 'promociones_realizadas' %}">Ver promociones</a></li>
+                    <li><a class="dropdown-item" href="{% url 'promocion_create' %}">Crear promocion</a></li>
+                    <li><a class="dropdown-item" href="{% url 'promocion_avanzada' %}">Busqueda Avanzada de promociones</a></li>
+                </ul>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link link-dark active" href="{% url 'listar_recintos' %}">Ver recintos</a>
+            </li>
+            {% if not request.user.is_authenticated %}
+            <li class="login nav-item ms-lg-5">
+                <a class="acceder nav-link link-primary" href="{% url 'login' %}">Login</a>
+            </li>
+            {% endif %}
+            {% if not request.user.is_authenticated %}
+            <li class="login nav-item ms-lg-5">
+                <a class="acceder nav-link link-primary" href="{% url 'registrar_usuario' %}">Registrarse</a>
+            </li>
+            {% endif %}
+            {% if request.user.is_authenticated %}
+            <li class="login nav-item ms-lg-5">
+                <a class="acceder nav-link link-primary" href="{% url 'logout' %}">Desconectarse</a>
+            </li>
+            {% endif %}
+            {% if request.user.is_authenticated %}
+            <li>
+                <div class="nav-link link-dark active">Hola: {{ usuario.username }}</div>
+            </li>
+            {% endif %}
+        </ul>
+        <form action="{% url 'recinto_buscar' %}" class="d-flex mt-3" role="search" method="GET">
+            <input name="textoBusqueda" class="form-control me-2" type="search" placeholder="Buscar recintos (ubicación)" aria-label="Search">
+            <button class="btn btn-light btn-outline-dark" type="submit">Search</button>
+        </form>
+    </div>
+</nav>

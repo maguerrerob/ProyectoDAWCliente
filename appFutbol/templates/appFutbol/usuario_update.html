@@ -1,0 +1,13 @@
+{% extends "principal.html" %}
+
+{% block cabecera %}
+    <h1>Modificación de usuarios AUTOMATIC-CRUD</h1>
+{% endblock %}
+
+{% block contenido %}
+    <form action="" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Actualizar usuario</button>
+    </form>
+{% endblock %}

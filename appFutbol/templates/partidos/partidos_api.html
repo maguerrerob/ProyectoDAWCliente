@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi app cliente</title>
+</head>
+<body>
+    {% for partido in partidos_mostrar %}
+        <h3>- Partido</h3>
+        <p>ID: {{ partido.id }}</p>
+        <p>Hora: {{ partido.hora }}</p>
+        <p>Estado: {{ partido.estado }}</p>
+        <p>Tipo: {{ partido.tipo }}</p>
+        <p>Estilo: {{ partido.estilo }}</p>
+        <p>Creador: {{ partido.creador.usuario.username }}</p>
+        <p>Campo reservado: {{ partido.campo_reservado.nombre }}</p>
+        <h4>Usuarios jugadores</h4>
+        {% for jugador in partido.usuario_jugadores.all %}
+            <p>{{ jugador.usuario.username }}</p>
+        {% endfor %}
+        <hr>
+    {% endfor %}
+</body>
+</html>

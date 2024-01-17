@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Última votación del partido {{ tarea.id }}</h1>
+    <p>Comentario: {{ votacion.comentario }}</p>
+    <p>Puntuación: {{ votacion.puntuacion_numerica }}</p>
+    <p>Nombre último: {{ votacion.creador_votacion.nombre }}</p>
+    <p>Apellido: {{ votacion.creador_votacion.apellidos }}</p>
+    <p>Email: {{ votacion.creador_votacion.email }}</p>
+    <p>Nivel: {{ votacion.creador_votacion.nivel }}</p>
+    <p>Teléfono: {{ votacion.creador_votacion.telefono }}</p>
+</body>
+</html>

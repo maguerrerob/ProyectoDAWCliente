@@ -1,0 +1,49 @@
+{% extends "principal.html" %}
+
+{% block cabecera %}
+    {% if not texto_busqueda is None %}
+        <h4>{{ texto_busqueda }}</h4>
+    {% else %}
+        <h1>Listado de Usuarios</h1>
+    {% endif %}
+{% endblock %}
+
+{% block contenido %}
+    {% for usuario in usuarios %}
+        <ul>
+            <li>
+                <p>Nombre: {{ usuario.nombre }}</p>
+                <p>Apellidos: {{ usuario.apellidos }}</p>
+                <p>Email: {{ usuario.email }}</p>
+                <p>Nivel: {{ usuario.nivel }}</p>
+                <p>Teléfono: {{ usuario.telefono }}</p>
+                <p>Descripción: {{ usuario.datos_usuario.descripcion }}</p>
+                <p>Posicion: {{ usuario.datos_usuario.posicion }}</p>
+                <p>Ubicación: {{ usuario.datos_usuario.ubicacion }}</p>
+                <h3>Posts creados del usuario</h3>
+                {% for post in usuario.creador_post.all %}
+                    <ul>
+                        <li>
+                            {{ post.contenido }}
+                        </li>
+                    </ul>
+                {% empty %}
+                <p>Lo siento el usuario no ha creado ningún post</p>
+                {% endfor %}
+                <h3>Reservas realizadas del usuario</h3>
+                {% for res in usuario.creador_reserva.all %}
+                    <ul>
+                        <li>
+                            <p>Estado: {{ res.estado }}</p>
+                            <p>Tipo: {{ res.tipo }}</p>
+                            <p>Número de jugadores: {{ res.n_jugadores }}</p>
+                            <p>Campo reservado: {{ res.campo_reservado.nombre }}</p>
+                        </li>
+                    </ul>
+                {% empty %}
+                <p>Lo siento el usuario no ha hecho ninguna reserva.</p>
+                {% endfor %}
+            </li>
+        </ul>
+    {% endfor %}
+{% endblock %}

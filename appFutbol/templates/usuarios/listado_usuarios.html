@@ -1,0 +1,45 @@
+{% extends "principal.html" %}
+
+{% block cabecera_extra %}
+    {% load static %}
+    <script type="text/javascript" src="{% static 'js/eliminarusuario.js' %}"></script>
+{% endblock %}
+
+{% block cabecera %}
+    {% if not texto_busqueda is None %}
+        <h4>{{ texto_busqueda }}</h4>
+    {% else %}
+        <h1>Listado de usuarios</h1>
+    {% endif %}
+{% endblock %}
+
+{% block contenido %}
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+    {% endif %}
+    {% for usuario in usuarios %}
+        <ul>
+            <li>
+                <h4> {{ usuario.nombre }}</h4>
+                <p>{{ usuario.apellidos }}</p>
+                <p>Email: {{ usuario.email }}</p>
+                <p>Nivel: {{ usuario.nivel }}</p>
+                <p>Teléfono: {{ usuario.telefono }}</p>
+                <!--<a href="{% url 'usuario_editar' usuario.id %}">EDITAR</a>
+                <form action="{% url 'usuario_eliminar' usuario.id %}" method="post">
+                    {% csrf_token %}
+                    <button onclick="return eliminar();" type="submit">
+                        ELIMINAR
+                    </button>
+                </form>-->
+            </li>
+        </ul>
+    {% empty %}
+        <p>No se ha encontrado ningún usuario</p>
+    {% endfor %}
+{% endblock %}

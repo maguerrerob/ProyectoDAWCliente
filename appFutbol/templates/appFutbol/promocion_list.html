@@ -1,0 +1,26 @@
+{% extends "principal.html" %}
+
+{% block cabecera %}
+    <h1>Listado de Promociones</h1>
+{% endblock %}
+
+{% block contenido %}
+    {% if object_list %}
+        {% for promocion in object_list %}
+            <ul>
+                <li>
+                    <h4>{{ promocion.nombre }}</h4>
+                    <p>{{ promocion.descripcion }}</p>
+                    <p>{{ promocion.descuento }}</p>
+                    <p>{{ promocion.fecha_promocion }}</p>
+                    <p>Usuarios:</p>
+                    
+                    <a href="#">EDITAR</a>
+                    <a href="{% url 'appFutbol-promocion-logic-delete' promocion.id %}">ELIMINAR</a>
+                </li>
+            </ul>
+        {% endfor %}
+    {% else %}
+        <p>Lo sentimos no existen datos</p>
+    {% endif %}
+{% endblock %}

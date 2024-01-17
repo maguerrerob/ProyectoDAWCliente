@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mejores usuarios</title>
+</head>
+<body>
+    <h1>Podio de usuarios</h1>
+    {% for usuario in usuarios %}
+        <ul>
+            <li>
+                <p>Nombre: {{ usuario.nombre }}</p>
+                <p>Apellidos: {{ usuario.nivel }}</p>
+                <p><strong>Nivel:</strong> {{ usuario.nivel }}</p>
+                <p>Email: {{ usuario.email }}</p>
+                <p>Teléfono: {{ usuario.telefono }}</p>
+                <p>Descripción: {{ usuario.datos_usuario.descripcion }}</p>
+                <p>Posición: {{ usuario.datos_usuario.posicion }}</p>
+                <p>Ubicación: {{ usuario.datos_usuario.ubicacion }}</p>
+                <p>ID partido: {{ usuario.jugadores_partido.id }}</p>
+            </li>
+        </ul>
+    {% endfor %}
+</body>
+</html>

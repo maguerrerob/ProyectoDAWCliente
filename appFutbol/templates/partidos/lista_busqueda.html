@@ -1,0 +1,20 @@
+{% extends "principal.html" %}
+
+{% block cabecera %}
+    <h1>{{ texto_bsuqueda }}</h1>
+{% endblock %}
+
+{% block contenido %}
+    {% for reserva in reservas %}
+    <ul>
+        <li>
+            <p>Estado: {{ reserva.get_estado_display }}</p>
+            <p>Tipo: {{ reserva.get_tipo_display }}</p>
+            <p>Creador de la reserva: {{ reserva.creador.nombre }}</p> 
+            <p>Campo reservado: {{ reserva.campo_reservado.nombre }}</p>
+        </li>
+    </ul>
+    {% empty %}
+        <p>Lo sentimos pero no hay reservas con ese nombre de creador</p>
+    {% endfor %}
+{% endblock %}

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Partidos del usuario {{ usuario.nombre }} los cuales un usuario votó con 3</h1>
+    {% for partido in partidos %}
+        <ul>
+            <li>
+                <p>Estilo: {{ partido.estilo }}</p>
+                <p>Estado de la reserva del partido: {{ partido.reserva_partido.estado }}</p>
+                <h3>Usuarios jugadores del partido</h3>
+                {% for usuario in partido.usuarios_jugadores.all %}
+                    <ul>
+                        <li>
+                            <p>Nombre: {{ usuario.nombre }}</p>
+                        </li>
+                    </ul>
+                {% endfor %}
+            </li>
+        </ul>
+    {% empty %}
+        <p>Lo siento no hay partidos puntuados con 3 de ese usuario</p>
+    {% endfor %}
+</body>
+</html>

@@ -1,0 +1,21 @@
+{% extends "principal.html" %}
+
+{% block cabecera %}
+    <h1>Listado de recintos AUTOMATIC-CRUD</h1>
+{% endblock %}
+
+{% block contenido %}
+    {% if object_list %}
+        {% for recinto in object_list %}
+            <ul>
+                <li>
+                    <p>{{ recinto.nombre }}</p>
+                    <p>Ubicación: {{ recinto.ubicacion }}</p>
+                    <p>Teléfono: {{ recinto.telefono }}</p>
+                </li>
+            </ul>
+        {% endfor %}
+    {% else %}
+        <p>Lo sentimos no existen datos</p>
+    {% endif %}
+{% endblock %}

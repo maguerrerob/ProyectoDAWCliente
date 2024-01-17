@@ -1,0 +1,14 @@
+{%%}
+    <h1>Partidos de locales ganados</h1>
+    {% for partido in partidos %}
+    <ul>
+        <li>
+            <p>Id partido: {{ partido.id }}</p>
+            <p>Local {{ partido.resultado_partido.goles_local }} / {{ partido.resultado_partido.goles_visitante }} Visitante</p>
+        </li>
+    </ul>
+    {% empty %}
+    <p>L siento son unos paquetes</p>
+    {% endfor %}
+</body>
+</html>
