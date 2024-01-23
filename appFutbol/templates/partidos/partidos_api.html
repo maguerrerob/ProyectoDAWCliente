@@ -17,7 +17,7 @@
         <p>Campo reservado: {{ partido.campo_reservado.nombre }}</p>
         <h4>Usuarios jugadores</h4>
         {% for jugador in partido.usuario_jugadores.all %}
-            <p>{{ jugador.usuario.username }}</p>
+            <p>{{ jugador.usuario.id }}</p>
         {% endfor %}
         <hr>
     {% endfor %}
