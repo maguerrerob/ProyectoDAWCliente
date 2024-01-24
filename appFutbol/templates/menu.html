@@ -26,9 +26,9 @@
                     Usuarios
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="accionesUsuariosLink">
-                    <li><a class="dropdown-item" href="{% url 'usuarios_creados' %}">Ver usuarios</a></li>
+                    <li><a class="dropdown-item" href="#">Ver usuarios</a></li>
                     <li><a class="dropdown-item" href="#">Crear usuario</a></li>
-                    <li><a class="dropdown-item" href="{% url 'usuario_buscar_avanzado' %}">Busqueda Avanzada de usuarios</a></li>
+                    <li><a class="dropdown-item" href="#">Busqueda Avanzada de usuarios</a></li>
                 </ul>
             </li>
             <li class="nav-item dropdown">
@@ -40,9 +40,9 @@
                     Recinto
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="accionesRecintoLink">
-                    <li><a class="dropdown-item" href="{% url 'listar_recintos' %}">Ver recintos</a></li>
-                    <li><a class="dropdown-item" href="{% url 'recinto_create' %}">Crear recinto</a></li>
-                    <li><a class="dropdown-item" href="{% url 'recinto_buscar_avanzado' %}">Busqueda Avanzada de recintos</a></li>
+                    <li><a class="dropdown-item" href="#">Ver recintos</a></li>
+                    <li><a class="dropdown-item" href="#">Crear recinto</a></li>
+                    <li><a class="dropdown-item" href="#">Busqueda Avanzada de recintos</a></li>
                 </ul>
             </li>
             <li class="nav-item dropdown">
@@ -54,9 +54,9 @@
                     Partidos
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="accionesPartidosLink">
-                    <li><a class="dropdown-item" href="{% url 'partidos_realizados' %}">Ver partidos</a></li>
-                    <li><a class="dropdown-item" href="{% url 'partido_create' %}">Crear partido</a></li>
-                    <li><a class="dropdown-item" href="{% url 'partido_buscar_avanzado' %}">Busqueda Avanzada de partidos</a></li>
+                    <li><a class="dropdown-item" href="#">Ver partidos</a></li>
+                    <li><a class="dropdown-item" href="#">Crear partido</a></li>
+                    <li><a class="dropdown-item" href="#">Busqueda Avanzada de partidos</a></li>
                 </ul>
             </li>
             <li class="nav-item dropdown">
@@ -68,27 +68,27 @@
                     Promociones
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="accionesPromocionLink">
-                    <li><a class="dropdown-item" href="{% url 'promociones_realizadas' %}">Ver promociones</a></li>
-                    <li><a class="dropdown-item" href="{% url 'promocion_create' %}">Crear promocion</a></li>
-                    <li><a class="dropdown-item" href="{% url 'promocion_avanzada' %}">Busqueda Avanzada de promociones</a></li>
+                    <li><a class="dropdown-item" href="#">Ver promociones</a></li>
+                    <li><a class="dropdown-item" href="#">Crear promocion</a></li>
+                    <li><a class="dropdown-item" href="#">Busqueda Avanzada de promociones</a></li>
                 </ul>
             </li>
             <li class="nav-item">
-                <a class="nav-link link-dark active" href="{% url 'listar_recintos' %}">Ver recintos</a>
+                <a class="nav-link link-dark active" href="#">Ver recintos</a>
             </li>
             {% if not request.user.is_authenticated %}
             <li class="login nav-item ms-lg-5">
-                <a class="acceder nav-link link-primary" href="{% url 'login' %}">Login</a>
+                <a class="acceder nav-link link-primary" href="#">Login</a>
             </li>
             {% endif %}
             {% if not request.user.is_authenticated %}
             <li class="login nav-item ms-lg-5">
-                <a class="acceder nav-link link-primary" href="{% url 'registrar_usuario' %}">Registrarse</a>
+                <a class="acceder nav-link link-primary" href="#">Registrarse</a>
             </li>
             {% endif %}
             {% if request.user.is_authenticated %}
             <li class="login nav-item ms-lg-5">
-                <a class="acceder nav-link link-primary" href="{% url 'logout' %}">Desconectarse</a>
+                <a class="acceder nav-link link-primary" href="#">Desconectarse</a>
             </li>
             {% endif %}
             {% if request.user.is_authenticated %}
@@ -97,7 +97,7 @@
             </li>
             {% endif %}
         </ul>
-        <form action="{% url 'recinto_buscar' %}" class="d-flex mt-3" role="search" method="GET">
+        <form action="{% url 'recinto_buscar_simple' %}" class="d-flex mt-3" role="search" method="GET">
             <input name="textoBusqueda" class="form-control me-2" type="search" placeholder="Buscar recintos (ubicación)" aria-label="Search">
             <button class="btn btn-light btn-outline-dark" type="submit">Search</button>
         </form>

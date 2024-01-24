@@ -1,0 +1,26 @@
+{% extends "principal.html" %}
+{% block cabecera %}
+    <h1>Listado de los recintos encontrados</h1>
+{% endblock %}
+
+{% block contenido %}
+    <div class="row">
+        {% for recinto in recintos_mostrar %}
+            <div class="col-sm-4 mb-2">
+               
+                <p>nombre: {{recinto.nombre}}</p>
+                <p>Ubicación: {{recinto.ubicacion}}</p>
+                <p>Teléfono: {{recinto.telefono}}</p>
+                <p>fecha_publicacion: {{recinto.fecha_publicacion}}</p>
+                <h5>Dueño recinto:</h5>
+                <ul>
+                    {% for duenyo in recinto.dueño_recinto.usuario.all %}
+                        <li>{{ duenyo.username }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% empty %}
+            <h1>Lo sentimos pero no hay recintos</h1>
+        {% endfor %}
+    </div>
+{% endblock %}  
