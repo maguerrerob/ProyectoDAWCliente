@@ -6,3 +6,11 @@ from django.contrib.auth.forms import UserCreationForm
 
 class BusquedaRecintoForm(forms.Form):
     textoBusqueda = forms.CharField(required=True)
+    
+    
+class BusquedaAvanzadaRecintoForm(forms.Form):
+    nombre = forms.CharField(required=True)
+
+    ubicacion = forms.CharField(required=True)
+    
+    telefono = forms.CharField(required=True)

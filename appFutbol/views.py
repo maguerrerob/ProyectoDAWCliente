@@ -7,7 +7,7 @@ from django.contrib.auth import login
 from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.models import Group
 import requests
-from  django.core import serializers
+from requests.exceptions import HTTPError
 
 # Create your views here.
 
@@ -47,4 +47,54 @@ def recinto_buscar_simple(request):
     else:
         return redirect("index")
     
-from requests.exceptions import HTTPError
+
+def recinto_busqueda_avanzada(request):
+    if(len(request.GET) > 0):
+        formulario = BusquedaAvanzadaRecintoForm(request.GET)
+        
+        try:
+            headers = crear_cabecera()
+            response = requests.get(
+                'http://127.0.0.1:8000/api/v1/libros/busqueda_avanzada',
+                headers=headers,
+                params=formulario.data
+            )
+            if(response.status_code == requests.codes.ok):
+                recintos = response.json()
+                return render(request, 'recintos/lista_mejorada_api.html',
+                              {"recintos_mostrar":recintos})
+            else:
+                print(response.status_code)
+                response.raise_for_status()
+        except HTTPError as http_err:
+            print(f'Hubo un error en la petición: {http_err}')
+            if(response.status_code == 400):
+                errores = response.json()
+                for error in errores:
+                    formulario.add_error(error,errores[error])
+                return render(request, 
+                            'recintos/lista_mejorada_api.html',
+                            {"formulario":formulario,"errores":errores})
+            else:
+                return mi_error_500(request)
+        except Exception as err:
+            print(f'Ocurrió un error: {err}')
+            return mi_error_500(request)
+    else:
+        formulario = BusquedaAvanzadaRecintoForm(None)
+    return render(request, 'recintos/form_busqueda_avanzada_api.html',{"formulario":formulario})
+
+
+# Errores
+
+def mi_error_400(request,exception=None):
+    return render(request, 'errores/400.html',None,None,400)
+
+def mi_error_403(request,exception=None):
+    return render(request, 'errores/403.html',None,None,403)
+
+def mi_error_404(request,exception=None):
+    return render(request, 'errores/404.html',None,None,404)
+
+def mi_error_500(request,exception=None):
+    return render(request, 'errores/500.html',None,None,500)
