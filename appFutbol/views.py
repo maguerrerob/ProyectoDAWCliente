@@ -6,8 +6,17 @@ from django.contrib import messages
 from django.contrib.auth import login
 from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.models import Group
-import requests
 from requests.exceptions import HTTPError
+from pathlib import Path
+
+import requests
+import os
+import environ
+from pathlib import Path
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+env = environ.Env()
+environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
 # Create your views here.
 
@@ -15,12 +24,16 @@ def index(request):
     return render(request, "index.html")
 
 # Para crear la cabecera, ahí irá los datos de la autenticacion con la API
-def crear_cabecera():
-    return {'Authorization': 'Bearer UaAG1imxXEmX90JSlVG8YMQ89Lwiet'}
+def crear_cabecera_cliente():
+    return {'Authorization': 'Bearer '+env("TOKEN_CLIENTE")}
 
+def crear_cabecera_duenyorecinto():
+    return {'Authorization': 'Bearer '+env("TOKEN_DUENYORECINTO")}
+
+# Consulta sencilla a modelo principal
 def partidos_lista(request):
     # Token cliente
-    headers = {"Authorization":"Bearer UaAG1imxXEmX90JSlVG8YMQ89Lwiet"}
+    headers = {'Authorization': 'Bearer aa2AuWPQ6RUUFa7LhhJPNAMK6886GK'}
     
     # Obtenemos todos los partidos
     response = requests.get("http://127.0.0.1:8000/api/v1/partidos", headers=headers)
@@ -29,11 +42,21 @@ def partidos_lista(request):
     partidos = response.json()
     return render(request, "partidos/partidos_api.html", {"partidos_mostrar": partidos})
 
+# Consulta mejorada
+def partidos_api_mejorada(request):
+    # Token cliente
+    headers = crear_cabecera_cliente()
+
+    response = requests.get("http://127.0.0.1:8000/api/v1/partidos_mejorada", headers=headers)
+
+    partidos = response.json()
+    return render(request, "partidos/partidos_api_mejorada.html", {"partidos_mostrar": partidos})
+
 def recinto_buscar_simple(request):
     formulario = BusquedaRecintoForm(request.GET)
     
     if formulario.is_valid():
-        headers = crear_cabecera()
+        headers = {'Authorization': 'Bearer aa2AuWPQ6RUUFa7LhhJPNAMK6886GK'}
         response = requests.get(
             'http://127.0.0.1:8000/api/v1/recintos/busqueda_simple',
             headers=headers,

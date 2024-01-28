@@ -11,3 +11,4 @@ django-crispy-forms~=2.0
 crispy-bootstrap5~=2023.10
 djangorestframework~=3.14.0
 requests~=2.31.0
+django-environ~=0.11.2
