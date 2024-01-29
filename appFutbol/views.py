@@ -23,23 +23,11 @@ environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 def index(request):
     return render(request, "index.html")
 
-# Para crear la cabecera, ahí irá los datos de la autenticacion con la API
-def crear_cabecera_cliente():
-    return {'Authorization': 'Bearer '+env("TOKEN_CLIENTE")}
-
-def crear_cabecera_duenyorecinto():
-    return {'Authorization': 'Bearer '+env("TOKEN_DUENYORECINTO")}
-
-def datos_usuario(request):
-    headers = {'Authorization': f'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzA2NTIwMzUyLCJpYXQiOjE3MDY1MjAwNTIsImp0aSI6IjE2YTczN2QxYTc0ODRlMzBhMzg2MDQ3YzRhZDcxYzkwIiwidXNlcl9pZCI6MX0.1ErYVlos6HLu6nh8SqId2qMK8mMIjmy1tsJwOyy8rG'}
-    response = requests.get("http://127.0.0.1:8000/api/v1/datosusuarios", headers=headers)
-    datosusuarios = response.json()
-    return render(request, "datosusuario/datosusuario_api.html", {"datos_mostrar":datosusuarios})
 
 # Consulta sencilla a modelo principal
 def partidos_lista(request):
     # Token cliente
-    headers = {'Authorization': 'Bearer aa2AuWPQ6RUUFa7LhhJPNAMK6886GK'}
+    headers = {'Authorization': 'Bearer r8nQ2jnolk0Kyl3Ubhypt9RdqMHZtI'}
     
     # Obtenemos todos los partidos
     response = requests.get("http://127.0.0.1:8000/api/v1/partidos", headers=headers)
@@ -51,18 +39,50 @@ def partidos_lista(request):
 # Consulta mejorada
 def partidos_api_mejorada(request):
     # Token cliente
-    headers = crear_cabecera_cliente()
+    headers = {'Authorization': 'Bearer r8nQ2jnolk0Kyl3Ubhypt9RdqMHZtI'}
 
     response = requests.get("http://127.0.0.1:8000/api/v1/partidos_mejorada", headers=headers)
 
     partidos = response.json()
     return render(request, "partidos/partidos_api_mejorada.html", {"partidos_mostrar": partidos})
 
+
+# Para crear la cabecera, ahí irá los datos de la autenticacion con la API en variables de entorno - clientes
+def crear_cabecera_cliente():
+    return {'Authorization': 'Bearer '+env("TOKEN_CLIENTE")}
+
+def crear_cabecera_duenyorecinto():
+    return {'Authorization': 'Bearer '+env("TOKEN_DUENYORECINTO")}
+
+# Consulta mejorada con autenticación oauth2 en API
+def datos_usuario(request):
+    headers = crear_cabecera_cliente()
+    response = requests.get("http://127.0.0.1:8000/api/v1/datosusuarios", headers=headers)
+    datosusuarios = response.json()
+    return render(request, "datosusuario/datosusuario_api.html", {"datos_mostrar":datosusuarios})
+
+def recintos_lista_api(request):
+    headers = crear_cabecera_duenyorecinto()
+    response = requests.get("http://127.0.0.1:8000/api/v1/recintos/listar", headers=headers)
+    recintos = response.json()
+    return render(request, "recintos/listar_recintos_api.html", {"recintos_mostrar":recintos})
+
+# Consulta mejorada con autenticación JWT
+def crear_cabecera_jwt():
+    return {'Authorization': 'Bearer '+env("TOKEN_JWT")}
+
+def listar_post(request):
+    headers = crear_cabecera_jwt()
+    response = requests.get("http://127.0.0.1:8000/api/v1/posts/listar", headers=headers)
+    posts = response.json()
+    return render(request, "posts/listar_posts_api.html", {"posts_mostrar":posts})
+
+
 def recinto_buscar_simple(request):
     formulario = BusquedaRecintoForm(request.GET)
     
     if formulario.is_valid():
-        headers = {'Authorization': 'Bearer aa2AuWPQ6RUUFa7LhhJPNAMK6886GK'}
+        headers = crear_cabecera_duenyorecinto()
         response = requests.get(
             'http://127.0.0.1:8000/api/v1/recintos/busqueda_simple',
             headers=headers,

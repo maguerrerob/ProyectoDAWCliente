@@ -1,0 +1,38 @@
+{% extends "principal.html" %}
+
+{% block cabecera_extra %}
+    {% load static %}
+    <script type="text/javascript" src="{% static 'js/eliminarpartido.js' %}"></script>
+{% endblock %}
+
+{% block cabecera %}
+    {% if not texto_busqueda is None %}
+        <h4>{{ texto_busqueda }}</h4>
+    {% else %}
+        <h1>Listado de posts de usuarios</h1>
+    {% endif %}
+{% endblock %}
+
+{% block contenido %}
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+    {% endif %}
+    {% for post in posts_mostrar %}
+        <ul>
+            <li>
+                <h5>{{ post.creador_post.cliente.usuario.username }}</h5>
+                {% comment %} {% for usu in post.creador_post.cliente.usuario.all %}
+                    <h5>{{ usu.username }}</h5>
+                {% endfor %} {% endcomment %}
+                <p>Contenido:  {{ post.contenido }}</p>
+            </li>
+        </ul>
+    {% empty %}
+        <p>No existe ningún post</p>
+    {% endfor %}
+{% endblock %}

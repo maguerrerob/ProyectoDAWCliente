@@ -40,7 +40,7 @@
                     Recinto
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="accionesRecintoLink">
-                    <li><a class="dropdown-item" href="#">Ver recintos</a></li>
+                    <li><a class="dropdown-item" href="{% url 'recintos_lista_api' %}">Ver recintos api</a></li>
                     <li><a class="dropdown-item" href="#">Crear recinto</a></li>
                     <li><a class="dropdown-item" href="{% url "recinto_busqueda_avanzada" %}">Busqueda Avanzada de recintos</a></li>
                 </ul>
@@ -76,6 +76,9 @@
             </li>
             <li class="nav-item">
                 <a class="nav-link link-dark active" href="{% url 'datos_usuario' %}">Datos Usuarios</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link link-dark active" href="{% url 'listar_post' %}">Lista posts api</a>
             </li>
             {% if not request.user.is_authenticated %}
             <li class="login nav-item ms-lg-5">

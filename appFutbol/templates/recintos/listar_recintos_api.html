@@ -1,0 +1,37 @@
+{% extends "principal.html" %}
+
+{% block cabecera_extra %}
+    {% load static %}
+    <script type="text/javascript" src="{% static 'js/eliminarrecinto.js' %}"></script>
+{% endblock %}
+
+{% block cabecera %}
+    {% if not texto_busqueda is None %}
+        <h1>{{ texto_busqueda }}</h1>
+    {% else %}
+        <h1>Listado de recintos API</h1>
+    {% endif %}
+{% endblock %}
+
+{% block contenido %}
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+    {% endif %}
+    {% for recinto in recintos_mostrar %}
+    <ul>
+        <li>
+            <h4>{{ recinto.nombre }}</h4>
+            <p>Ubicación: {{ recinto.ubicacion }}</p>
+            <p>Teléfono: {{ recinto.telefono }}</p>
+            <p>Dueño recinto: {{ recinto.dueño_recinto.usuario.username }}</p>
+        </li>
+    </ul>
+    {% empty %}
+        <p>Lo sentimos pero no hay recintos</p>
+    {% endfor %}
+{% endblock %}

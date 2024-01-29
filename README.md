@@ -70,3 +70,11 @@ Se cuenta también con un apartado de posts en los cuales podrás compartir los 
 - Los usuarios "cliente" son los únicos que podrán hacer búsqueda avanzada de partidos, eliminar, editar y crear
 - Los usuarios "dueñorecinto" son los únicos que pueden añadir, editar y borrar recintos.
 - NOTA: no me deja añadir ni un recinto nuevo ni un partido, los cree con el superusuario en admin, sorry
+
+# API REST I
+En el index principal, las vistas que he manejado están:
+- Consulta sencilla: Desplegable de "Partido" (Ver partidos_api)
+- Consulta mejorada: Desplegable de "Partido" (Ver partidos_api_mejorada)
+- Consulta mejorada con token oauth2 primera: Barra de navegación superior (Datos Usuarios)
+- Consulta mejorada con token oauth2 segunda: Desplegable de "Recinto" (Ver recintos api)
+- Consulta mejorada con token JWT: Barra de navegación superior (Lsta posts api)
