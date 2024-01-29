@@ -30,6 +30,12 @@ def crear_cabecera_cliente():
 def crear_cabecera_duenyorecinto():
     return {'Authorization': 'Bearer '+env("TOKEN_DUENYORECINTO")}
 
+def datos_usuario(request):
+    headers = {'Authorization': f'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzA2NTIwMzUyLCJpYXQiOjE3MDY1MjAwNTIsImp0aSI6IjE2YTczN2QxYTc0ODRlMzBhMzg2MDQ3YzRhZDcxYzkwIiwidXNlcl9pZCI6MX0.1ErYVlos6HLu6nh8SqId2qMK8mMIjmy1tsJwOyy8rG'}
+    response = requests.get("http://127.0.0.1:8000/api/v1/datosusuarios", headers=headers)
+    datosusuarios = response.json()
+    return render(request, "datosusuario/datosusuario_api.html", {"datos_mostrar":datosusuarios})
+
 # Consulta sencilla a modelo principal
 def partidos_lista(request):
     # Token cliente

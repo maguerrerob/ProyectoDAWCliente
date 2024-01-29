@@ -75,7 +75,7 @@
                 </ul>
             </li>
             <li class="nav-item">
-                <a class="nav-link link-dark active" href="#">Ver recintos</a>
+                <a class="nav-link link-dark active" href="{% url 'datos_usuario' %}">Datos Usuarios</a>
             </li>
             {% if not request.user.is_authenticated %}
             <li class="login nav-item ms-lg-5">
