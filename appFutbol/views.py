@@ -8,6 +8,7 @@ from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.models import Group
 from requests.exceptions import HTTPError
 from pathlib import Path
+import json
 
 import requests
 import os
@@ -134,6 +135,47 @@ def recinto_busqueda_avanzada(request):
     else:
         formulario = BusquedaAvanzadaRecintoForm(None)
     return render(request, 'recintos/form_busqueda_avanzada_api.html',{"formulario":formulario})
+
+
+def partido_create(request):
+    if (request.method == "POST"):
+        try:
+            formulario = PartidoForm(request.POST)
+            headers =  {
+                        'Authorization': 'Bearer '+env("TOKEN_CLIENTE"), "Content-Type": "application/json" 
+                    } 
+            datos = formulario.data.copy()
+            # Para campos que son varios valores de selección
+            datos["usuarios_jugadores"] = request.POST.getlist("usuarios_jugadores");
+            
+            response = requests.post(
+                'http://127.0.0.1:8000/api/v1/partido/crear',
+                headers=headers,
+                data=json.dumps(datos)
+            )
+            if(response.status_code == requests.codes.ok):
+                return redirect("partidos_api_mejorada")
+            else:
+                print(response.status_code)
+                response.raise_for_status()
+        except HTTPError as http_err:
+            print(f'Hubo un error en la petición: {http_err}')
+            if(response.status_code == 400):
+                errores = response.json()
+                for error in errores:
+                    formulario.add_error(error,errores[error])
+                return render(request, 
+                            'partidos/create_api.html',
+                            {"formulario":formulario})
+            else:
+                return mi_error_500(request)
+        except Exception as err:
+            print(f'Ocurrió un error: {err}')
+            return mi_error_500(request)
+        
+    else:
+         formulario = PartidoForm(None)
+    return render(request, 'partidos/create_api.html',{"formulario":formulario})
 
 
 # Errores

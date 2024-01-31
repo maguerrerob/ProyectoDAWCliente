@@ -14,4 +14,5 @@ urlpatterns = [
     path("posts/listar", views.listar_post, name="listar_post"),
     path("recintos/busqueda_recinto", views.recinto_buscar_simple, name="recinto_buscar_simple"),
     path("recintos/busqueda_avanzada", views.recinto_busqueda_avanzada, name="recinto_busqueda_avanzada"),
+    path("partido/create", views.partido_create, name="partido_create")
 ]
