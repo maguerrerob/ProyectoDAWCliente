@@ -27,7 +27,7 @@ def index(request):
 # Consulta sencilla a modelo principal
 def partidos_lista(request):
     # Token cliente
-    headers = {'Authorization': 'Bearer r8nQ2jnolk0Kyl3Ubhypt9RdqMHZtI'}
+    headers = crear_cabecera_cliente()
     
     # Obtenemos todos los partidos
     response = requests.get("http://127.0.0.1:8000/api/v1/partidos", headers=headers)
@@ -39,7 +39,7 @@ def partidos_lista(request):
 # Consulta mejorada
 def partidos_api_mejorada(request):
     # Token cliente
-    headers = {'Authorization': 'Bearer r8nQ2jnolk0Kyl3Ubhypt9RdqMHZtI'}
+    headers = crear_cabecera_cliente()
 
     response = requests.get("http://127.0.0.1:8000/api/v1/partidos_mejorada", headers=headers)
 
@@ -60,6 +60,7 @@ def datos_usuario(request):
     response = requests.get("http://127.0.0.1:8000/api/v1/datosusuarios", headers=headers)
     datosusuarios = response.json()
     return render(request, "datosusuario/datosusuario_api.html", {"datos_mostrar":datosusuarios})
+
 
 def recintos_lista_api(request):
     headers = crear_cabecera_duenyorecinto()
@@ -102,14 +103,15 @@ def recinto_busqueda_avanzada(request):
         formulario = BusquedaAvanzadaRecintoForm(request.GET)
         
         try:
-            headers = crear_cabecera()
+            headers = crear_cabecera_cliente()
             response = requests.get(
-                'http://127.0.0.1:8000/api/v1/libros/busqueda_avanzada',
+                'http://127.0.0.1:8000/api/v1/recintos/busqueda_avanzada',
                 headers=headers,
                 params=formulario.data
             )
             if(response.status_code == requests.codes.ok):
                 recintos = response.json()
+                print(recintos)
                 return render(request, 'recintos/lista_mejorada_api.html',
                               {"recintos_mostrar":recintos})
             else:
