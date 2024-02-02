@@ -15,9 +15,10 @@ import os
 import environ
 from pathlib import Path
 
+
 BASE_DIR = Path(__file__).resolve().parent.parent
+environ.Env.read_env(os.path.join(BASE_DIR, '.env'), True)
 env = environ.Env()
-environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
 # Create your views here.
 
@@ -80,11 +81,12 @@ def listar_post(request):
     return render(request, "posts/listar_posts_api.html", {"posts_mostrar":posts})
 
 
+# Búsqueda simple modelo principal
 def recinto_buscar_simple(request):
     formulario = BusquedaRecintoForm(request.GET)
     
     if formulario.is_valid():
-        headers = crear_cabecera_duenyorecinto()
+        headers = crear_cabecera_cliente()
         response = requests.get(
             'http://127.0.0.1:8000/api/v1/recintos/busqueda_simple',
             headers=headers,
@@ -98,7 +100,7 @@ def recinto_buscar_simple(request):
     else:
         return redirect("index")
     
-
+# Búsqueda avanzada modelo principal
 def recinto_busqueda_avanzada(request):
     if(len(request.GET) > 0):
         formulario = BusquedaAvanzadaRecintoForm(request.GET)
