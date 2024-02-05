@@ -1,57 +1,5 @@
 [
 {
-    "model": "admin.logentry",
-    "pk": 1,
-    "fields": {
-        "action_time": "2023-12-17T22:43:32.635Z",
-        "user": 1,
-        "content_type": 3,
-        "object_id": "1",
-        "object_repr": "cliente",
-        "action_flag": 1,
-        "change_message": "[{\"added\": {}}]"
-    }
-},
-{
-    "model": "admin.logentry",
-    "pk": 2,
-    "fields": {
-        "action_time": "2023-12-17T22:43:47.950Z",
-        "user": 1,
-        "content_type": 3,
-        "object_id": "2",
-        "object_repr": "dueñorecinto",
-        "action_flag": 1,
-        "change_message": "[{\"added\": {}}]"
-    }
-},
-{
-    "model": "admin.logentry",
-    "pk": 3,
-    "fields": {
-        "action_time": "2023-12-17T22:46:16.422Z",
-        "user": 1,
-        "content_type": 13,
-        "object_id": "1",
-        "object_repr": "recinto1",
-        "action_flag": 1,
-        "change_message": "[{\"added\": {}}]"
-    }
-},
-{
-    "model": "admin.logentry",
-    "pk": 4,
-    "fields": {
-        "action_time": "2023-12-17T22:47:48.945Z",
-        "user": 1,
-        "content_type": 10,
-        "object_id": "1",
-        "object_repr": "Partido object (1)",
-        "action_flag": 1,
-        "change_message": "[{\"added\": {}}]"
-    }
-},
-{
     "model": "auth.permission",
     "pk": 1,
     "fields": {
@@ -163,529 +111,540 @@
     "model": "auth.permission",
     "pk": 13,
     "fields": {
-        "name": "Can add content type",
+        "name": "Can add user",
         "content_type": 4,
-        "codename": "add_contenttype"
+        "codename": "add_user"
     }
 },
 {
     "model": "auth.permission",
     "pk": 14,
     "fields": {
-        "name": "Can change content type",
+        "name": "Can change user",
         "content_type": 4,
-        "codename": "change_contenttype"
+        "codename": "change_user"
     }
 },
 {
     "model": "auth.permission",
     "pk": 15,
     "fields": {
-        "name": "Can delete content type",
+        "name": "Can delete user",
         "content_type": 4,
-        "codename": "delete_contenttype"
+        "codename": "delete_user"
     }
 },
 {
     "model": "auth.permission",
     "pk": 16,
     "fields": {
-        "name": "Can view content type",
+        "name": "Can view user",
         "content_type": 4,
-        "codename": "view_contenttype"
+        "codename": "view_user"
     }
 },
 {
     "model": "auth.permission",
     "pk": 17,
     "fields": {
-        "name": "Can add session",
+        "name": "Can add content type",
         "content_type": 5,
-        "codename": "add_session"
+        "codename": "add_contenttype"
     }
 },
 {
     "model": "auth.permission",
     "pk": 18,
     "fields": {
-        "name": "Can change session",
+        "name": "Can change content type",
         "content_type": 5,
-        "codename": "change_session"
+        "codename": "change_contenttype"
     }
 },
 {
     "model": "auth.permission",
     "pk": 19,
     "fields": {
-        "name": "Can delete session",
+        "name": "Can delete content type",
         "content_type": 5,
-        "codename": "delete_session"
+        "codename": "delete_contenttype"
     }
 },
 {
     "model": "auth.permission",
     "pk": 20,
     "fields": {
-        "name": "Can view session",
+        "name": "Can view content type",
         "content_type": 5,
-        "codename": "view_session"
+        "codename": "view_contenttype"
     }
 },
 {
     "model": "auth.permission",
     "pk": 21,
     "fields": {
-        "name": "Can add user",
+        "name": "Can add session",
         "content_type": 6,
-        "codename": "add_usuario"
+        "codename": "add_session"
     }
 },
 {
     "model": "auth.permission",
     "pk": 22,
     "fields": {
-        "name": "Can change user",
+        "name": "Can change session",
         "content_type": 6,
-        "codename": "change_usuario"
+        "codename": "change_session"
     }
 },
 {
     "model": "auth.permission",
     "pk": 23,
     "fields": {
-        "name": "Can delete user",
+        "name": "Can delete session",
         "content_type": 6,
-        "codename": "delete_usuario"
+        "codename": "delete_session"
     }
 },
 {
     "model": "auth.permission",
     "pk": 24,
     "fields": {
-        "name": "Can view user",
+        "name": "Can view session",
         "content_type": 6,
-        "codename": "view_usuario"
+        "codename": "view_session"
     }
 },
 {
     "model": "auth.permission",
     "pk": 25,
     "fields": {
-        "name": "Can add cliente",
+        "name": "Can add user",
         "content_type": 7,
-        "codename": "add_cliente"
+        "codename": "add_usuario"
     }
 },
 {
     "model": "auth.permission",
     "pk": 26,
     "fields": {
-        "name": "Can change cliente",
+        "name": "Can change user",
         "content_type": 7,
-        "codename": "change_cliente"
+        "codename": "change_usuario"
     }
 },
 {
     "model": "auth.permission",
     "pk": 27,
     "fields": {
-        "name": "Can delete cliente",
+        "name": "Can delete user",
         "content_type": 7,
-        "codename": "delete_cliente"
+        "codename": "delete_usuario"
     }
 },
 {
     "model": "auth.permission",
     "pk": 28,
     "fields": {
-        "name": "Can view cliente",
+        "name": "Can view user",
         "content_type": 7,
-        "codename": "view_cliente"
+        "codename": "view_usuario"
     }
 },
 {
     "model": "auth.permission",
     "pk": 29,
     "fields": {
-        "name": "Can add dueñorecinto",
+        "name": "Can add cliente",
         "content_type": 8,
-        "codename": "add_dueñorecinto"
+        "codename": "add_cliente"
     }
 },
 {
     "model": "auth.permission",
     "pk": 30,
     "fields": {
-        "name": "Can change dueñorecinto",
+        "name": "Can change cliente",
         "content_type": 8,
-        "codename": "change_dueñorecinto"
+        "codename": "change_cliente"
     }
 },
 {
     "model": "auth.permission",
     "pk": 31,
     "fields": {
-        "name": "Can delete dueñorecinto",
+        "name": "Can delete cliente",
         "content_type": 8,
-        "codename": "delete_dueñorecinto"
+        "codename": "delete_cliente"
     }
 },
 {
     "model": "auth.permission",
     "pk": 32,
     "fields": {
-        "name": "Can view dueñorecinto",
+        "name": "Can view cliente",
         "content_type": 8,
-        "codename": "view_dueñorecinto"
+        "codename": "view_cliente"
     }
 },
 {
     "model": "auth.permission",
     "pk": 33,
     "fields": {
-        "name": "Can add jugador_partido",
+        "name": "Can add dueñorecinto",
         "content_type": 9,
-        "codename": "add_jugador_partido"
+        "codename": "add_dueñorecinto"
     }
 },
 {
     "model": "auth.permission",
     "pk": 34,
     "fields": {
-        "name": "Can change jugador_partido",
+        "name": "Can change dueñorecinto",
         "content_type": 9,
-        "codename": "change_jugador_partido"
+        "codename": "change_dueñorecinto"
     }
 },
 {
     "model": "auth.permission",
     "pk": 35,
     "fields": {
-        "name": "Can delete jugador_partido",
+        "name": "Can delete dueñorecinto",
         "content_type": 9,
-        "codename": "delete_jugador_partido"
+        "codename": "delete_dueñorecinto"
     }
 },
 {
     "model": "auth.permission",
     "pk": 36,
     "fields": {
-        "name": "Can view jugador_partido",
+        "name": "Can view dueñorecinto",
         "content_type": 9,
-        "codename": "view_jugador_partido"
+        "codename": "view_dueñorecinto"
     }
 },
 {
     "model": "auth.permission",
     "pk": 37,
     "fields": {
-        "name": "Can add partido",
+        "name": "Can add jugador_partido",
         "content_type": 10,
-        "codename": "add_partido"
+        "codename": "add_jugador_partido"
     }
 },
 {
     "model": "auth.permission",
     "pk": 38,
     "fields": {
-        "name": "Can change partido",
+        "name": "Can change jugador_partido",
         "content_type": 10,
-        "codename": "change_partido"
+        "codename": "change_jugador_partido"
     }
 },
 {
     "model": "auth.permission",
     "pk": 39,
     "fields": {
-        "name": "Can delete partido",
+        "name": "Can delete jugador_partido",
         "content_type": 10,
-        "codename": "delete_partido"
+        "codename": "delete_jugador_partido"
     }
 },
 {
     "model": "auth.permission",
     "pk": 40,
     "fields": {
-        "name": "Can view partido",
+        "name": "Can view jugador_partido",
         "content_type": 10,
-        "codename": "view_partido"
+        "codename": "view_jugador_partido"
     }
 },
 {
     "model": "auth.permission",
     "pk": 41,
     "fields": {
-        "name": "Can add votacion_partido",
+        "name": "Can add partido",
         "content_type": 11,
-        "codename": "add_votacion_partido"
+        "codename": "add_partido"
     }
 },
 {
     "model": "auth.permission",
     "pk": 42,
     "fields": {
-        "name": "Can change votacion_partido",
+        "name": "Can change partido",
         "content_type": 11,
-        "codename": "change_votacion_partido"
+        "codename": "change_partido"
     }
 },
 {
     "model": "auth.permission",
     "pk": 43,
     "fields": {
-        "name": "Can delete votacion_partido",
+        "name": "Can delete partido",
         "content_type": 11,
-        "codename": "delete_votacion_partido"
+        "codename": "delete_partido"
     }
 },
 {
     "model": "auth.permission",
     "pk": 44,
     "fields": {
-        "name": "Can view votacion_partido",
+        "name": "Can view partido",
         "content_type": 11,
-        "codename": "view_votacion_partido"
+        "codename": "view_partido"
     }
 },
 {
     "model": "auth.permission",
     "pk": 45,
     "fields": {
-        "name": "Can add resultado",
+        "name": "Can add votacion_partido",
         "content_type": 12,
-        "codename": "add_resultado"
+        "codename": "add_votacion_partido"
     }
 },
 {
     "model": "auth.permission",
     "pk": 46,
     "fields": {
-        "name": "Can change resultado",
+        "name": "Can change votacion_partido",
         "content_type": 12,
-        "codename": "change_resultado"
+        "codename": "change_votacion_partido"
     }
 },
 {
     "model": "auth.permission",
     "pk": 47,
     "fields": {
-        "name": "Can delete resultado",
+        "name": "Can delete votacion_partido",
         "content_type": 12,
-        "codename": "delete_resultado"
+        "codename": "delete_votacion_partido"
     }
 },
 {
     "model": "auth.permission",
     "pk": 48,
     "fields": {
-        "name": "Can view resultado",
+        "name": "Can view votacion_partido",
         "content_type": 12,
-        "codename": "view_resultado"
+        "codename": "view_votacion_partido"
     }
 },
 {
     "model": "auth.permission",
     "pk": 49,
     "fields": {
-        "name": "Can add recinto",
+        "name": "Can add resultado",
         "content_type": 13,
-        "codename": "add_recinto"
+        "codename": "add_resultado"
     }
 },
 {
     "model": "auth.permission",
     "pk": 50,
     "fields": {
-        "name": "Can change recinto",
+        "name": "Can change resultado",
         "content_type": 13,
-        "codename": "change_recinto"
+        "codename": "change_resultado"
     }
 },
 {
     "model": "auth.permission",
     "pk": 51,
     "fields": {
-        "name": "Can delete recinto",
+        "name": "Can delete resultado",
         "content_type": 13,
-        "codename": "delete_recinto"
+        "codename": "delete_resultado"
     }
 },
 {
     "model": "auth.permission",
     "pk": 52,
     "fields": {
-        "name": "Can view recinto",
+        "name": "Can view resultado",
         "content_type": 13,
-        "codename": "view_recinto"
+        "codename": "view_resultado"
     }
 },
 {
     "model": "auth.permission",
     "pk": 53,
     "fields": {
-        "name": "Can add promocion",
+        "name": "Can add recinto",
         "content_type": 14,
-        "codename": "add_promocion"
+        "codename": "add_recinto"
     }
 },
 {
     "model": "auth.permission",
     "pk": 54,
     "fields": {
-        "name": "Can change promocion",
+        "name": "Can change recinto",
         "content_type": 14,
-        "codename": "change_promocion"
+        "codename": "change_recinto"
     }
 },
 {
     "model": "auth.permission",
     "pk": 55,
     "fields": {
-        "name": "Can delete promocion",
+        "name": "Can delete recinto",
         "content_type": 14,
-        "codename": "delete_promocion"
+        "codename": "delete_recinto"
     }
 },
 {
     "model": "auth.permission",
     "pk": 56,
     "fields": {
-        "name": "Can view promocion",
+        "name": "Can view recinto",
         "content_type": 14,
-        "codename": "view_promocion"
+        "codename": "view_recinto"
     }
 },
 {
     "model": "auth.permission",
     "pk": 57,
     "fields": {
-        "name": "Can add post",
+        "name": "Can add promocion",
         "content_type": 15,
-        "codename": "add_post"
+        "codename": "add_promocion"
     }
 },
 {
     "model": "auth.permission",
     "pk": 58,
     "fields": {
-        "name": "Can change post",
+        "name": "Can change promocion",
         "content_type": 15,
-        "codename": "change_post"
+        "codename": "change_promocion"
     }
 },
 {
     "model": "auth.permission",
     "pk": 59,
     "fields": {
-        "name": "Can delete post",
+        "name": "Can delete promocion",
         "content_type": 15,
-        "codename": "delete_post"
+        "codename": "delete_promocion"
     }
 },
 {
     "model": "auth.permission",
     "pk": 60,
     "fields": {
-        "name": "Can view post",
+        "name": "Can view promocion",
         "content_type": 15,
-        "codename": "view_post"
+        "codename": "view_promocion"
     }
 },
 {
     "model": "auth.permission",
     "pk": 61,
     "fields": {
-        "name": "Can add datos usuario",
+        "name": "Can add post",
         "content_type": 16,
-        "codename": "add_datosusuario"
+        "codename": "add_post"
     }
 },
 {
     "model": "auth.permission",
     "pk": 62,
     "fields": {
-        "name": "Can change datos usuario",
+        "name": "Can change post",
         "content_type": 16,
-        "codename": "change_datosusuario"
+        "codename": "change_post"
     }
 },
 {
     "model": "auth.permission",
     "pk": 63,
     "fields": {
-        "name": "Can delete datos usuario",
+        "name": "Can delete post",
         "content_type": 16,
-        "codename": "delete_datosusuario"
+        "codename": "delete_post"
     }
 },
 {
     "model": "auth.permission",
     "pk": 64,
     "fields": {
-        "name": "Can view datos usuario",
+        "name": "Can view post",
         "content_type": 16,
-        "codename": "view_datosusuario"
+        "codename": "view_post"
     }
 },
 {
     "model": "auth.permission",
     "pk": 65,
     "fields": {
-        "name": "Can add cuenta_bancaria",
+        "name": "Can add datos usuario",
         "content_type": 17,
-        "codename": "add_cuenta_bancaria"
+        "codename": "add_datosusuario"
     }
 },
 {
     "model": "auth.permission",
     "pk": 66,
     "fields": {
-        "name": "Can change cuenta_bancaria",
+        "name": "Can change datos usuario",
         "content_type": 17,
-        "codename": "change_cuenta_bancaria"
+        "codename": "change_datosusuario"
     }
 },
 {
     "model": "auth.permission",
     "pk": 67,
     "fields": {
-        "name": "Can delete cuenta_bancaria",
+        "name": "Can delete datos usuario",
         "content_type": 17,
-        "codename": "delete_cuenta_bancaria"
+        "codename": "delete_datosusuario"
     }
 },
 {
     "model": "auth.permission",
     "pk": 68,
     "fields": {
-        "name": "Can view cuenta_bancaria",
+        "name": "Can view datos usuario",
         "content_type": 17,
+        "codename": "view_datosusuario"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 69,
+    "fields": {
+        "name": "Can add cuenta_bancaria",
+        "content_type": 18,
+        "codename": "add_cuenta_bancaria"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 70,
+    "fields": {
+        "name": "Can change cuenta_bancaria",
+        "content_type": 18,
+        "codename": "change_cuenta_bancaria"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 71,
+    "fields": {
+        "name": "Can delete cuenta_bancaria",
+        "content_type": 18,
+        "codename": "delete_cuenta_bancaria"
+    }
+},
+{
+    "model": "auth.permission",
+    "pk": 72,
+    "fields": {
+        "name": "Can view cuenta_bancaria",
+        "content_type": 18,
         "codename": "view_cuenta_bancaria"
-    }
-},
-{
-    "model": "auth.group",
-    "pk": 1,
-    "fields": {
-        "name": "cliente",
-        "permissions": [
-            37,
-            38,
-            39,
-            40
-        ]
-    }
-},
-{
-    "model": "auth.group",
-    "pk": 2,
-    "fields": {
-        "name": "dueñorecinto",
-        "permissions": [
-            49,
-            50,
-            51
-        ]
     }
 },
 {
@@ -716,13 +675,21 @@
     "model": "contenttypes.contenttype",
     "pk": 4,
     "fields": {
+        "app_label": "auth",
+        "model": "user"
+    }
+},
+{
+    "model": "contenttypes.contenttype",
+    "pk": 5,
+    "fields": {
         "app_label": "contenttypes",
         "model": "contenttype"
     }
 },
 {
     "model": "contenttypes.contenttype",
-    "pk": 5,
+    "pk": 6,
     "fields": {
         "app_label": "sessions",
         "model": "session"
@@ -730,7 +697,7 @@
 },
 {
     "model": "contenttypes.contenttype",
-    "pk": 6,
+    "pk": 7,
     "fields": {
         "app_label": "appFutbol",
         "model": "usuario"
@@ -738,7 +705,7 @@
 },
 {
     "model": "contenttypes.contenttype",
-    "pk": 7,
+    "pk": 8,
     "fields": {
         "app_label": "appFutbol",
         "model": "cliente"
@@ -746,7 +713,7 @@
 },
 {
     "model": "contenttypes.contenttype",
-    "pk": 8,
+    "pk": 9,
     "fields": {
         "app_label": "appFutbol",
         "model": "dueñorecinto"
@@ -754,7 +721,7 @@
 },
 {
     "model": "contenttypes.contenttype",
-    "pk": 9,
+    "pk": 10,
     "fields": {
         "app_label": "appFutbol",
         "model": "jugador_partido"
@@ -762,7 +729,7 @@
 },
 {
     "model": "contenttypes.contenttype",
-    "pk": 10,
+    "pk": 11,
     "fields": {
         "app_label": "appFutbol",
         "model": "partido"
@@ -770,7 +737,7 @@
 },
 {
     "model": "contenttypes.contenttype",
-    "pk": 11,
+    "pk": 12,
     "fields": {
         "app_label": "appFutbol",
         "model": "votacion_partido"
@@ -778,7 +745,7 @@
 },
 {
     "model": "contenttypes.contenttype",
-    "pk": 12,
+    "pk": 13,
     "fields": {
         "app_label": "appFutbol",
         "model": "resultado"
@@ -786,7 +753,7 @@
 },
 {
     "model": "contenttypes.contenttype",
-    "pk": 13,
+    "pk": 14,
     "fields": {
         "app_label": "appFutbol",
         "model": "recinto"
@@ -794,7 +761,7 @@
 },
 {
     "model": "contenttypes.contenttype",
-    "pk": 14,
+    "pk": 15,
     "fields": {
         "app_label": "appFutbol",
         "model": "promocion"
@@ -802,7 +769,7 @@
 },
 {
     "model": "contenttypes.contenttype",
-    "pk": 15,
+    "pk": 16,
     "fields": {
         "app_label": "appFutbol",
         "model": "post"
@@ -810,7 +777,7 @@
 },
 {
     "model": "contenttypes.contenttype",
-    "pk": 16,
+    "pk": 17,
     "fields": {
         "app_label": "appFutbol",
         "model": "datosusuario"
@@ -818,256 +785,10 @@
 },
 {
     "model": "contenttypes.contenttype",
-    "pk": 17,
+    "pk": 18,
     "fields": {
         "app_label": "appFutbol",
         "model": "cuenta_bancaria"
-    }
-},
-{
-    "model": "sessions.session",
-    "pk": "8nmjjl4ccllpmx4g95ntdqvrlatqx9px",
-    "fields": {
-        "session_data": ".eJxVjDsOwyAQBe9CHSGD-aZM7zMg2F2CkwgkY1dR7h4huUjaNzPvzUI89hKOTltYkV2ZZpffLUV4Uh0AH7HeG4dW921NfCj8pJ0vDel1O92_gxJ7GTVYEMkpBxi1gTlZlDGDSXLKzivSMImctRNeOqJZz0aQEmStx-TAIPt8AQaTOHg:1rFw6J:poz-EAaLmHoK4alOhVbtN8KC_ojnLZmCW8p5xeLtEY8",
-        "expire_date": "2024-01-03T12:55:03.660Z"
-    }
-},
-{
-    "model": "sessions.session",
-    "pk": "ecojube7h0bi68oixd5xvivp7s3p57kf",
-    "fields": {
-        "session_data": ".eJxVjDsOwjAQBe_iGln-JjYlfc5g7a43OIAcKU4qxN1JpBTQvpl5b5FgW0vaGi9pyuIqtLj8bgj05HqA_IB6nyXNdV0mlIciT9rkMGd-3U7376BAK3vNxL0PwRmVRwiGXADqbAidtX60Lvoec1TOkzaUMSqtCRUSscdIeyY-X9zlN9U:1rEzv0:OqC3-KMjM6kTx5KbvrpZF25MHpS3WsCdeR_4XgeyxS8",
-        "expire_date": "2023-12-31T22:47:30.859Z"
-    }
-},
-{
-    "model": "appFutbol.usuario",
-    "pk": 1,
-    "fields": {
-        "password": "pbkdf2_sha256$600000$AI4F3r90oOe3TGfbkTULYz$jOZwgf6nPGzTFpzWNJO1mrtVhzsGAtfP6KvWoTgSzso=",
-        "last_login": "2023-12-17T22:47:30.820Z",
-        "is_superuser": true,
-        "username": "manuel",
-        "first_name": "",
-        "last_name": "",
-        "email": "",
-        "is_staff": true,
-        "is_active": true,
-        "date_joined": "2023-12-17T22:42:43.461Z",
-        "rol": 1,
-        "groups": [],
-        "user_permissions": []
-    }
-},
-{
-    "model": "appFutbol.usuario",
-    "pk": 2,
-    "fields": {
-        "password": "pbkdf2_sha256$600000$BxVlxNlXjdcwkPmU8Uva97$K2j6F9/AVks4D8uu8jWW4YNQNuh+xL3Dz2X0BMw94Gk=",
-        "last_login": "2023-12-17T22:46:57.194Z",
-        "is_superuser": false,
-        "username": "usuariocliente",
-        "first_name": "",
-        "last_name": "",
-        "email": "cliente@gmail.com",
-        "is_staff": false,
-        "is_active": true,
-        "date_joined": "2023-12-17T22:44:14.677Z",
-        "rol": 2,
-        "groups": [
-            1
-        ],
-        "user_permissions": []
-    }
-},
-{
-    "model": "appFutbol.usuario",
-    "pk": 3,
-    "fields": {
-        "password": "pbkdf2_sha256$600000$D0wy70nk5Z3D58XXFPbhV1$5Fx7xnFw3Q3aAY+dqDvZ9dM7X/MWbi+fS1PQoSOIyOw=",
-        "last_login": "2023-12-20T12:08:52.623Z",
-        "is_superuser": false,
-        "username": "pruebaduenyorecinto",
-        "first_name": "",
-        "last_name": "",
-        "email": "duenyorecinto@gmail.com",
-        "is_staff": false,
-        "is_active": true,
-        "date_joined": "2023-12-17T22:44:45.248Z",
-        "rol": 3,
-        "groups": [
-            2
-        ],
-        "user_permissions": []
-    }
-},
-{
-    "model": "appFutbol.usuario",
-    "pk": 4,
-    "fields": {
-        "password": "pbkdf2_sha256$600000$Yjw4MgTwevq6VpqU7RcofG$Fz5p7TqmhNupx2noo4WqdmZx7dRiOOgCVwXdUWViCEs=",
-        "last_login": "2023-12-20T12:40:48.098Z",
-        "is_superuser": false,
-        "username": "pepe",
-        "first_name": "",
-        "last_name": "",
-        "email": "pepe@pepe.com",
-        "is_staff": false,
-        "is_active": true,
-        "date_joined": "2023-12-20T12:23:00.646Z",
-        "rol": 3,
-        "groups": [
-            2
-        ],
-        "user_permissions": []
-    }
-},
-{
-    "model": "appFutbol.usuario",
-    "pk": 5,
-    "fields": {
-        "password": "pbkdf2_sha256$600000$WKtyYaSF7ywdC024UypSCx$KIq/O3rCpha1qqiXpCWzum/ekSgXoaqCS1YGFMuo0rE=",
-        "last_login": "2023-12-20T12:55:03.578Z",
-        "is_superuser": false,
-        "username": "cliente1",
-        "first_name": "",
-        "last_name": "",
-        "email": "cliente1@gmail.com",
-        "is_staff": false,
-        "is_active": true,
-        "date_joined": "2023-12-20T12:55:03.231Z",
-        "rol": 2,
-        "groups": [
-            1
-        ],
-        "user_permissions": []
-    }
-},
-{
-    "model": "appFutbol.cliente",
-    "pk": 1,
-    "fields": {
-        "usuario": 2,
-        "nivel": 0.0,
-        "telefono": ""
-    }
-},
-{
-    "model": "appFutbol.cliente",
-    "pk": 2,
-    "fields": {
-        "usuario": 5,
-        "nivel": 0.0,
-        "telefono": ""
-    }
-},
-{
-    "model": "appFutbol.dueñorecinto",
-    "pk": 1,
-    "fields": {
-        "usuario": 3,
-        "telefono": ""
-    }
-},
-{
-    "model": "appFutbol.dueñorecinto",
-    "pk": 2,
-    "fields": {
-        "usuario": 4,
-        "telefono": ""
-    }
-},
-{
-    "model": "appFutbol.recinto",
-    "pk": 1,
-    "fields": {
-        "nombre": "recinto1",
-        "ubicacion": "recinto1 descripcion",
-        "telefono": "967433323",
-        "dueño_recinto": 1
-    }
-},
-{
-    "model": "appFutbol.recinto",
-    "pk": 2,
-    "fields": {
-        "nombre": "Prueba",
-        "ubicacion": "Ejemplo de Recinto bueno",
-        "telefono": "123123123",
-        "dueño_recinto": 2
-    }
-},
-{
-    "model": "appFutbol.recinto",
-    "pk": 3,
-    "fields": {
-        "nombre": "prueba2",
-        "ubicacion": "prueba2 recinto 2",
-        "telefono": "666666666",
-        "dueño_recinto": 2
-    }
-},
-{
-    "model": "appFutbol.partido",
-    "pk": 1,
-    "fields": {
-        "hora": "11:00:00",
-        "estado": "A",
-        "tipo": "Pu",
-        "estilo": "11",
-        "creador": 1,
-        "campo_reservado": 1
-    }
-},
-{
-    "model": "appFutbol.partido",
-    "pk": 2,
-    "fields": {
-        "hora": "09:00:00",
-        "estado": "A",
-        "tipo": "Pu",
-        "estilo": "11",
-        "creador": 2,
-        "campo_reservado": 3
-    }
-},
-{
-    "model": "appFutbol.partido",
-    "pk": 3,
-    "fields": {
-        "hora": "14:00:00",
-        "estado": "A",
-        "tipo": "Pu",
-        "estilo": "11",
-        "creador": 2,
-        "campo_reservado": 2
-    }
-},
-{
-    "model": "appFutbol.jugador_partido",
-    "pk": 1,
-    "fields": {
-        "cliente": 1,
-        "partido": 1,
-        "ganar": false
-    }
-},
-{
-    "model": "appFutbol.jugador_partido",
-    "pk": 2,
-    "fields": {
-        "cliente": 1,
-        "partido": 2,
-        "ganar": false
-    }
-},
-{
-    "model": "appFutbol.jugador_partido",
-    "pk": 4,
-    "fields": {
-        "cliente": 2,
-        "partido": 3,
-        "ganar": false
     }
 }
 ]

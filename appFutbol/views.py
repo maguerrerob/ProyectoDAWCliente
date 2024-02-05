@@ -14,6 +14,7 @@ import requests
 import os
 import environ
 from pathlib import Path
+import xml.etree.ElementTree as ET
 
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,6 +26,22 @@ env = environ.Env()
 def index(request):
     return render(request, "index.html")
 
+# Para parseado de xml
+def parse_xml(xml_string):
+    root = ET.fromstring(xml_string)
+    # Procesa el árbol XML según tus necesidades
+    return root
+
+def manejar_respuesta(response):
+    content_type = response.headers['Content-Type']
+
+    if 'application/json' in content_type:
+        return response.json()
+    elif 'application/xml' in content_type:
+        return parse_xml(response.content)
+    else:
+        raise ValueError('Formato de respuesta no soportado')
+
 
 # Consulta sencilla a modelo principal
 def partidos_lista(request):
@@ -32,20 +49,19 @@ def partidos_lista(request):
     headers = crear_cabecera_cliente()
     
     # Obtenemos todos los partidos
-    response = requests.get("http://127.0.0.1:8000/api/v1/partidos", headers=headers)
+    response = requests.get(env("URL_API") + "partidos", headers=headers)
     
-    # Transformamos la respuesta en json
-    partidos = response.json()
+    # Para manejar respuesta json o xml
+    partidos = manejar_respuesta(response)
+
     return render(request, "partidos/partidos_api.html", {"partidos_mostrar": partidos})
 
 # Consulta mejorada
 def partidos_api_mejorada(request):
     # Token cliente
     headers = crear_cabecera_cliente()
-
-    response = requests.get("http://127.0.0.1:8000/api/v1/partidos_mejorada", headers=headers)
-
-    partidos = response.json()
+    response = requests.get(env("URL_API") + "partidos_mejorada", headers=headers)
+    partidos = manejar_respuesta(response)
     return render(request, "partidos/partidos_api_mejorada.html", {"partidos_mostrar": partidos})
 
 
@@ -59,15 +75,15 @@ def crear_cabecera_duenyorecinto():
 # Consulta mejorada con autenticación oauth2 en API
 def datos_usuario(request):
     headers = crear_cabecera_cliente()
-    response = requests.get("http://127.0.0.1:8000/api/v1/datosusuarios", headers=headers)
-    datosusuarios = response.json()
+    response = requests.get(env("URL_API") + "datosusuarios", headers=headers)
+    datosusuarios = manejar_respuesta(response)
     return render(request, "datosusuario/datosusuario_api.html", {"datos_mostrar":datosusuarios})
 
 
 def recintos_lista_api(request):
     headers = crear_cabecera_duenyorecinto()
-    response = requests.get("http://127.0.0.1:8000/api/v1/recintos/listar", headers=headers)
-    recintos = response.json()
+    response = requests.get(env("URL_API") + "recintos/listar", headers=headers)
+    recintos = manejar_respuesta(response)
     return render(request, "recintos/listar_recintos_api.html", {"recintos_mostrar":recintos})
 
 # Consulta mejorada con autenticación JWT
@@ -76,8 +92,8 @@ def crear_cabecera_jwt():
 
 def listar_post(request):
     headers = crear_cabecera_jwt()
-    response = requests.get("http://127.0.0.1:8000/api/v1/posts/listar", headers=headers)
-    posts = response.json()
+    response = requests.get(env("URL_API") + "posts/listar", headers=headers)
+    posts = manejar_respuesta(response)
     return render(request, "posts/listar_posts_api.html", {"posts_mostrar":posts})
 
 
@@ -86,13 +102,12 @@ def recinto_buscar_simple(request):
     formulario = BusquedaRecintoForm(request.GET)
     
     if formulario.is_valid():
-        headers = crear_cabecera_cliente()
-        response = requests.get(
-            'http://127.0.0.1:8000/api/v1/recintos/busqueda_simple',
+        headers = crear_cabecera_duenyorecinto()
+        response = requests.get(env("URL_API") + "recintos/busqueda_simple",
             headers=headers,
             params=formulario.cleaned_data
         )
-        recintos = response.json()
+        recintos = manejar_respuesta(response)
         print(recintos)
         return render(request, 'recintos/lista_mejorada_api.html',{"recintos_mostrar":recintos})
     if("HTTP_REFERER" in request.META):
@@ -106,14 +121,13 @@ def recinto_busqueda_avanzada(request):
         formulario = BusquedaAvanzadaRecintoForm(request.GET)
         
         try:
-            headers = crear_cabecera_cliente()
-            response = requests.get(
-                'http://127.0.0.1:8000/api/v1/recintos/busqueda_avanzada',
+            headers = crear_cabecera_duenyorecinto()
+            response = requests.get(env("URL_API") + "recintos/busqueda_avanzada",
                 headers=headers,
                 params=formulario.data
             )
             if(response.status_code == requests.codes.ok):
-                recintos = response.json()
+                recintos = manejar_respuesta(response)
                 print(recintos)
                 return render(request, 'recintos/lista_mejorada_api.html',
                               {"recintos_mostrar":recintos})
@@ -123,7 +137,7 @@ def recinto_busqueda_avanzada(request):
         except HTTPError as http_err:
             print(f'Hubo un error en la petición: {http_err}')
             if(response.status_code == 400):
-                errores = response.json()
+                errores = manejar_respuesta(response)
                 for error in errores:
                     formulario.add_error(error,errores[error])
                 return render(request, 
@@ -139,19 +153,19 @@ def recinto_busqueda_avanzada(request):
     return render(request, 'recintos/form_busqueda_avanzada_api.html',{"formulario":formulario})
 
 
+# Búsqueda avanzada
 def datosusuario_busqueda_avanzada(request):
     if(len(request.GET) > 0):
         formulario = BusquedaAvanzadaDatosusuarioForm(request.GET)
         
         try:
             headers = crear_cabecera_cliente()
-            response = requests.get(
-                'http://127.0.0.1:8000/api/v1/datosusuario/busqueda_avanzada',
+            response = requests.get(env("URL_API") + "datosusuario/busqueda_avanzada",
                 headers=headers,
                 params=formulario.data
             )
             if(response.status_code == requests.codes.ok):
-                datosusuario = response.json()
+                datosusuario = manejar_respuesta(response)
                 print(datosusuario)
                 return render(request, 'datosusuario/datosusuario_api.html',
                               {"datos_mostrar":datosusuario})
@@ -161,7 +175,7 @@ def datosusuario_busqueda_avanzada(request):
         except HTTPError as http_err:
             print(f'Hubo un error en la petición: {http_err}')
             if(response.status_code == 400):
-                errores = response.json()
+                errores = manejar_respuesta(response)
                 for error in errores:
                     formulario.add_error(error,errores[error])
                 return render(request, 
@@ -177,19 +191,19 @@ def datosusuario_busqueda_avanzada(request):
     return render(request, 'datosusuario/form_busqueda_avanzada_api.html',{"formulario":formulario})
 
 
+# Búsqueda avanzada
 def partido_busqueda_avanzada(request):
     if(len(request.GET) > 0):
         formulario = BusquedaAvanzadaPartidoForm(request.GET)
         
         try:
             headers = crear_cabecera_cliente()
-            response = requests.get(
-                'http://127.0.0.1:8000/api/v1/partidos/busqueda_avanzada',
+            response = requests.get(env("URL_API") + "partidos/busqueda_avanzada",
                 headers=headers,
                 params=formulario.data
             )
             if(response.status_code == requests.codes.ok):
-                partidos = response.json()
+                partidos = manejar_respuesta(response)
                 print(partidos)
                 return render(request, 'partidos/partidos_api_mejorada.html',
                               {"partidos_mostrar":partidos})
@@ -199,7 +213,7 @@ def partido_busqueda_avanzada(request):
         except HTTPError as http_err:
             print(f'Hubo un error en la petición: {http_err}')
             if(response.status_code == 400):
-                errores = response.json()
+                errores = manejar_respuesta(response)
                 for error in errores:
                     formulario.add_error(error,errores[error])
                 return render(request, 
@@ -226,8 +240,7 @@ def partido_create(request):
             # Para campos que son varios valores de selección
             datos["usuarios_jugadores"] = request.POST.getlist("usuarios_jugadores");
             
-            response = requests.post(
-                'http://127.0.0.1:8000/api/v1/partido/crear',
+            response = requests.get(env("URL_API") + "partido/crear",
                 headers=headers,
                 data=json.dumps(datos)
             )
@@ -239,7 +252,7 @@ def partido_create(request):
         except HTTPError as http_err:
             print(f'Hubo un error en la petición: {http_err}')
             if(response.status_code == 400):
-                errores = response.json()
+                errores = manejar_respuesta(response)
                 for error in errores:
                     formulario.add_error(error,errores[error])
                 return render(request, 
