@@ -9,7 +9,7 @@ from django.contrib.auth.models import Group
 from requests.exceptions import HTTPError
 from pathlib import Path
 import json
-
+from requests.exceptions import HTTPError
 import requests
 import os
 import environ
@@ -17,7 +17,7 @@ from pathlib import Path
 
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-environ.Env.read_env(os.path.join(BASE_DIR, '.env'), True)
+environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 env = environ.Env()
 
 # Create your views here.
@@ -127,7 +127,7 @@ def recinto_busqueda_avanzada(request):
                 for error in errores:
                     formulario.add_error(error,errores[error])
                 return render(request, 
-                            'recintos/lista_mejorada_api.html',
+                            'recintos/form_busqueda_avanzada_api.html',
                             {"formulario":formulario,"errores":errores})
             else:
                 return mi_error_500(request)
@@ -137,6 +137,82 @@ def recinto_busqueda_avanzada(request):
     else:
         formulario = BusquedaAvanzadaRecintoForm(None)
     return render(request, 'recintos/form_busqueda_avanzada_api.html',{"formulario":formulario})
+
+
+def datosusuario_busqueda_avanzada(request):
+    if(len(request.GET) > 0):
+        formulario = BusquedaAvanzadaDatosusuarioForm(request.GET)
+        
+        try:
+            headers = crear_cabecera_cliente()
+            response = requests.get(
+                'http://127.0.0.1:8000/api/v1/datosusuario/busqueda_avanzada',
+                headers=headers,
+                params=formulario.data
+            )
+            if(response.status_code == requests.codes.ok):
+                datosusuario = response.json()
+                print(datosusuario)
+                return render(request, 'datosusuario/datosusuario_api.html',
+                              {"datos_mostrar":datosusuario})
+            else:
+                print(response.status_code)
+                response.raise_for_status()
+        except HTTPError as http_err:
+            print(f'Hubo un error en la petición: {http_err}')
+            if(response.status_code == 400):
+                errores = response.json()
+                for error in errores:
+                    formulario.add_error(error,errores[error])
+                return render(request, 
+                            'datosusuario/form_busqueda_avanzada_api.html',
+                            {"formulario":formulario,"errores":errores})
+            else:
+                return mi_error_500(request)
+        except Exception as err:
+            print(f'Ocurrió un error: {err}')
+            return mi_error_500(request)
+    else:
+        formulario = BusquedaAvanzadaDatosusuarioForm(None)
+    return render(request, 'datosusuario/form_busqueda_avanzada_api.html',{"formulario":formulario})
+
+
+def partido_busqueda_avanzada(request):
+    if(len(request.GET) > 0):
+        formulario = BusquedaAvanzadaPartidoForm(request.GET)
+        
+        try:
+            headers = crear_cabecera_cliente()
+            response = requests.get(
+                'http://127.0.0.1:8000/api/v1/partidos/busqueda_avanzada',
+                headers=headers,
+                params=formulario.data
+            )
+            if(response.status_code == requests.codes.ok):
+                partidos = response.json()
+                print(partidos)
+                return render(request, 'partidos/partidos_api_mejorada.html',
+                              {"partidos_mostrar":partidos})
+            else:
+                print(response.status_code)
+                response.raise_for_status()
+        except HTTPError as http_err:
+            print(f'Hubo un error en la petición: {http_err}')
+            if(response.status_code == 400):
+                errores = response.json()
+                for error in errores:
+                    formulario.add_error(error,errores[error])
+                return render(request, 
+                            'partidos/form_busqueda_avanzada_api.html',
+                            {"formulario":formulario,"errores":errores})
+            else:
+                return mi_error_500(request)
+        except Exception as err:
+            print(f'Ocurrió un error: {err}')
+            return mi_error_500(request)
+    else:
+        formulario = BusquedaAvanzadaPartidoForm(None)
+    return render(request, 'partidos/form_busqueda_avanzada_api.html',{"formulario":formulario})
 
 
 def partido_create(request):

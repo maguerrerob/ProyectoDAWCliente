@@ -17,6 +17,37 @@ class BusquedaAvanzadaRecintoForm(forms.Form):
     
     telefono = forms.CharField(required=True)
 
+class BusquedaAvanzadaDatosusuarioForm(forms.Form):
+    descripcion = forms.CharField(required=True)
+    POSICIONES = [
+        ("GOA","Portero"),
+        ("DEF","Defensa"),
+        ("MID","Centrocampista"),
+        ("STR", "Delantero")
+    ]
+    posicion = forms.MultipleChoiceField(choices=POSICIONES,
+                                required=False,
+                                widget=forms.CheckboxSelectMultiple())
+    ubicacion = forms.CharField(required=True)
+
+class BusquedaAvanzadaPartidoForm(forms.Form):
+    ESTADO = [
+        ("F", "Completo"),
+        ("A", "Disponible")
+    ]
+    estado = forms.MultipleChoiceField(choices=ESTADO,
+                                       required=False,
+                                       initial="A",
+                                       widget=forms.Select())
+    ESTILO = [
+        ("5", "Fútbol sala"),
+        ("7", "Fútbol 7"),
+        ("11", "Fútbol 11"),
+    ]
+    estilo = forms.MultipleChoiceField(choices=ESTILO,
+                                       required=False,
+                                       widget=forms.CheckboxSelectMultiple())
+
 
 class PartidoForm(forms.Form):
     horas_choices = [(f'{i}:00', f'{i}:00') for i in range(0, 24)]

@@ -57,7 +57,7 @@
                     <li><a class="dropdown-item" href="{% url "partidos_lista" %}">Ver partidos_api</a></li>
                     <li><a class="dropdown-item" href="{% url "partidos_api_mejorada" %}">Ver partidos_api_mejorada</a></li>
                     <li><a class="dropdown-item" href="{% url 'partido_create' %}">Crear partido api</a></li>
-                    <li><a class="dropdown-item" href="#">Busqueda Avanzada de partidos</a></li>
+                    <li><a class="dropdown-item" href="{% url 'partido_busqueda_avanzada' %}">Busqueda Avanzada de partidos api</a></li>
                 </ul>
             </li>
             <li class="nav-item dropdown">
@@ -74,8 +74,18 @@
                     <li><a class="dropdown-item" href="#">Busqueda Avanzada de promociones</a></li>
                 </ul>
             </li>
-            <li class="nav-item">
-                <a class="nav-link link-dark active" href="{% url 'datos_usuario' %}">Datos Usuarios</a>
+            <li class="nav-item dropdown">
+                <a class="nav-link link-dark dropdown-toggle" href="#" 
+                    id="accionesPromocionLink" 
+                    role="button" 
+                    data-bs-toggle="dropdown" 
+                    aria-expanded="false">
+                    Datos Usuarios
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="accionesPromocionLink">
+                    <li><a class="dropdown-item" href="{% url 'datos_usuario' %}">Ver datos usuarios</a></li>
+                    <li><a class="dropdown-item" href="{% url 'datosusuario_busqueda_avanzada' %}">Busqueda Avanzada de datos usuariosapi</a></li>
+                </ul>
             </li>
             <li class="nav-item">
                 <a class="nav-link link-dark active" href="{% url 'listar_post' %}">Lista posts api</a>
