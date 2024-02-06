@@ -32,8 +32,8 @@
                 <p>Creador del partido: {{ partido.creador.usuario.username }}</p> 
                 <p>Campo reservado: {{ partido.campo_reservado.nombre }}</p>
                 <h5>Jugadores:</h5>
-                {% for usu in partido.usuarios_jugadores.all %}
-                    <p>{{ usu.id }}</p>
+                {% for usu in partido.usuarios_jugadores %}
+                    <p>{{ usu.cliente.usuario.username }}</p>
                 {% endfor %}
                 {% comment %} <form action="{% url 'partido_editar' partido.id %}" method="post">
                     {% csrf_token %}

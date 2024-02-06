@@ -11,14 +11,14 @@ class BusquedaRecintoForm(forms.Form):
     
     
 class BusquedaAvanzadaRecintoForm(forms.Form):
-    nombre = forms.CharField(required=True)
+    nombre = forms.CharField(required=False)
 
-    ubicacion = forms.CharField(required=True)
+    ubicacion = forms.CharField(required=False)
     
-    telefono = forms.CharField(required=True)
+    telefono = forms.CharField(required=False)
 
 class BusquedaAvanzadaDatosusuarioForm(forms.Form):
-    descripcion = forms.CharField(required=True)
+    descripcion = forms.CharField(required=False)
     POSICIONES = [
         ("GOA","Portero"),
         ("DEF","Defensa"),
@@ -28,7 +28,7 @@ class BusquedaAvanzadaDatosusuarioForm(forms.Form):
     posicion = forms.MultipleChoiceField(choices=POSICIONES,
                                 required=False,
                                 widget=forms.CheckboxSelectMultiple())
-    ubicacion = forms.CharField(required=True)
+    ubicacion = forms.CharField(required=False)
 
 class BusquedaAvanzadaPartidoForm(forms.Form):
     ESTADO = [
