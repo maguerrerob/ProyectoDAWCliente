@@ -77,9 +77,9 @@ class PartidoForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super(PartidoForm, self).__init__(*args, **kwargs)
 
-        clientes = helper.obtener_clientes_select()
-        self.fields["creadorPartido"] = forms.ChoiceField(
-            choices=clientes,
+        clientesDisponibles = helper.obtener_clientes_select()
+        self.fields["creadorº"] = forms.ChoiceField(
+            choices=clientesDisponibles,
             widget=forms.Select,
             required=True,
         )
@@ -92,7 +92,7 @@ class PartidoForm(forms.Form):
         )
 
         self.fields["usuarios_jugadores"] = forms.MultipleChoiceField(
-            choices=clientes,
+            choices=clientesDisponibles,
             required=True,
             help_text="Mantén tecla control para seleccionar varios"
         )

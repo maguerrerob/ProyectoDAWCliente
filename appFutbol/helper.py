@@ -10,12 +10,13 @@ environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 class helper:
     def obtener_clientes_select():
         headers = {'Authorization': 'Bearer '+env("TOKEN_CLIENTE")}
-        response = requests.get('http://127.0.0.1:8000/api/v1/clientes/listar',headers=headers)
+        response = requests.get(env("URL_API") + "clientes/listar",headers=headers)
         clientes = response.json()
         
         lista_clientes = [("","Ninguna")]
         for cliente in clientes:
-            lista_clientes.append((cliente["id"], cliente["usuario"]["username"]))
+            print(cliente)
+            lista_clientes.append((cliente["id"],cliente["usuario"]["username"]))
         return lista_clientes
     
     def obtener_recintos_select():
