@@ -6,7 +6,7 @@
 
 {% block contenido %}
     {% load bootstrap5 %}
-    <form action="{% url 'url partido create' %}" method="post">
+    <form action="{% url 'partido_create' %}" method="post">
         {% csrf_token %}
         {% for error in formulario.usuarios_jugadores.errors %}
             {{ error }}

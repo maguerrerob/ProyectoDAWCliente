@@ -235,7 +235,7 @@ def partido_create(request):
             formulario = PartidoForm(request.POST)
             headers =  {
                         'Authorization': 'Bearer '+env("TOKEN_CLIENTE"), "Content-Type": "application/json" 
-                    } 
+                    }
             datos = formulario.data.copy()
             # Para campos que son varios valores de selección
             datos["usuarios_jugadores"] = request.POST.getlist("usuarios_jugadores");

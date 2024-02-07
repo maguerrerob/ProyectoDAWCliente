@@ -67,8 +67,9 @@ class PartidoForm(forms.Form):
                                        required=False,
                                        widget=forms.CheckboxSelectMultiple())
     ESTILO = [
-        ("Pr", "Privada"),
-        ("Pu", "Pública")
+        ("5", "Fútbol sala"),
+        ("7", "Fútbol 7"),
+        ("11", "Fútbol 11"),
     ]
     estilo = forms.MultipleChoiceField(choices=ESTILO,
                                        required=False,
@@ -78,7 +79,7 @@ class PartidoForm(forms.Form):
         super(PartidoForm, self).__init__(*args, **kwargs)
 
         clientesDisponibles = helper.obtener_clientes_select()
-        self.fields["creadorº"] = forms.ChoiceField(
+        self.fields["creador"] = forms.ChoiceField(
             choices=clientesDisponibles,
             widget=forms.Select,
             required=True,
@@ -91,8 +92,8 @@ class PartidoForm(forms.Form):
             required=True,
         )
 
-        self.fields["usuarios_jugadores"] = forms.MultipleChoiceField(
-            choices=clientesDisponibles,
-            required=True,
-            help_text="Mantén tecla control para seleccionar varios"
-        )
+        # self.fields["usuarios_jugadores"] = forms.MultipleChoiceField(
+        #     choices=clientesDisponibles,
+        #     required=True,
+        #     help_text="Mantén tecla control para seleccionar varios"
+        # )

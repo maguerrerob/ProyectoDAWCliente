@@ -15,7 +15,6 @@ class helper:
         
         lista_clientes = [("","Ninguna")]
         for cliente in clientes:
-            print(cliente)
             lista_clientes.append((cliente["id"],cliente["usuario"]["username"]))
         return lista_clientes
     
@@ -27,3 +26,4 @@ class helper:
         lista_recintos = []
         for recinto in recintos:
             lista_recintos.append((recinto["id"], recinto["nombre"]))
+        return lista_recintos
