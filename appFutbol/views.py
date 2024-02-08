@@ -236,8 +236,6 @@ def partido_create(request):
             headers =  {'Authorization': 'Bearer '+env("TOKEN_CLIENTE"),
                         "Content-Type": "application/json"}
             datos = formulario.data.copy()
-            # Para campos que son varios valores de selección
-            datos["usuarios_jugadores"] = request.POST.getlist("usuarios_jugadores")
             
             response = requests.post(env("URL_API") + "partido/crear",
                 headers=headers,
@@ -268,6 +266,58 @@ def partido_create(request):
          formulario = PartidoForm(None)
     return render(request, 'partidos/create_api.html',{"formulario":formulario})
 
+
+def partido_obtener(request,partido_id):
+    partido = helper.obtener_partido(partido_id)
+    return render(request, 'partidos/partido_mostrar.html',{"partido":partido})
+
+
+def partido_editar(request, partido_id):
+    datosFormulario = None
+    
+    if request.method == "POST":
+        datosFormulario = request.POST
+    
+    partido = helper.obtener_partido(partido_id)
+    formulario = PartidoForm(datosFormulario, initial={
+        "hora": partido["hora"],
+        "estado": partido["estado"],
+        "tipo": partido["tipo"],
+        "estilo": partido["estilo"],
+        "creador": partido["creador"]["id"],
+        "campo_reservador": partido["campo_reservado"]["id"]
+    })
+
+    if (request.method == "POST"):
+        try:
+            formulario = PartidoForm(request.POST)
+            headers = crear_cabecera_cliente()
+            datos = request.POST.copy()
+            response = requests.put(env("URL_API") + "partido/editar" + str(partido_id),
+                headers=headers,
+                data=json.dumps(datos)
+            )
+            if(response.status_code == requests.codes.ok):
+                return redirect("partido_mostrar",partido_id=partido_id)
+            else:
+                print(response.status_code)
+                response.raise_for_status()
+        except HTTPError as http_err:
+            print(f'Hubo un error en la petición: {http_err}')
+            if(response.status_code == 400):
+                errores = response.json()
+                for error in errores:
+                    formulario.add_error(error,errores[error])
+                return render(request, 
+                            'partidos/PUT_api.html',
+                            {"formulario":formulario,"partido":partido})
+            else:
+                return mi_error_500(request)
+        except Exception as err:
+            print(f'Ocurrió un error: {err}')
+            return mi_error_500(request)
+        
+    return render(request, 'partidos/PUT_api.html',{"formulario":formulario,"partido":partido})
 
 # Errores
 
