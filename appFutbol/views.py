@@ -18,7 +18,7 @@ import xml.etree.ElementTree as ET
 
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
+environ.Env.read_env(os.path.join(BASE_DIR, '.env'), True)
 env = environ.Env()
 
 # Create your views here.
@@ -233,17 +233,17 @@ def partido_create(request):
     if (request.method == "POST"):
         try:
             formulario = PartidoForm(request.POST)
-            headers =  {
-                        'Authorization': 'Bearer '+env("TOKEN_CLIENTE"), "Content-Type": "application/json" 
-                    }
+            headers =  {'Authorization': 'Bearer '+env("TOKEN_CLIENTE"),
+                        "Content-Type": "application/json"}
             datos = formulario.data.copy()
             # Para campos que son varios valores de selección
-            datos["usuarios_jugadores"] = request.POST.getlist("usuarios_jugadores");
+            datos["usuarios_jugadores"] = request.POST.getlist("usuarios_jugadores")
             
-            response = requests.get(env("URL_API") + "partido/crear",
+            response = requests.post(env("URL_API") + "partido/crear",
                 headers=headers,
                 data=json.dumps(datos)
             )
+            print(response)
             if(response.status_code == requests.codes.ok):
                 return redirect("partidos_api_mejorada")
             else:

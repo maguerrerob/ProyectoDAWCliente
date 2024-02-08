@@ -63,17 +63,13 @@ class PartidoForm(forms.Form):
         ("Pr", "Privada"),
         ("Pu", "Pública")
     ]
-    tipo = forms.MultipleChoiceField(choices=TIPO,
-                                       required=False,
-                                       widget=forms.CheckboxSelectMultiple())
+    tipo = forms.ChoiceField(choices=TIPO, required=False)
     ESTILO = [
         ("5", "Fútbol sala"),
         ("7", "Fútbol 7"),
         ("11", "Fútbol 11"),
     ]
-    estilo = forms.MultipleChoiceField(choices=ESTILO,
-                                       required=False,
-                                       widget=forms.CheckboxSelectMultiple())
+    estilo = forms.ChoiceField(choices=ESTILO, required=False)
     
     def __init__(self, *args, **kwargs):
         super(PartidoForm, self).__init__(*args, **kwargs)
@@ -82,18 +78,10 @@ class PartidoForm(forms.Form):
         self.fields["creador"] = forms.ChoiceField(
             choices=clientesDisponibles,
             widget=forms.Select,
-            required=True,
-        )
-
+            required=True)
+        
         recintos = helper.obtener_recintos_select()
         self.fields["campo_reservado"] = forms.ChoiceField(
             choices=recintos,
             widget=forms.Select,
-            required=True,
-        )
-
-        # self.fields["usuarios_jugadores"] = forms.MultipleChoiceField(
-        #     choices=clientesDisponibles,
-        #     required=True,
-        #     help_text="Mantén tecla control para seleccionar varios"
-        # )
+            required=True)
