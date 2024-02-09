@@ -29,7 +29,8 @@ class helper:
         return lista_recintos
     
     def obtener_partido(id):
-        headers = {'Authorization': 'Bearer '+env("TOKEN_CLIENTE")}
-        response = requests.get(env("URL_API") + "partidos_mejorada" +str(id),headers=headers)
+        headers = {'Authorization': 'Bearer '+env("TOKEN_CLIENTE"),
+                        "Content-Type": "application/json"}
+        response = requests.get(env("URL_API") + "partido/" + str(id),headers=headers)
         partido = response.json()
         return partido

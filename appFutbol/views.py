@@ -269,7 +269,7 @@ def partido_create(request):
 
 def partido_obtener(request,partido_id):
     partido = helper.obtener_partido(partido_id)
-    return render(request, 'partidos/partido_mostrar.html',{"partido":partido})
+    return render(request, 'partidos/partido_mostrar_api.html',{"partido":partido})
 
 
 def partido_editar(request, partido_id):
@@ -291,14 +291,14 @@ def partido_editar(request, partido_id):
     if (request.method == "POST"):
         try:
             formulario = PartidoForm(request.POST)
-            headers = crear_cabecera_cliente()
+            headers = {'Authorization': 'Bearer '+env("TOKEN_CLIENTE"), "Content-Type": "application/json"}
             datos = request.POST.copy()
-            response = requests.put(env("URL_API") + "partido/editar" + str(partido_id),
+            response = requests.put(env("URL_API") + "partido/editar/" + str(partido_id),
                 headers=headers,
                 data=json.dumps(datos)
             )
             if(response.status_code == requests.codes.ok):
-                return redirect("partido_mostrar",partido_id=partido_id)
+                return redirect("partido_mostrar_api",partido_id=partido_id)
             else:
                 print(response.status_code)
                 response.raise_for_status()

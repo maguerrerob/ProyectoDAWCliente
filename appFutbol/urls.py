@@ -19,5 +19,6 @@ urlpatterns = [
     # Create
     path("partido/create", views.partido_create, name="partido_create"),
     # PUT
-    path("partido/put", views.partido_editar, name="partido_editar")
+    path("partido/put/<int:partido_id>", views.partido_editar, name="partido_editar"),
+    path("partido/obtener/<int:partido_id>", views.partido_obtener, name="partido_obtener")
 ]
