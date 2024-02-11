@@ -33,4 +33,16 @@ class helper:
                         "Content-Type": "application/json"}
         response = requests.get(env("URL_API") + "partido/" + str(id),headers=headers)
         partido = response.json()
+        
         return partido
+    
+    def obtener_duenyosrecintos_select():
+        headers = {'Authorization': 'Bearer '+env("TOKEN_CLIENTE")}
+        response = requests.get(env("URL_API") + "duenyosrecintos/listar",headers=headers)
+        duenyosrecintos = response.json()
+        print(duenyosrecintos)
+        lista_duenyosrecintos =  [("", "Selecciona un campo")]
+        for duenyorecinto in duenyosrecintos:
+            lista_duenyosrecintos.append((duenyorecinto["id"], duenyorecinto["usuario"]["username"]))
+        
+        return lista_duenyosrecintos

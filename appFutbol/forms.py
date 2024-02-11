@@ -50,10 +50,10 @@ class BusquedaAvanzadaPartidoForm(forms.Form):
 
 
 class PartidoForm(forms.Form):
-    horas_choices = [(f'{i}:00', f'{i}:00') for i in range(0, 24)]
-    hora = forms.ChoiceField(choices=horas_choices,
-                            widget=forms.Select(),
-                            label="Escoja una hora")
+    # horas_choices = [(f'{i}:00', f'{i}:00') for i in range(0, 24)]
+    # hora = forms.ChoiceField(choices=horas_choices,
+    #                         widget=forms.Select(),
+    #                         label="Escoja una hora")
     ESTADO = [
         ("F", "Completo"),
         ("A", "Disponible")
@@ -78,10 +78,46 @@ class PartidoForm(forms.Form):
         self.fields["creador"] = forms.ChoiceField(
             choices=clientesDisponibles,
             widget=forms.Select,
-            required=True)
+            required=False)
         
         recintos = helper.obtener_recintos_select()
         self.fields["campo_reservado"] = forms.ChoiceField(
             choices=recintos,
             widget=forms.Select,
-            required=True)
+            required=False)
+        
+
+class RecintoForm(forms.Form):
+    nombre = forms.CharField(required=False)
+    ubicacion = forms.CharField(required=False)
+    telefono = forms.CharField(required=False)
+
+    def __init__(self, *args, **kwargs):
+        super(RecintoForm, self).__init__(*args, **kwargs)
+
+        duenyosrecintos = helper.obtener_duenyosrecintos_select()
+        self.fields["dueño_recinto"] = forms.ChoiceField(
+            choices=duenyosrecintos,
+            widget=forms.Select,
+            required=False)
+        
+class DatosUsuarioForm(forms.Form):
+    descripcion = forms.CharField(required=False)
+    POSICION = [
+        ("GOA","Portero"),
+        ("DEF","Defensa"),
+        ("MID","Centrocampista"),
+        ("STR", "Delantero")
+    ]
+    posicion = forms.MultipleChoiceField(choices=POSICION, required=False, widget=forms.CheckboxSelectMultiple())
+    ubicacion = forms.CharField(required=False)
+
+    def __init__(self, *args, **kwargs):
+        super(DatosUsuarioForm, self).__init__(*args, **kwargs)
+
+        clientesDisponibles = helper.obtener_clientes_select()
+        self.fields["cliente"] = forms.ChoiceField(
+            choices=clientesDisponibles,
+            widget=forms.Select,
+            required=False
+        )

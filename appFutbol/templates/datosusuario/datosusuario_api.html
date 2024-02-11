@@ -2,7 +2,7 @@
 
 {% block cabecera_extra %}
     {% load static %}
-    <script type="text/javascript" src="{% static 'js/eliminarpartido.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/eliminardatosusuario.js' %}"></script>
 {% endblock %}
 
 {% block cabecera %}
@@ -29,9 +29,15 @@
                 <p>Descripción:  {{ datos.descripcion }}</p>
                 <p>Posición: {{ datos.posicion }}</p>
                 <p>Ubicación: {{ datos.ubicacion }}</p>
-                {% comment %} {% for partido in partido.usuarios_jugadores.all %}
-                    <p>{{ usu.id }}</p> 
-                {% endfor %} {% endcomment %}
+                {% for partido in partido.usuarios_jugadores %}
+                    <p>{{ usu.id }}</p>
+                {% endfor %}
+                <form action="{% url 'datosusuario_eliminar' datos.id %}" method="post">
+                    {% csrf_token %}
+                    <button onclick="return eliminar();" type="submit">
+                        ELIMINAR
+                    </button>
+                </form>
             </li>
         </ul>
     {% empty %}

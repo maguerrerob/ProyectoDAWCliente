@@ -1,0 +1,17 @@
+{% extends "principal.html" %}
+
+{% block cabecera %}
+    <h1>Crear recinto</h1>
+{% endblock %}
+
+{% block contenido %}
+    {% load bootstrap5 %}
+    <form action="{% url 'recinto_create' %}" method="post">
+        {% csrf_token %}
+        {% for error in formulario.errors %}
+            {{ error }}
+        {% endfor %}
+        {% bootstrap_form formulario %}
+        <button type="submit">Enviar</button>
+    </form>
+{% endblock %}

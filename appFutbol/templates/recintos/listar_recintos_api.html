@@ -29,6 +29,12 @@
             <p>Ubicación: {{ recinto.ubicacion }}</p>
             <p>Teléfono: {{ recinto.telefono }}</p>
             <p>Dueño recinto: {{ recinto.dueño_recinto.usuario.username }}</p>
+            <form action="{% url 'recinto_eliminar' recinto.id %}" method="post">
+                {% csrf_token %}
+                <button onclick="return eliminar();" type="submit">
+                    ELIMINAR
+                </button>
+            </form>
         </li>
     </ul>
     {% empty %}

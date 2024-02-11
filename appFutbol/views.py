@@ -67,10 +67,10 @@ def partidos_api_mejorada(request):
 
 # Para crear la cabecera, ahí irá los datos de la autenticacion con la API en variables de entorno - clientes
 def crear_cabecera_cliente():
-    return {'Authorization': 'Bearer '+env("TOKEN_CLIENTE")}
+    return {'Authorization': 'Bearer '+env("TOKEN_CLIENTE"), "Content-Type": "application/json"}
 
 def crear_cabecera_duenyorecinto():
-    return {'Authorization': 'Bearer '+env("TOKEN_DUENYORECINTO")}
+    return {'Authorization': 'Bearer '+env("TOKEN_DUENYORECINTO"), "Content-Type": "application/json"}
 
 # Consulta mejorada con autenticación oauth2 en API
 def datos_usuario(request):
@@ -229,10 +229,12 @@ def partido_busqueda_avanzada(request):
     return render(request, 'partidos/form_busqueda_avanzada_api.html',{"formulario":formulario})
 
 
+# CRUD Partido
+
 def partido_create(request):
     if (request.method == "POST"):
         try:
-            formulario = PartidoForm(request.POST)
+            formulario = RecintoForm(request.POST)
             headers =  {'Authorization': 'Bearer '+env("TOKEN_CLIENTE"),
                         "Content-Type": "application/json"}
             datos = formulario.data.copy()
@@ -279,20 +281,25 @@ def partido_editar(request, partido_id):
         datosFormulario = request.POST
     
     partido = helper.obtener_partido(partido_id)
+    print("Print de partido \n")
+    print(partido)
     formulario = PartidoForm(datosFormulario, initial={
         "hora": partido["hora"],
         "estado": partido["estado"],
         "tipo": partido["tipo"],
         "estilo": partido["estilo"],
         "creador": partido["creador"]["id"],
-        "campo_reservador": partido["campo_reservado"]["id"]
+        "campo_reservado": partido["campo_reservado"]["id"],
+        "usuarios_jugadores": [usuario["id"] for usuario in partido["usuarios_jugadores"]]
     })
 
     if (request.method == "POST"):
         try:
             formulario = PartidoForm(request.POST)
             headers = {'Authorization': 'Bearer '+env("TOKEN_CLIENTE"), "Content-Type": "application/json"}
-            datos = request.POST.copy()
+            datos = formulario.data.copy()
+            print("Print de datos \n")
+            print(datos)
             response = requests.put(env("URL_API") + "partido/editar/" + str(partido_id),
                 headers=headers,
                 data=json.dumps(datos)
@@ -318,6 +325,134 @@ def partido_editar(request, partido_id):
             return mi_error_500(request)
         
     return render(request, 'partidos/PUT_api.html',{"formulario":formulario,"partido":partido})
+
+# DELETE
+def partido_eliminar(request, partido_id):
+    try:
+        headers = crear_cabecera_cliente()
+        response = requests.delete(env("URL_API") + "partido/eliminar/" + str(partido_id), headers=headers)
+        if(response.status_code == requests.codes.ok):
+            return redirect("partidos_api_mejorada")
+        else:
+            print(response.status_code)
+            response.raise_for_status()
+    except Exception as err:
+        print(f'Ocurrió un error: {err}')
+        return mi_error_500(request)
+    return redirect('partidos_api_mejorada')
+
+
+
+# CRUD Recinto
+
+def recinto_create(request):
+    if (request.method == "POST"):
+        try:
+            formulario = RecintoForm(request.POST)
+            headers =  {'Authorization': 'Bearer '+env("TOKEN_CLIENTE"),
+                        "Content-Type": "application/json"}
+            datos = formulario.data.copy()
+            
+            response = requests.post(env("URL_API") + "recinto/create",
+                headers=headers,
+                data=json.dumps(datos)
+            )
+            if(response.status_code == requests.codes.ok):
+                return redirect("recintos_lista_api")
+            else:
+                print(response.status_code)
+                response.raise_for_status()
+        except HTTPError as http_err:
+            print(f'Hubo un error en la petición: {http_err}')
+            if(response.status_code == 400):
+                errores = manejar_respuesta(response)
+                for error in errores:
+                    formulario.add_error(error,errores[error])
+                return render(request, 
+                            'recintos/create_api.html',
+                            {"formulario":formulario})
+            else:
+                return mi_error_500(request)
+        except Exception as err:
+            print(f'Ocurrió un error: {err}')
+            return mi_error_500(request)
+        
+    else:
+         formulario = RecintoForm(None)
+
+    return render(request, 'recintos/create_api.html',{"formulario":formulario})
+
+# DELETE
+def recinto_eliminar(request, recinto_id):
+    try:
+        headers = crear_cabecera_cliente()
+        response = requests.delete(env("URL_API") + "recinto/eliminar/" + str(recinto_id), headers=headers)
+        if(response.status_code == requests.codes.ok):
+            return redirect("recintos_lista_api")
+        else:
+            print(response.status_code)
+            response.raise_for_status()
+    except Exception as err:
+        print(f'Ocurrió un error: {err}')
+        return mi_error_500(request)
+    return redirect('recintos_lista_api')
+
+
+# CRUD DatosUsuario
+
+# CREATE
+def datosusuario_create(request):
+    if (request.method == "POST"):
+        try:
+            formulario = DatosUsuarioForm(request.POST)
+            headers =  {'Authorization': 'Bearer '+env("TOKEN_CLIENTE"),
+                        "Content-Type": "application/json"}
+            datos = formulario.data.copy()
+            
+            response = requests.post(env("URL_API") + "datosusuario/create",
+                headers=headers,
+                data=json.dumps(datos)
+            )
+            if(response.status_code == requests.codes.ok):
+                return redirect("datos_usuario")
+            else:
+                print(response.status_code)
+                response.raise_for_status()
+        except HTTPError as http_err:
+            print(f'Hubo un error en la petición: {http_err}')
+            if(response.status_code == 400):
+                errores = manejar_respuesta(response)
+                for error in errores:
+                    formulario.add_error(error,errores[error])
+                return render(request, 
+                            'datosusuario/create_api.html',
+                            {"formulario":formulario})
+            else:
+                return mi_error_500(request)
+        except Exception as err:
+            print(f'Ocurrió un error: {err}')
+            return mi_error_500(request)
+
+    else:
+         formulario = DatosUsuarioForm(None)
+
+    return render(request, 'datosusuario/create_api.html',{"formulario":formulario})
+
+# DELETE
+def datosusuario_eliminar(request, datosusuario_id):
+    try:
+        headers = crear_cabecera_cliente()
+        response = requests.delete(env("URL_API") + "datosusuario/eliminar/" + str(datosusuario_id), headers=headers)
+        if(response.status_code == requests.codes.ok):
+            return redirect("datos_usuario")
+        else:
+            print(response.status_code)
+            response.raise_for_status()
+    except Exception as err:
+        print(f'Ocurrió un error: {err}')
+        return mi_error_500(request)
+    return redirect('datos_usuario')
+
 
 # Errores
 
