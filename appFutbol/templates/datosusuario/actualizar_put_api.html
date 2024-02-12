@@ -1,12 +1,12 @@
 {% extends "principal.html" %}
 
 {% block cabecera %}
-    <h1>Modificar datos partido</h1>
+    <h1>Modificar datos del usuario</h1>
 {% endblock %}
 
 {% block contenido %}
     {% load bootstrap5 %}
-    <form action="{% url 'partido_editar' partido.id %}" method="post" class="m-3">
+    <form action="{% url 'datosusuario_put' datosusuario.id %}" method="post" class="m-3">
         {% csrf_token %}
         {% bootstrap_form formulario %}
         <button type="submit" value="">Enviar</button>

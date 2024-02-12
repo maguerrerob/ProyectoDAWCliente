@@ -46,3 +46,15 @@ class helper:
             lista_duenyosrecintos.append((duenyorecinto["id"], duenyorecinto["usuario"]["username"]))
         
         return lista_duenyosrecintos
+    
+    def obtener_recinto(recinto_id):
+        headers = {'Authorization': 'Bearer '+env("TOKEN_CLIENTE")} 
+        response = requests.get(env("URL_API") + "recinto/" + str(recinto_id),headers=headers)
+        recinto = response.json()
+        return recinto
+    
+    def obtener_datosusuario(datosusuario_id):
+        headers = {'Authorization': 'Bearer '+env("TOKEN_CLIENTE")} 
+        response = requests.get(env("URL_API") + "datosusuario/" + str(datosusuario_id),headers=headers)
+        datosusuario = response.json()
+        return datosusuario

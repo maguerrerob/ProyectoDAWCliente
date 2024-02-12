@@ -109,7 +109,7 @@ def recinto_buscar_simple(request):
         )
         recintos = manejar_respuesta(response)
         print(recintos)
-        return render(request, 'recintos/lista_mejorada_api.html',{"recintos_mostrar":recintos})
+        return render(request, 'recintos/busqueda_mejorada_api.html',{"recintos_mostrar":recintos})
     if("HTTP_REFERER" in request.META):
         return redirect(request.META["HTTP_REFERER"])
     else:
@@ -129,7 +129,7 @@ def recinto_busqueda_avanzada(request):
             if(response.status_code == requests.codes.ok):
                 recintos = manejar_respuesta(response)
                 print(recintos)
-                return render(request, 'recintos/lista_mejorada_api.html',
+                return render(request, 'recintos/busqueda_mejorada_api.html',
                               {"recintos_mostrar":recintos})
             else:
                 print(response.status_code)
@@ -230,7 +230,7 @@ def partido_busqueda_avanzada(request):
 
 
 # CRUD Partido
-
+# Create
 def partido_create(request):
     if (request.method == "POST"):
         try:
@@ -273,39 +273,35 @@ def partido_obtener(request,partido_id):
     partido = helper.obtener_partido(partido_id)
     return render(request, 'partidos/partido_mostrar_api.html',{"partido":partido})
 
-
-def partido_editar(request, partido_id):
+# PUT
+def partido_put(request, partido_id):
     datosFormulario = None
     
     if request.method == "POST":
         datosFormulario = request.POST
     
     partido = helper.obtener_partido(partido_id)
-    print("Print de partido \n")
-    print(partido)
-    formulario = PartidoForm(datosFormulario, initial={
-        "hora": partido["hora"],
-        "estado": partido["estado"],
-        "tipo": partido["tipo"],
-        "estilo": partido["estilo"],
-        "creador": partido["creador"]["id"],
-        "campo_reservado": partido["campo_reservado"]["id"],
-        "usuarios_jugadores": [usuario["id"] for usuario in partido["usuarios_jugadores"]]
-    })
-
+    formulario = PartidoForm(datosFormulario,
+            initial={
+                'estado': partido['estado'],
+                'tipo': partido["tipo"],
+                'estilo': partido["estilo"],
+                'creador': partido['creador']['id'],
+                'campo_reservado': partido['campo_reservado']['id']
+            }
+    )
     if (request.method == "POST"):
         try:
             formulario = PartidoForm(request.POST)
-            headers = {'Authorization': 'Bearer '+env("TOKEN_CLIENTE"), "Content-Type": "application/json"}
-            datos = formulario.data.copy()
-            print("Print de datos \n")
-            print(datos)
-            response = requests.put(env("URL_API") + "partido/editar/" + str(partido_id),
-                headers=headers,
-                data=json.dumps(datos)
+            headers = crear_cabecera_cliente()
+            datos = request.POST.copy()
+           
+            response = requests.put(
+                env("URL_API") + "partido/put/" + str(partido_id), headers=headers, data=json.dumps(datos)
             )
             if(response.status_code == requests.codes.ok):
-                return redirect("partido_mostrar_api",partido_id=partido_id)
+                # Redirecciono al listado completo de recintos
+                return redirect("partidos_api_mejorada")
             else:
                 print(response.status_code)
                 response.raise_for_status()
@@ -316,7 +312,7 @@ def partido_editar(request, partido_id):
                 for error in errores:
                     formulario.add_error(error,errores[error])
                 return render(request, 
-                            'partidos/PUT_api.html',
+                            'partidos/actualizar_put_api.html',
                             {"formulario":formulario,"partido":partido})
             else:
                 return mi_error_500(request)
@@ -324,7 +320,7 @@ def partido_editar(request, partido_id):
             print(f'Ocurrió un error: {err}')
             return mi_error_500(request)
         
-    return render(request, 'partidos/PUT_api.html',{"formulario":formulario,"partido":partido})
+    return render(request, 'recintos/actualizar_put_api.html',{"formulario":formulario,"partido":partido})
 
 # DELETE
 def partido_eliminar(request, partido_id):
@@ -344,7 +340,7 @@ def partido_eliminar(request, partido_id):
 
 
 # CRUD Recinto
-
+# Create
 def recinto_create(request):
     if (request.method == "POST"):
         try:
@@ -382,6 +378,60 @@ def recinto_create(request):
 
     return render(request, 'recintos/create_api.html',{"formulario":formulario})
 
+# No lo uso para redireccionar después en editar el recinto, sino que redirecciono al listado completo de recintos
+def recinto_obtener(request,recinto_id):
+    recinto = helper.obtener_recinto(recinto_id)
+    return render(request, 'recintos/recinto_mostrar.html',{"recinto":recinto})
+
+# PUT
+def recinto_put(request, recinto_id):
+    datosFormulario = None
+    
+    if request.method == "POST":
+        datosFormulario = request.POST
+    
+    recinto = helper.obtener_recinto(recinto_id)
+    formulario = RecintoForm(datosFormulario,
+            initial={
+                'nombre': recinto['nombre'],
+                'ubicacion': recinto["ubicacion"],
+                'telefono': recinto["telefono"],
+                'dueño_recinto': recinto['dueño_recinto']['id']
+            }
+    )
+    if (request.method == "POST"):
+        try:
+            formulario = RecintoForm(request.POST)
+            headers = crear_cabecera_cliente()
+            datos = request.POST.copy()
+           
+            response = requests.put(
+                env("URL_API") + "recinto/put/" + str(recinto_id), headers=headers, data=json.dumps(datos)
+            )
+            if(response.status_code == requests.codes.ok):
+                # Redirecciono al listado completo de recintos
+                return redirect("recintos_lista_api")
+            else:
+                print(response.status_code)
+                response.raise_for_status()
+        except HTTPError as http_err:
+            print(f'Hubo un error en la petición: {http_err}')
+            if(response.status_code == 400):
+                errores = response.json()
+                for error in errores:
+                    formulario.add_error(error,errores[error])
+                return render(request, 
+                            'recintos/actualizar_put_api.html',
+                            {"formulario":formulario,"recinto":recinto})
+            else:
+                return mi_error_500(request)
+        except Exception as err:
+            print(f'Ocurrió un error: {err}')
+            return mi_error_500(request)
+        
+    return render(request, 'recintos/actualizar_put_api.html',{"formulario":formulario,"recinto":recinto})
+
+
 # DELETE
 def recinto_eliminar(request, recinto_id):
     try:
@@ -399,8 +449,7 @@ def recinto_eliminar(request, recinto_id):
 
 
 # CRUD DatosUsuario
-
-# CREATE
+# Create
 def datosusuario_create(request):
     if (request.method == "POST"):
         try:
@@ -437,6 +486,54 @@ def datosusuario_create(request):
          formulario = DatosUsuarioForm(None)
 
     return render(request, 'datosusuario/create_api.html',{"formulario":formulario})
+
+# PUT
+def datosusuario_put(request, datosusuario_id):
+    datosFormulario = None
+    
+    if request.method == "POST":
+        datosFormulario = request.POST
+    
+    datosusuario = helper.obtener_datosusuario(datosusuario_id)
+    formulario = DatosUsuarioForm(datosFormulario,
+            initial={
+                'descripcion': datosusuario['descripcion'],
+                'posicion': datosusuario["posicion"],
+                'ubicacion': datosusuario["ubicacion"],
+                'cliente': datosusuario['cliente']['id']
+            }
+    )
+    if (request.method == "POST"):
+        try:
+            formulario = DatosUsuarioForm(request.POST)
+            headers = crear_cabecera_cliente()
+            datos = request.POST.copy()
+           
+            response = requests.put(
+                env("URL_API") + "datosusuario/put/" + str(datosusuario_id), headers=headers, data=json.dumps(datos)
+            )
+            if(response.status_code == requests.codes.ok):
+                # Redirecciono al listado completo de datos de usuarios
+                return redirect("datos_usuario")
+            else:
+                print(response.status_code)
+                response.raise_for_status()
+        except HTTPError as http_err:
+            print(f'Hubo un error en la petición: {http_err}')
+            if(response.status_code == 400):
+                errores = response.json()
+                for error in errores:
+                    formulario.add_error(error,errores[error])
+                return render(request, 
+                            'datosusuario/actualizar_put_api.html',
+                            {"formulario":formulario,"datosusuario":datosusuario})
+            else:
+                return mi_error_500(request)
+        except Exception as err:
+            print(f'Ocurrió un error: {err}')
+            return mi_error_500(request)
+        
+    return render(request, 'datosusuario/actualizar_put_api.html',{"formulario":formulario,"datosusuario":datosusuario})
 
 # DELETE
 def datosusuario_eliminar(request, datosusuario_id):

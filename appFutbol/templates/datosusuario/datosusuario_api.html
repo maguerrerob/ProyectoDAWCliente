@@ -32,6 +32,12 @@
                 {% for partido in partido.usuarios_jugadores %}
                     <p>{{ usu.id }}</p>
                 {% endfor %}
+                <form action="{% url 'datosusuario_put' datos.id %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit">
+                        EDITAR
+                    </button>
+                </form>
                 <form action="{% url 'datosusuario_eliminar' datos.id %}" method="post">
                     {% csrf_token %}
                     <button onclick="return eliminar();" type="submit">
