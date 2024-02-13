@@ -320,7 +320,7 @@ def partido_put(request, partido_id):
             print(f'Ocurrió un error: {err}')
             return mi_error_500(request)
         
-    return render(request, 'recintos/actualizar_put_api.html',{"formulario":formulario,"partido":partido})
+    return render(request, 'partidos/actualizar_put_api.html',{"formulario":formulario,"partido":partido})
 
 # DELETE
 def partido_eliminar(request, partido_id):
@@ -457,7 +457,6 @@ def datosusuario_create(request):
             headers =  {'Authorization': 'Bearer '+env("TOKEN_CLIENTE"),
                         "Content-Type": "application/json"}
             datos = formulario.data.copy()
-            
             response = requests.post(env("URL_API") + "datosusuario/create",
                 headers=headers,
                 data=json.dumps(datos)
@@ -534,6 +533,10 @@ def datosusuario_put(request, datosusuario_id):
             return mi_error_500(request)
         
     return render(request, 'datosusuario/actualizar_put_api.html',{"formulario":formulario,"datosusuario":datosusuario})
+
+# PATH
+def datosusuario_patch(request, datosusuario_id):
+    pass
 
 # DELETE
 def datosusuario_eliminar(request, datosusuario_id):

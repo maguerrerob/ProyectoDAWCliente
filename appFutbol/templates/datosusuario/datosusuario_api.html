@@ -29,10 +29,8 @@
                 <p>Descripción:  {{ datos.descripcion }}</p>
                 <p>Posición: {{ datos.posicion }}</p>
                 <p>Ubicación: {{ datos.ubicacion }}</p>
-                {% for partido in partido.usuarios_jugadores %}
-                    <p>{{ usu.id }}</p>
-                {% endfor %}
-                <form action="{% url 'datosusuario_put' datos.id %}" method="post">
+                <p>Cliente: {{ datos.cliente.usuario.username }}</p>
+                <form action="{% url 'datosusuario_put' datos.id %}" method="get">
                     {% csrf_token %}
                     <button type="submit">
                         EDITAR

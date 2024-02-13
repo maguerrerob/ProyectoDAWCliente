@@ -39,7 +39,7 @@
                 <p class="mt-3">Equipo Local: {{ partido.resultado_partido.goles_local }}</p>
                 <p>Equipo Visitante: {{ partido.resultado_partido.goles_visitante }}</p>
                 {% comment %} <h5 class="mt-2"><a href="{% url 'resultado_create' %}">Añadir resultado del partido</a></h5> {% endcomment %}
-                <form action="{% url 'partido_put' partido.id %}" method="post">
+                <form action="{% url 'partido_put' partido.id %}" method="get">
                     {% csrf_token %}
                     <button type="submit">
                         EDITAR

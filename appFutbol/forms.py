@@ -109,7 +109,7 @@ class DatosUsuarioForm(forms.Form):
         ("MID","Centrocampista"),
         ("STR", "Delantero")
     ]
-    posicion = forms.MultipleChoiceField(choices=POSICION, required=False, widget=forms.CheckboxSelectMultiple())
+    posicion = forms.ChoiceField(choices=POSICION, required=False)
     ubicacion = forms.CharField(required=False)
 
     def __init__(self, *args, **kwargs):
