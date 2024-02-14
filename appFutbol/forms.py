@@ -5,6 +5,7 @@ from datetime import datetime
 from django.contrib.auth.forms import UserCreationForm
 from django.utils import timezone
 from .helper import helper
+from django.contrib.auth.models import User
 
 class BusquedaRecintoForm(forms.Form):
     textoBusqueda = forms.CharField(required=True)
@@ -50,10 +51,10 @@ class BusquedaAvanzadaPartidoForm(forms.Form):
 
 
 class PartidoForm(forms.Form):
-    # horas_choices = [(f'{i}:00', f'{i}:00') for i in range(0, 24)]
-    # hora = forms.ChoiceField(choices=horas_choices,
-    #                         widget=forms.Select(),
-    #                         label="Escoja una hora")
+    horas_choices = [(f'{i}:00', f'{i}:00') for i in range(0, 24)]
+    hora = forms.ChoiceField(choices=horas_choices,
+                            widget=forms.Select(),
+                            label="Escoja una hora")
     ESTADO = [
         ("F", "Completo"),
         ("A", "Disponible")
@@ -86,6 +87,12 @@ class PartidoForm(forms.Form):
             widget=forms.Select,
             required=False)
         
+class PartidoPatchHoraForm(forms.Form):
+    hora = horas_choices = [(f'{i}:00', f'{i}:00') for i in range(0, 24)]
+    hora = forms.ChoiceField(choices=horas_choices,
+                            widget=forms.Select(),
+                            label="Escoja una hora")
+        
 
 class RecintoForm(forms.Form):
     nombre = forms.CharField(required=False)
@@ -101,6 +108,10 @@ class RecintoForm(forms.Form):
             widget=forms.Select,
             required=False)
         
+class RecintoPatchNombreForm(forms.Form):
+    nombre = forms.CharField(required=True)
+
+
 class DatosUsuarioForm(forms.Form):
     descripcion = forms.CharField(required=False)
     POSICION = [
@@ -124,3 +135,16 @@ class DatosUsuarioForm(forms.Form):
         
 class DatosUsuarioPatchUbicacionForm(forms.Form):
     ubicacion = forms.CharField(required=True)
+
+
+#----Registro----
+class RegistroForm(UserCreationForm):
+    roles = (
+        (2, "cliente"),
+        (3, "dueñorecinto")
+    )
+
+    rol = forms.ChoiceField(choices=roles)
+    class Meta:
+        model = User
+        fields = ("username", "email", "password1", "password2", "rol")

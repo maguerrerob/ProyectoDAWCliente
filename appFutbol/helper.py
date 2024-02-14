@@ -28,10 +28,10 @@ class helper:
             lista_recintos.append((recinto["id"], recinto["nombre"]))
         return lista_recintos
     
-    def obtener_partido(id):
+    def obtener_partido(partido_id):
         headers = {'Authorization': 'Bearer '+env("TOKEN_CLIENTE"),
                         "Content-Type": "application/json"}
-        response = requests.get(env("URL_API") + "partido/" + str(id),headers=headers)
+        response = requests.get(env("URL_API") + "partido/" + str(partido_id),headers=headers)
         partido = response.json()
         
         return partido
@@ -58,3 +58,20 @@ class helper:
         response = requests.get(env("URL_API") + "datosusuario/" + str(datosusuario_id),headers=headers)
         datosusuario = response.json()
         return datosusuario
+    
+    def obtener_token_session(usuario,password):
+            token_url = env("URL_OBTENER_TOKEN")
+            data = {
+                'grant_type': 'password',
+                'username': usuario,
+                'password': password,
+                'client_id': 'client_id',
+                'client_secret': 'client_secret',
+            }
+
+            response = requests.post(token_url, data=data)
+            respuesta = response.json()
+            if response.status_code == 200:
+                return respuesta.get('access_token')
+            else:
+                raise Exception(respuesta.get("error_description"))

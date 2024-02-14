@@ -234,7 +234,7 @@ def partido_busqueda_avanzada(request):
 def partido_create(request):
     if (request.method == "POST"):
         try:
-            formulario = RecintoForm(request.POST)
+            formulario = PartidoForm(request.POST)
             headers =  {'Authorization': 'Bearer '+env("TOKEN_CLIENTE"),
                         "Content-Type": "application/json"}
             datos = formulario.data.copy()
@@ -321,6 +321,51 @@ def partido_put(request, partido_id):
             return mi_error_500(request)
         
     return render(request, 'partidos/actualizar_put_api.html',{"formulario":formulario,"partido":partido})
+
+# PATCH
+def partido_patch_hora(request, partido_id):
+    datosFormulario = None
+    
+    if request.method == "POST":
+        datosFormulario = request.POST
+    
+    partido = helper.obtener_partido(partido_id)
+    formulario = PartidoPatchHoraForm(datosFormulario,
+            initial={
+                'hora': partido['hora'],
+                # 'campo_reservado': partido['campo_reservado']
+            }
+    )
+    if (request.method == "POST"):
+        try:
+            formulario = PartidoPatchHoraForm(request.POST)
+            headers = crear_cabecera_cliente()
+            datos = request.POST.copy()
+            response = requests.patch(
+                env("URL_API") + 'partido/actualizar/hora/' + str(partido_id),
+                headers=headers,
+                data=json.dumps(datos)
+            )
+            if(response.status_code == requests.codes.ok):
+                return redirect("partidos_api_mejorada")
+            else:
+                print(response.status_code)
+                response.raise_for_status()
+        except HTTPError as http_err:
+            print(f'Hubo un error en la petición: {http_err}')
+            if(response.status_code == 400):
+                errores = response.json()
+                for error in errores:
+                    formulario.add_error(error,errores[error])
+                return render(request, 
+                            'partidos/patch_hora_api.html',
+                            {"formulario":formulario,"partido":partido})
+            else:
+                return mi_error_500(request)
+        except Exception as err:
+            print(f'Ocurrió un error: {err}')
+            return mi_error_500(request)
+    return render(request, 'partidos/patch_hora_api.html',{"formulario":formulario,"partido":partido})
 
 # DELETE
 def partido_eliminar(request, partido_id):
@@ -430,6 +475,50 @@ def recinto_put(request, recinto_id):
             return mi_error_500(request)
         
     return render(request, 'recintos/actualizar_put_api.html',{"formulario":formulario,"recinto":recinto})
+
+# PATCH
+def recinto_patch_nombre(request, recinto_id):
+    datosFormulario = None
+    
+    if request.method == "POST":
+        datosFormulario = request.POST
+    
+    recinto = helper.obtener_recinto(recinto_id)
+    formulario = RecintoPatchNombreForm(datosFormulario,
+            initial={
+                'nombre': recinto['nombre'],
+            }
+    )
+    if (request.method == "POST"):
+        try:
+            formulario = RecintoPatchNombreForm(request.POST)
+            headers = crear_cabecera_cliente()
+            datos = request.POST.copy()
+            response = requests.patch(
+                env("URL_API") + 'recinto/actualizar/nombre/' + str(recinto_id),
+                headers=headers,
+                data=json.dumps(datos)
+            )
+            if(response.status_code == requests.codes.ok):
+                return redirect("recintos_lista_api")
+            else:
+                print(response.status_code)
+                response.raise_for_status()
+        except HTTPError as http_err:
+            print(f'Hubo un error en la petición: {http_err}')
+            if(response.status_code == 400):
+                errores = response.json()
+                for error in errores:
+                    formulario.add_error(error,errores[error])
+                return render(request, 
+                            'recintos/patch_nombre_api.html',
+                            {"formulario":formulario,"recinto":recinto})
+            else:
+                return mi_error_500(request)
+        except Exception as err:
+            print(f'Ocurrió un error: {err}')
+            return mi_error_500(request)
+    return render(request, 'recintos/patch_nombre_api.html',{"formulario":formulario,"recinto":recinto})
 
 
 # DELETE
@@ -569,14 +658,14 @@ def datosusuario_ubicacion(request, datosusuario_id):
                 for error in errores:
                     formulario.add_error(error,errores[error])
                 return render(request, 
-                            'datosusuario/patch_nombre_api.html',
+                            'datosusuario/patch_ubicacion_api.html',
                             {"formulario":formulario,"datosusuario":datosusuario})
             else:
                 return mi_error_500(request)
         except Exception as err:
             print(f'Ocurrió un error: {err}')
             return mi_error_500(request)
-    return render(request, 'datosusuario/patch_nombre_api.html',{"formulario":formulario,"datosusuario":datosusuario})
+    return render(request, 'datosusuario/patch_ubicacion_api.html',{"formulario":formulario,"datosusuario":datosusuario})
 
 
 # DELETE
@@ -594,6 +683,46 @@ def datosusuario_eliminar(request, datosusuario_id):
         return mi_error_500(request)
     return redirect('datos_usuario')
 
+
+#----Registro----
+def registrar_usuario(request):
+    if (request.method == "POST"):
+        try:
+            formulario = RegistroForm(request.POST)
+            if(formulario.is_valid()):
+                headers =  {"Content-Type": "application/json"}
+                response = requests.post(env("URL_API") + 'registrar/usuario', headers=headers, data=json.dumps(formulario.cleaned_data))
+                
+                if(response.status_code == requests.codes.ok):
+                    usuario = response.json()
+                    token_acceso = helper.obtener_token_session(
+                            formulario.cleaned_data.get("username"),
+                            formulario.cleaned_data.get("password1")
+                            )
+                    request.session["usuario"]=usuario
+                    request.session["token"] = token_acceso
+                    redirect("index")
+                else:
+                    print(response.status_code)
+                    response.raise_for_status()
+        except HTTPError as http_err:
+            print(f'Hubo un error en la petición: {http_err}')
+            if(response.status_code == 400):
+                errores = response.json()
+                for error in errores:
+                    formulario.add_error(error,errores[error])
+                return render(request, 
+                            'registration/signup.html',
+                            {"formulario":formulario})
+            else:
+                return mi_error_500(request)
+        except Exception as err:
+            print(f'Ocurrió un error: {err}')
+            return mi_error_500(request)
+            
+    else:
+        formulario = RegistroForm()
+    return render(request, 'registration/signup.html', {'formulario': formulario})
 
 # Errores
 

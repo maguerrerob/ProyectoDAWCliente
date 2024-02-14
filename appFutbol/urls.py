@@ -21,6 +21,8 @@ urlpatterns = [
     path("partido/create", views.partido_create, name="partido_create"),
     # PUT
     path("partido/put/<int:partido_id>", views.partido_put, name="partido_put"),
+    # PATCH
+    path("partido/editar/hora/<int:partido_id>", views.partido_patch_hora, name="partido_patch_hora"),
     # Delete
     path("partido/eliminar/<int:partido_id>", views.partido_eliminar, name="partido_eliminar"),
     # CRUD Recinto
@@ -29,6 +31,8 @@ urlpatterns = [
     path('recinto/<int:recinto_id>',views.recinto_obtener,name='recinto_obtener'),
     # PUT
     path("recinto/editar/<int:recinto_id>", views.recinto_put, name="recinto_put"),
+    # PATCH
+    path("recinto/editar_nombre/<int:recinto_id>", views.recinto_patch_nombre, name="recinto_patch_nombre"),
     # Delete
     path("recinto/eliminar/<int:recinto_id>", views.recinto_eliminar, name="recinto_eliminar"),
     # CRUD Datosusuario
@@ -39,5 +43,9 @@ urlpatterns = [
     # PATCH
     path("datosusuario/editar_ubicacion/<int:datosusuario_id>", views.datosusuario_ubicacion, name="datosusuario_ubicacion"),
     # Delete
-    path("datosusuario/eliminar/<int:datosusuario_id>", views.datosusuario_eliminar, name="datosusuario_eliminar")
+    path("datosusuario/eliminar/<int:datosusuario_id>", views.datosusuario_eliminar, name="datosusuario_eliminar"),
+    # Gestión de accesos
+    path("registrar", views.registrar_usuario, name="registrar_usuario"),
+    path('login',views.login,name='login'),
+    path('logout',views.logout,name='logout'),
 ]

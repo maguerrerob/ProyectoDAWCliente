@@ -26,6 +26,7 @@
     <ul>
         <li>
             <h4>{{ recinto.nombre }}</h4>
+            <a href="{% url 'recinto_patch_nombre' recinto.id %}">Modificar nombre</a>
             <p>Ubicación: {{ recinto.ubicacion }}</p>
             <p>Teléfono: {{ recinto.telefono }}</p>
             <p>Dueño recinto: {{ recinto.dueño_recinto.usuario.username }}</p>
