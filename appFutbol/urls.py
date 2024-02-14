@@ -36,6 +36,8 @@ urlpatterns = [
     path("datosusuario/create", views.datosusuario_create, name="datosusuario_create"),
     # PUT
     path("datosusuario/editar/<int:datosusuario_id>", views.datosusuario_put, name="datosusuario_put"),
+    # PATCH
+    path("datosusuario/editar_ubicacion/<int:datosusuario_id>", views.datosusuario_ubicacion, name="datosusuario_ubicacion"),
     # Delete
     path("datosusuario/eliminar/<int:datosusuario_id>", views.datosusuario_eliminar, name="datosusuario_eliminar")
 ]

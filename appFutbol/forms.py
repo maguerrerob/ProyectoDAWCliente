@@ -121,3 +121,6 @@ class DatosUsuarioForm(forms.Form):
             widget=forms.Select,
             required=False
         )
+        
+class DatosUsuarioPatchUbicacionForm(forms.Form):
+    ubicacion = forms.CharField(required=True)

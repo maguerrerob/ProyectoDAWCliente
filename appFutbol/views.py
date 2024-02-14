@@ -534,9 +534,50 @@ def datosusuario_put(request, datosusuario_id):
         
     return render(request, 'datosusuario/actualizar_put_api.html',{"formulario":formulario,"datosusuario":datosusuario})
 
-# PATH
-def datosusuario_patch(request, datosusuario_id):
-    pass
+# PATCH
+def datosusuario_ubicacion(request, datosusuario_id):
+    datosFormulario = None
+    
+    if request.method == "POST":
+        datosFormulario = request.POST
+    
+    datosusuario = helper.obtener_datosusuario(datosusuario_id)
+    formulario = DatosUsuarioPatchUbicacionForm(datosFormulario,
+            initial={
+                'ubicacion': datosusuario['ubicacion'],
+            }
+    )
+    if (request.method == "POST"):
+        try:
+            formulario = DatosUsuarioPatchUbicacionForm(request.POST)
+            headers = crear_cabecera_cliente()
+            datos = request.POST.copy()
+            response = requests.patch(
+                env("URL_API") + 'datosusuario/actualizar_ubicacion/ubicacion/' + str(datosusuario_id),
+                headers=headers,
+                data=json.dumps(datos)
+            )
+            if(response.status_code == requests.codes.ok):
+                return redirect("datos_usuario")
+            else:
+                print(response.status_code)
+                response.raise_for_status()
+        except HTTPError as http_err:
+            print(f'Hubo un error en la petición: {http_err}')
+            if(response.status_code == 400):
+                errores = response.json()
+                for error in errores:
+                    formulario.add_error(error,errores[error])
+                return render(request, 
+                            'datosusuario/patch_nombre_api.html',
+                            {"formulario":formulario,"datosusuario":datosusuario})
+            else:
+                return mi_error_500(request)
+        except Exception as err:
+            print(f'Ocurrió un error: {err}')
+            return mi_error_500(request)
+    return render(request, 'datosusuario/patch_nombre_api.html',{"formulario":formulario,"datosusuario":datosusuario})
+
 
 # DELETE
 def datosusuario_eliminar(request, datosusuario_id):
