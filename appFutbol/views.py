@@ -701,7 +701,7 @@ def registrar_usuario(request):
                             )
                     request.session["usuario"]=usuario
                     request.session["token"] = token_acceso
-                    redirect("index")
+                    return redirect("index")
                 else:
                     print(response.status_code)
                     response.raise_for_status()
@@ -723,6 +723,41 @@ def registrar_usuario(request):
     else:
         formulario = RegistroForm()
     return render(request, 'registration/signup.html', {'formulario': formulario})
+
+#----Login----
+def login(request):
+    if (request.method == "POST"):
+        formulario = LoginForm(request.POST)
+        try:
+            token_acceso = helper.obtener_token_session(
+                                formulario.data.get("usuario"),
+                                formulario.data.get("password")
+                                )
+            request.session["token"] = token_acceso
+            
+          
+            headers = {'Authorization': 'Bearer ' + token_acceso} 
+            response = requests.get(env("URL_API") + 'usuario/token/' + token_acceso, headers=headers)
+            usuario = response.json()
+            request.session["usuario"] = usuario
+            
+            return  redirect("index")
+        except Exception as excepcion:
+            print(f'Hubo un error en la petición: {excepcion}')
+            formulario.add_error("usuario",excepcion)
+            formulario.add_error("password",excepcion)
+            return render(request, 
+                            'registration/login.html',
+                            {"form":formulario})
+    else:  
+        formulario = LoginForm()
+
+    return render(request, 'registration/login.html', {'form': formulario})
+
+#----Logout----
+def logout(request):
+    del request.session['token']
+    return redirect('index')
 
 # Errores
 

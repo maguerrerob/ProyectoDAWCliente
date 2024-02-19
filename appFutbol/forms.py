@@ -140,11 +140,16 @@ class DatosUsuarioPatchUbicacionForm(forms.Form):
 #----Registro----
 class RegistroForm(UserCreationForm):
     roles = (
-        (2, "cliente"),
-        (3, "dueñorecinto")
+        (2, "CLIENTE"),
+        (3, "DUEÑORECINTO")
     )
 
     rol = forms.ChoiceField(choices=roles)
     class Meta:
         model = User
         fields = ("username", "email", "password1", "password2", "rol")
+
+#----Login----
+class LoginForm(forms.Form):
+    usuario = forms.CharField()
+    password = forms.CharField(widget=forms.PasswordInput())

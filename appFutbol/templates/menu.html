@@ -94,12 +94,12 @@
             </li>
             {% if not request.user.is_authenticated %}
             <li class="login nav-item ms-lg-5">
-                <a class="acceder nav-link link-primary" href="#">Login</a>
+                <a class="acceder nav-link link-primary" href="{% url 'login' %}">Login</a>
             </li>
             {% endif %}
             {% if not request.user.is_authenticated %}
             <li class="login nav-item ms-lg-5">
-                <a class="acceder nav-link link-primary" href="#">Registrarse</a>
+                <a class="acceder nav-link link-primary" href="{% url 'registrar_usuario' %}">Registrarse</a>
             </li>
             {% endif %}
             {% if request.user.is_authenticated %}
@@ -107,7 +107,8 @@
                 <a class="acceder nav-link link-primary" href="#">Desconectarse</a>
             </li>
             {% endif %}
-            {% if request.user.is_authenticated %}
+            {% comment %}Preguntar{% endcomment %}
+            {% if request.session.is_authenticated %}
             <li>
                 <div class="nav-link link-dark active">Hola: {{ usuario.username }}</div>
             </li>
