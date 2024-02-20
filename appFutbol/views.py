@@ -692,6 +692,7 @@ def registrar_usuario(request):
             if(formulario.is_valid()):
                 headers =  {"Content-Type": "application/json"}
                 response = requests.post(env("URL_API") + 'registrar/usuario', headers=headers, data=json.dumps(formulario.cleaned_data))
+                print(response)
                 
                 if(response.status_code == requests.codes.ok):
                     usuario = response.json()
