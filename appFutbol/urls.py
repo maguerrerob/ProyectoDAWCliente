@@ -47,5 +47,5 @@ urlpatterns = [
     # Gestión de accesos
     path("registrar", views.registrar_usuario, name="registrar_usuario"),
     path('login',views.login,name='login'),
-    # path('logout',views.logout,name='logout'),
+    path('logout',views.logout,name='logout'),
 ]

@@ -19,20 +19,6 @@
             </li>
             <li class="nav-item dropdown">
                 <a class="nav-link link-dark dropdown-toggle" href="#" 
-                    id="accionesUsuariosLink"
-                    role="button" 
-                    data-bs-toggle="dropdown" 
-                    aria-expanded="false">
-                    Usuarios
-                </a>
-                <ul class="dropdown-menu" aria-labelledby="accionesUsuariosLink">
-                    <li><a class="dropdown-item" href="#">Ver usuarios</a></li>
-                    <li><a class="dropdown-item" href="#">Crear usuario</a></li>
-                    <li><a class="dropdown-item" href="#">Busqueda Avanzada de usuarios</a></li>
-                </ul>
-            </li>
-            <li class="nav-item dropdown">
-                <a class="nav-link link-dark dropdown-toggle" href="#" 
                     id="accionesRecintoLink" 
                     role="button" 
                     data-bs-toggle="dropdown" 
@@ -41,11 +27,13 @@
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="accionesRecintoLink">
                     <li><a class="dropdown-item" href="{% url 'recintos_lista_api' %}">Ver recintos api</a></li>
-                    <li><a class="dropdown-item" href="#">Crear recinto</a></li>
                     <li><a class="dropdown-item" href="{% url "recinto_busqueda_avanzada" %}">Busqueda Avanzada de recintos api</a></li>
-                    <li><a class="dropdown-item" href="{% url "recinto_create" %}">Crear recinto api</a></li>
+                    {% if request.session.usuario.rol == 3 %}
+                        <li><a class="dropdown-item" href="{% url "recinto_create" %}">Crear recinto api</a></li>
+                    {% endif %}
                 </ul>
             </li>
+            {% if request.session.usuario.rol == 2 %}
             <li class="nav-item dropdown">
                 <a class="nav-link link-dark dropdown-toggle" href="#" 
                     id="accionesPartidosLink" 
@@ -55,10 +43,24 @@
                     Partidos
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="accionesPartidosLink">
-                    <li><a class="dropdown-item" href="{% url "partidos_lista" %}">Ver partidos_api</a></li>
                     <li><a class="dropdown-item" href="{% url "partidos_api_mejorada" %}">Ver partidos_api_mejorada</a></li>
                     <li><a class="dropdown-item" href="{% url 'partido_create' %}">Crear partido api</a></li>
                     <li><a class="dropdown-item" href="{% url 'partido_busqueda_avanzada' %}">Busqueda Avanzada de partidos api</a></li>
+                </ul>
+            </li>
+            {% endif %}
+            <li class="nav-item dropdown">
+                <a class="nav-link link-dark dropdown-toggle" href="#" 
+                    id="accionesPromocionLink" 
+                    role="button" 
+                    data-bs-toggle="dropdown" 
+                    aria-expanded="false">
+                    Datos Usuarios
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="accionesPromocionLink">
+                    <li><a class="dropdown-item" href="{% url 'datos_usuario' %}">Ver datos usuarios api</a></li>
+                    <li><a class="dropdown-item" href="{% url 'datosusuario_busqueda_avanzada' %}">Busqueda Avanzada de datos usuarios api</a></li>
+                    <li><a class="dropdown-item" href="{% url 'datosusuario_create' %}">Crear datos de usuario api</a></li>
                 </ul>
             </li>
             <li class="nav-item dropdown">
@@ -75,42 +77,31 @@
                     <li><a class="dropdown-item" href="#">Busqueda Avanzada de promociones</a></li>
                 </ul>
             </li>
-            <li class="nav-item dropdown">
-                <a class="nav-link link-dark dropdown-toggle" href="#" 
-                    id="accionesPromocionLink" 
-                    role="button" 
-                    data-bs-toggle="dropdown" 
-                    aria-expanded="false">
-                    Datos Usuarios
-                </a>
-                <ul class="dropdown-menu" aria-labelledby="accionesPromocionLink">
-                    <li><a class="dropdown-item" href="{% url 'datos_usuario' %}">Ver datos usuarios api</a></li>
-                    <li><a class="dropdown-item" href="{% url 'datosusuario_busqueda_avanzada' %}">Busqueda Avanzada de datos usuarios api</a></li>
-                    <li><a class="dropdown-item" href="{% url 'datosusuario_create' %}">Crear datos de usuario api</a></li>
-                </ul>
-            </li>
+            
             <li class="nav-item">
                 <a class="nav-link link-dark active" href="{% url 'listar_post' %}">Lista posts api</a>
             </li>
-            {% if not request.user.is_authenticated %}
+            <li>
+                <div class="nav-link link-dark active">|</div>
+            </li>
+            {% if not request.session.usuario %}
             <li class="login nav-item ms-lg-5">
                 <a class="acceder nav-link link-primary" href="{% url 'login' %}">Login</a>
             </li>
             {% endif %}
-            {% if not request.user.is_authenticated %}
+            {% if not request.session.usuario %}
             <li class="login nav-item ms-lg-5">
                 <a class="acceder nav-link link-primary" href="{% url 'registrar_usuario' %}">Registrarse</a>
             </li>
             {% endif %}
-            {% if request.user.is_authenticated %}
-            <li class="login nav-item ms-lg-5">
-                <a class="acceder nav-link link-primary" href="#">Desconectarse</a>
+            {% if request.session.usuario %}
+            <li>
+                <div class="nav-link link-dark active">Hola: {{ request.session.usuario.username }}</div>
             </li>
             {% endif %}
-            {% comment %}Preguntar{% endcomment %}
-            {% if request.session.is_authenticated %}
-            <li>
-                <div class="nav-link link-dark active">Hola: {{ usuario.username }}</div>
+            {% if request.session.usuario %}
+            <li class="login nav-item ms-lg-5">
+                <a class="acceder nav-link link-primary" href="{% url 'logout' %}">Desconectarse</a>
             </li>
             {% endif %}
         </ul>

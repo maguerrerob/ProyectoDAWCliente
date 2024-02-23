@@ -67,7 +67,7 @@ def partidos_api_mejorada(request):
 
 # Para crear la cabecera, ahí irá los datos de la autenticacion con la API en variables de entorno - clientes
 def crear_cabecera_cliente():
-    return {'Authorization': 'Bearer '+env("TOKEN_CLIENTE"), "Content-Type": "application/json"}
+    return {'Authorization': 'Bearer '+ env("TOKEN_CLIENTE"), "Content-Type": "application/json"}
 
 def crear_cabecera_duenyorecinto():
     return {'Authorization': 'Bearer '+env("TOKEN_DUENYORECINTO"), "Content-Type": "application/json"}
@@ -757,7 +757,8 @@ def login(request):
 
 #----Logout----
 def logout(request):
-    del request.session['token']
+    print(request.session["usuario"])
+    request.session.clear()
     return redirect('index')
 
 # Errores
