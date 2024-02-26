@@ -30,7 +30,6 @@
                 <p>Posición: {{ datos.posicion }}</p>
                 <p>Ubicación: {{ datos.ubicacion }}</p>
                 <a href="{% url 'datosusuario_ubicacion' datos.id %}">Editar ubicacion del usuario</a>
-                <p>Cliente: {{ datos.cliente.usuario.username }}</p>
                 <form action="{% url 'datosusuario_put' datos.id %}" method="get">
                     {% csrf_token %}
                     <button type="submit">

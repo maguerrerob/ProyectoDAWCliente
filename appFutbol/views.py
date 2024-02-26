@@ -59,29 +59,27 @@ def partidos_lista(request):
 # Consulta mejorada
 def partidos_api_mejorada(request):
     # Token cliente
-    headers = crear_cabecera_cliente()
+    headers = crear_cabecera_cliente(request)
     response = requests.get(env("URL_API") + "partidos_mejorada", headers=headers)
     partidos = manejar_respuesta(response)
     return render(request, "partidos/partidos_api_mejorada.html", {"partidos_mostrar": partidos})
 
 
 # Para crear la cabecera, ahí irá los datos de la autenticacion con la API en variables de entorno - clientes
-def crear_cabecera_cliente():
-    return {'Authorization': 'Bearer '+ env("TOKEN_CLIENTE"), "Content-Type": "application/json"}
+def crear_cabecera_cliente(request):
+    return {'Authorization': 'Bearer '+ request.session["token"], "Content-Type": "application/json"}
 
-def crear_cabecera_duenyorecinto():
-    return {'Authorization': 'Bearer '+env("TOKEN_DUENYORECINTO"), "Content-Type": "application/json"}
 
 # Consulta mejorada con autenticación oauth2 en API
 def datos_usuario(request):
-    headers = crear_cabecera_cliente()
+    headers = crear_cabecera_cliente(request)
     response = requests.get(env("URL_API") + "datosusuarios", headers=headers)
     datosusuarios = manejar_respuesta(response)
     return render(request, "datosusuario/datosusuario_api.html", {"datos_mostrar":datosusuarios})
 
 
 def recintos_lista_api(request):
-    headers = crear_cabecera_duenyorecinto()
+    headers = crear_cabecera_cliente(request)
     response = requests.get(env("URL_API") + "recintos/listar", headers=headers)
     recintos = manejar_respuesta(response)
     return render(request, "recintos/listar_recintos_api.html", {"recintos_mostrar":recintos})
@@ -102,7 +100,7 @@ def recinto_buscar_simple(request):
     formulario = BusquedaRecintoForm(request.GET)
     
     if formulario.is_valid():
-        headers = crear_cabecera_duenyorecinto()
+        headers = crear_cabecera_cliente(request)
         response = requests.get(env("URL_API") + "recintos/busqueda_simple",
             headers=headers,
             params=formulario.cleaned_data
@@ -121,7 +119,7 @@ def recinto_busqueda_avanzada(request):
         formulario = BusquedaAvanzadaRecintoForm(request.GET)
         
         try:
-            headers = crear_cabecera_duenyorecinto()
+            headers = crear_cabecera_cliente(request)
             response = requests.get(env("URL_API") + "recintos/busqueda_avanzada",
                 headers=headers,
                 params=formulario.data
@@ -229,14 +227,12 @@ def partido_busqueda_avanzada(request):
     return render(request, 'partidos/form_busqueda_avanzada_api.html',{"formulario":formulario})
 
 
-# CRUD Partido
 # Create
 def partido_create(request):
     if (request.method == "POST"):
         try:
-            formulario = PartidoForm(request.POST)
-            headers =  {'Authorization': 'Bearer '+env("TOKEN_CLIENTE"),
-                        "Content-Type": "application/json"}
+            formulario = PartidoForm(request.POST, request_usuario = request)
+            headers = crear_cabecera_cliente(request)
             datos = formulario.data.copy()
             
             response = requests.post(env("URL_API") + "partido/crear",
@@ -265,7 +261,7 @@ def partido_create(request):
             return mi_error_500(request)
         
     else:
-         formulario = PartidoForm(None)
+         formulario = PartidoForm(None, request_usuario=request)
     return render(request, 'partidos/create_api.html',{"formulario":formulario})
 
 
@@ -280,22 +276,24 @@ def partido_put(request, partido_id):
     if request.method == "POST":
         datosFormulario = request.POST
     
-    partido = helper.obtener_partido(partido_id)
+    partido = helper.obtener_partido(partido_id, request)
+    print(partido)
     formulario = PartidoForm(datosFormulario,
             initial={
+                'hora': datetime.strptime(partido['hora'], "%H:%M:%S"),
                 'estado': partido['estado'],
                 'tipo': partido["tipo"],
                 'estilo': partido["estilo"],
                 'creador': partido['creador']['id'],
                 'campo_reservado': partido['campo_reservado']['id']
             }
+            , request_usuario=request
     )
     if (request.method == "POST"):
         try:
             formulario = PartidoForm(request.POST)
-            headers = crear_cabecera_cliente()
+            headers = crear_cabecera_cliente(request)
             datos = request.POST.copy()
-           
             response = requests.put(
                 env("URL_API") + "partido/put/" + str(partido_id), headers=headers, data=json.dumps(datos)
             )
@@ -329,17 +327,16 @@ def partido_patch_hora(request, partido_id):
     if request.method == "POST":
         datosFormulario = request.POST
     
-    partido = helper.obtener_partido(partido_id)
+    partido = helper.obtener_partido(partido_id, request)
     formulario = PartidoPatchHoraForm(datosFormulario,
             initial={
-                'hora': partido['hora'],
-                # 'campo_reservado': partido['campo_reservado']
+                'hora': datetime.strptime(partido['hora'], "%H:%M:%S"),
             }
     )
     if (request.method == "POST"):
         try:
             formulario = PartidoPatchHoraForm(request.POST)
-            headers = crear_cabecera_cliente()
+            headers = crear_cabecera_cliente(request)
             datos = request.POST.copy()
             response = requests.patch(
                 env("URL_API") + 'partido/actualizar/hora/' + str(partido_id),
@@ -370,7 +367,7 @@ def partido_patch_hora(request, partido_id):
 # DELETE
 def partido_eliminar(request, partido_id):
     try:
-        headers = crear_cabecera_cliente()
+        headers = crear_cabecera_cliente(request)
         response = requests.delete(env("URL_API") + "partido/eliminar/" + str(partido_id), headers=headers)
         if(response.status_code == requests.codes.ok):
             return redirect("partidos_api_mejorada")
@@ -383,15 +380,13 @@ def partido_eliminar(request, partido_id):
     return redirect('partidos_api_mejorada')
 
 
-
 # CRUD Recinto
 # Create
 def recinto_create(request):
     if (request.method == "POST"):
         try:
-            formulario = RecintoForm(request.POST)
-            headers =  {'Authorization': 'Bearer '+env("TOKEN_CLIENTE"),
-                        "Content-Type": "application/json"}
+            formulario = RecintoForm(request.POST, request_usuario = request)
+            headers = crear_cabecera_cliente(request)
             datos = formulario.data.copy()
             
             response = requests.post(env("URL_API") + "recinto/create",
@@ -419,7 +414,7 @@ def recinto_create(request):
             return mi_error_500(request)
         
     else:
-         formulario = RecintoForm(None)
+         formulario = RecintoForm(None, request_usuario=request)
 
     return render(request, 'recintos/create_api.html',{"formulario":formulario})
 
@@ -435,7 +430,7 @@ def recinto_put(request, recinto_id):
     if request.method == "POST":
         datosFormulario = request.POST
     
-    recinto = helper.obtener_recinto(recinto_id)
+    recinto = helper.obtener_recinto(recinto_id, request)
     formulario = RecintoForm(datosFormulario,
             initial={
                 'nombre': recinto['nombre'],
@@ -443,11 +438,12 @@ def recinto_put(request, recinto_id):
                 'telefono': recinto["telefono"],
                 'dueño_recinto': recinto['dueño_recinto']['id']
             }
+            , request_usuario=request
     )
     if (request.method == "POST"):
         try:
             formulario = RecintoForm(request.POST)
-            headers = crear_cabecera_cliente()
+            headers = crear_cabecera_cliente(request)
             datos = request.POST.copy()
            
             response = requests.put(
@@ -483,7 +479,7 @@ def recinto_patch_nombre(request, recinto_id):
     if request.method == "POST":
         datosFormulario = request.POST
     
-    recinto = helper.obtener_recinto(recinto_id)
+    recinto = helper.obtener_recinto(recinto_id, request)
     formulario = RecintoPatchNombreForm(datosFormulario,
             initial={
                 'nombre': recinto['nombre'],
@@ -492,7 +488,7 @@ def recinto_patch_nombre(request, recinto_id):
     if (request.method == "POST"):
         try:
             formulario = RecintoPatchNombreForm(request.POST)
-            headers = crear_cabecera_cliente()
+            headers = crear_cabecera_cliente(request)
             datos = request.POST.copy()
             response = requests.patch(
                 env("URL_API") + 'recinto/actualizar/nombre/' + str(recinto_id),
@@ -524,7 +520,7 @@ def recinto_patch_nombre(request, recinto_id):
 # DELETE
 def recinto_eliminar(request, recinto_id):
     try:
-        headers = crear_cabecera_cliente()
+        headers = crear_cabecera_cliente(request)
         response = requests.delete(env("URL_API") + "recinto/eliminar/" + str(recinto_id), headers=headers)
         if(response.status_code == requests.codes.ok):
             return redirect("recintos_lista_api")
@@ -542,9 +538,8 @@ def recinto_eliminar(request, recinto_id):
 def datosusuario_create(request):
     if (request.method == "POST"):
         try:
-            formulario = DatosUsuarioForm(request.POST)
-            headers =  {'Authorization': 'Bearer '+env("TOKEN_CLIENTE"),
-                        "Content-Type": "application/json"}
+            formulario = DatosUsuarioForm(request.POST, request_usuario = request)
+            headers =  crear_cabecera_cliente(request)
             datos = formulario.data.copy()
             response = requests.post(env("URL_API") + "datosusuario/create",
                 headers=headers,
@@ -571,7 +566,7 @@ def datosusuario_create(request):
             return mi_error_500(request)
 
     else:
-         formulario = DatosUsuarioForm(None)
+         formulario = DatosUsuarioForm(None, request_usuario=request)
 
     return render(request, 'datosusuario/create_api.html',{"formulario":formulario})
 
@@ -582,7 +577,8 @@ def datosusuario_put(request, datosusuario_id):
     if request.method == "POST":
         datosFormulario = request.POST
     
-    datosusuario = helper.obtener_datosusuario(datosusuario_id)
+    datosusuario = helper.obtener_datosusuario(datosusuario_id, request)
+    print(datosusuario)
     formulario = DatosUsuarioForm(datosFormulario,
             initial={
                 'descripcion': datosusuario['descripcion'],
@@ -590,11 +586,12 @@ def datosusuario_put(request, datosusuario_id):
                 'ubicacion': datosusuario["ubicacion"],
                 'cliente': datosusuario['cliente']['id']
             }
+            , request_usuario = request
     )
     if (request.method == "POST"):
         try:
-            formulario = DatosUsuarioForm(request.POST)
-            headers = crear_cabecera_cliente()
+            formulario = DatosUsuarioForm(request.POST, request_usuario=request)
+            headers = crear_cabecera_cliente(request)
             datos = request.POST.copy()
            
             response = requests.put(
@@ -630,7 +627,7 @@ def datosusuario_ubicacion(request, datosusuario_id):
     if request.method == "POST":
         datosFormulario = request.POST
     
-    datosusuario = helper.obtener_datosusuario(datosusuario_id)
+    datosusuario = helper.obtener_datosusuario(datosusuario_id, request)
     formulario = DatosUsuarioPatchUbicacionForm(datosFormulario,
             initial={
                 'ubicacion': datosusuario['ubicacion'],
@@ -639,7 +636,7 @@ def datosusuario_ubicacion(request, datosusuario_id):
     if (request.method == "POST"):
         try:
             formulario = DatosUsuarioPatchUbicacionForm(request.POST)
-            headers = crear_cabecera_cliente()
+            headers = crear_cabecera_cliente(request)
             datos = request.POST.copy()
             response = requests.patch(
                 env("URL_API") + 'datosusuario/actualizar_ubicacion/ubicacion/' + str(datosusuario_id),
@@ -671,7 +668,7 @@ def datosusuario_ubicacion(request, datosusuario_id):
 # DELETE
 def datosusuario_eliminar(request, datosusuario_id):
     try:
-        headers = crear_cabecera_cliente()
+        headers = crear_cabecera_cliente(request)
         response = requests.delete(env("URL_API") + "datosusuario/eliminar/" + str(datosusuario_id), headers=headers)
         if(response.status_code == requests.codes.ok):
             return redirect("datos_usuario")
@@ -757,7 +754,6 @@ def login(request):
 
 #----Logout----
 def logout(request):
-    print(request.session["usuario"])
     request.session.clear()
     return redirect('index')
 

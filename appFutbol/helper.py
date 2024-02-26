@@ -8,8 +8,8 @@ env = environ.Env()
 environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
 class helper:
-    def obtener_clientes_select():
-        headers = {'Authorization': 'Bearer '+env("TOKEN_CLIENTE")}
+    def obtener_clientes_select(request):
+        headers = {'Authorization': 'Bearer '+ request.session["token"]}
         response = requests.get(env("URL_API") + "clientes/listar",headers=headers)
         clientes = response.json()
         
@@ -18,9 +18,9 @@ class helper:
             lista_clientes.append((cliente["id"],cliente["usuario"]["username"]))
         return lista_clientes
     
-    def obtener_recintos_select():
-        headers = {'Authorization': 'Bearer '+env("TOKEN_CLIENTE")}
-        response = requests.get('http://127.0.0.1:8000/api/v1/recintos/listar',headers=headers)
+    def obtener_recintos_select(request):
+        headers = {'Authorization': 'Bearer '+ request.session["token"]}
+        response = requests.get(env("URL_API") + 'recintos/listar',headers=headers)
         recintos = response.json()
         
         lista_recintos = [("", "Selecciona campo")]
@@ -28,16 +28,17 @@ class helper:
             lista_recintos.append((recinto["id"], recinto["nombre"]))
         return lista_recintos
     
-    def obtener_partido(partido_id):
-        headers = {'Authorization': 'Bearer '+env("TOKEN_CLIENTE"),
+    def obtener_partido(partido_id, request):
+        headers = {'Authorization': 'Bearer '+ request.session["token"],
                         "Content-Type": "application/json"}
         response = requests.get(env("URL_API") + "partido/" + str(partido_id),headers=headers)
         partido = response.json()
+        print(partido)
         
         return partido
     
-    def obtener_duenyosrecintos_select():
-        headers = {'Authorization': 'Bearer '+env("TOKEN_CLIENTE")}
+    def obtener_duenyosrecintos_select(request):
+        headers = {'Authorization': 'Bearer '+ request.session["token"]}
         response = requests.get(env("URL_API") + "duenyosrecintos/listar",headers=headers)
         duenyosrecintos = response.json()
         print(duenyosrecintos)
@@ -47,14 +48,14 @@ class helper:
         
         return lista_duenyosrecintos
     
-    def obtener_recinto(recinto_id):
-        headers = {'Authorization': 'Bearer '+env("TOKEN_CLIENTE")} 
+    def obtener_recinto(recinto_id, request):
+        headers = {'Authorization': 'Bearer '+ request.session["token"]} 
         response = requests.get(env("URL_API") + "recinto/" + str(recinto_id),headers=headers)
         recinto = response.json()
         return recinto
     
-    def obtener_datosusuario(datosusuario_id):
-        headers = {'Authorization': 'Bearer '+env("TOKEN_CLIENTE")} 
+    def obtener_datosusuario(datosusuario_id, request):
+        headers = {'Authorization': 'Bearer '+ request.session["token"]}
         response = requests.get(env("URL_API") + "datosusuario/" + str(datosusuario_id),headers=headers)
         datosusuario = response.json()
         return datosusuario

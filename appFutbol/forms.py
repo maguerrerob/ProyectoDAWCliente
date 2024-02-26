@@ -51,10 +51,11 @@ class BusquedaAvanzadaPartidoForm(forms.Form):
 
 
 class PartidoForm(forms.Form):
-    horas_choices = [(f'{i}:00', f'{i}:00') for i in range(0, 24)]
-    hora = forms.ChoiceField(choices=horas_choices,
-                            widget=forms.Select(),
-                            label="Escoja una hora")
+    hora = forms.TimeField(label="hora", required=False)
+    # horas_choices = [(f'{i}:00', f'{i}:00') for i in range(0, 24)]
+    # hora = forms.ChoiceField(choices=horas_choices,
+    #                         widget=forms.Select(),
+    #                         label="Escoja una hora")
     ESTADO = [
         ("F", "Completo"),
         ("A", "Disponible")
@@ -73,15 +74,16 @@ class PartidoForm(forms.Form):
     estilo = forms.ChoiceField(choices=ESTILO, required=False)
     
     def __init__(self, *args, **kwargs):
+        self.request = kwargs.pop("request_usuario")
         super(PartidoForm, self).__init__(*args, **kwargs)
 
-        clientesDisponibles = helper.obtener_clientes_select()
+        clientesDisponibles = helper.obtener_clientes_select(self.request)
         self.fields["creador"] = forms.ChoiceField(
             choices=clientesDisponibles,
             widget=forms.Select,
             required=False)
         
-        recintos = helper.obtener_recintos_select()
+        recintos = helper.obtener_recintos_select(self.request)
         self.fields["campo_reservado"] = forms.ChoiceField(
             choices=recintos,
             widget=forms.Select,
@@ -89,9 +91,7 @@ class PartidoForm(forms.Form):
         
 class PartidoPatchHoraForm(forms.Form):
     hora = horas_choices = [(f'{i}:00', f'{i}:00') for i in range(0, 24)]
-    hora = forms.ChoiceField(choices=horas_choices,
-                            widget=forms.Select(),
-                            label="Escoja una hora")
+    hora = forms.TimeField(label="hora", required=False)
         
 
 class RecintoForm(forms.Form):
@@ -100,9 +100,10 @@ class RecintoForm(forms.Form):
     telefono = forms.CharField(required=False)
 
     def __init__(self, *args, **kwargs):
+        self.request = kwargs.pop("request_usuario")
         super(RecintoForm, self).__init__(*args, **kwargs)
 
-        duenyosrecintos = helper.obtener_duenyosrecintos_select()
+        duenyosrecintos = helper.obtener_duenyosrecintos_select(self.request)
         self.fields["dueño_recinto"] = forms.ChoiceField(
             choices=duenyosrecintos,
             widget=forms.Select,
@@ -124,9 +125,10 @@ class DatosUsuarioForm(forms.Form):
     ubicacion = forms.CharField(required=False)
 
     def __init__(self, *args, **kwargs):
+        self.request = kwargs.pop("request_usuario")
         super(DatosUsuarioForm, self).__init__(*args, **kwargs)
 
-        clientesDisponibles = helper.obtener_clientes_select()
+        clientesDisponibles = helper.obtener_clientes_select(self.request)
         self.fields["cliente"] = forms.ChoiceField(
             choices=clientesDisponibles,
             widget=forms.Select,

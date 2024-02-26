@@ -45,7 +45,7 @@
                     <button type="submit">
                         EDITAR
                     </button>
-                </form>
+                </form> 
                 <form action="{% url 'partido_eliminar' partido.id %}" method="post">
                     {% csrf_token %}
                     <button onclick="return eliminar();" type="submit">
