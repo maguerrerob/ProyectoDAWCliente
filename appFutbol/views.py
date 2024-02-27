@@ -79,9 +79,8 @@ def datos_usuario(request):
 
 
 def recintos_lista_api(request):
-    headers = crear_cabecera_cliente(request)
-    response = requests.get(env("URL_API") + "recintos/listar", headers=headers)
-    recintos = manejar_respuesta(response)
+    response = requests.get(env("URL_API") + "recintos/listar")
+    recintos = response.json()
     return render(request, "recintos/listar_recintos_api.html", {"recintos_mostrar":recintos})
 
 # Consulta mejorada con autenticación JWT
@@ -100,9 +99,7 @@ def recinto_buscar_simple(request):
     formulario = BusquedaRecintoForm(request.GET)
     
     if formulario.is_valid():
-        headers = crear_cabecera_cliente(request)
         response = requests.get(env("URL_API") + "recintos/busqueda_simple",
-            headers=headers,
             params=formulario.cleaned_data
         )
         recintos = manejar_respuesta(response)
@@ -119,9 +116,7 @@ def recinto_busqueda_avanzada(request):
         formulario = BusquedaAvanzadaRecintoForm(request.GET)
         
         try:
-            headers = crear_cabecera_cliente(request)
             response = requests.get(env("URL_API") + "recintos/busqueda_avanzada",
-                headers=headers,
                 params=formulario.data
             )
             if(response.status_code == requests.codes.ok):

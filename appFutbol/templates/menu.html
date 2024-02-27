@@ -33,36 +33,42 @@
                     {% endif %}
                 </ul>
             </li>
-            {% if request.session.usuario.rol == 2 %}
-            <li class="nav-item dropdown">
-                <a class="nav-link link-dark dropdown-toggle" href="#" 
-                    id="accionesPartidosLink" 
-                    role="button" 
-                    data-bs-toggle="dropdown" 
-                    aria-expanded="false">
-                    Partidos
-                </a>
-                <ul class="dropdown-menu" aria-labelledby="accionesPartidosLink">
-                    <li><a class="dropdown-item" href="{% url "partidos_api_mejorada" %}">Ver partidos_api_mejorada</a></li>
-                    <li><a class="dropdown-item" href="{% url 'partido_create' %}">Crear partido api</a></li>
-                    <li><a class="dropdown-item" href="{% url 'partido_busqueda_avanzada' %}">Busqueda Avanzada de partidos api</a></li>
-                </ul>
-            </li>
+            {% if request.session.usuario.rol == 2 or request.session.usuario.rol == 3 %}
+                <li class="nav-item dropdown">
+                    <a class="nav-link link-dark dropdown-toggle" href="#" 
+                        id="accionesPartidosLink" 
+                        role="button" 
+                        data-bs-toggle="dropdown" 
+                        aria-expanded="false">
+                        Partidos
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="accionesPartidosLink">
+                        <li><a class="dropdown-item" href="{% url "partidos_api_mejorada" %}">Ver partidos_api_mejorada</a></li>
+                        {% if request.session.usuario.rol == 2 %}
+                            <li><a class="dropdown-item" href="{% url 'partido_create' %}">Crear partido api</a></li>
+                        {% endif %}
+                        <li><a class="dropdown-item" href="{% url 'partido_busqueda_avanzada' %}">Busqueda Avanzada de partidos api</a></li>
+                    </ul>
+                </li>
             {% endif %}
-            <li class="nav-item dropdown">
-                <a class="nav-link link-dark dropdown-toggle" href="#" 
-                    id="accionesPromocionLink" 
-                    role="button" 
-                    data-bs-toggle="dropdown" 
-                    aria-expanded="false">
-                    Datos Usuarios
-                </a>
-                <ul class="dropdown-menu" aria-labelledby="accionesPromocionLink">
-                    <li><a class="dropdown-item" href="{% url 'datos_usuario' %}">Ver datos usuarios api</a></li>
-                    <li><a class="dropdown-item" href="{% url 'datosusuario_busqueda_avanzada' %}">Busqueda Avanzada de datos usuarios api</a></li>
-                    <li><a class="dropdown-item" href="{% url 'datosusuario_create' %}">Crear datos de usuario api</a></li>
-                </ul>
-            </li>
+            {% if request.session.usuario.rol == 2 or request.session.usuario.rol == 3 %}
+                <li class="nav-item dropdown">
+                    <a class="nav-link link-dark dropdown-toggle" href="#" 
+                        id="accionesPromocionLink" 
+                        role="button" 
+                        data-bs-toggle="dropdown" 
+                        aria-expanded="false">
+                        Datos Usuarios
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="accionesPromocionLink">
+                        <li><a class="dropdown-item" href="{% url 'datos_usuario' %}">Ver datos usuarios api</a></li>
+                        <li><a class="dropdown-item" href="{% url 'datosusuario_busqueda_avanzada' %}">Busqueda Avanzada de datos usuarios api</a></li>
+                        {% if request.session.usuario.rol == 2 %}
+                            <li><a class="dropdown-item" href="{% url 'datosusuario_create' %}">Crear datos de usuario api</a></li>
+                        {% endif %}
+                    </ul>
+                </li>
+            {% endif %}
             <li class="nav-item dropdown">
                 <a class="nav-link link-dark dropdown-toggle" href="#" 
                     id="accionesPromocionLink" 

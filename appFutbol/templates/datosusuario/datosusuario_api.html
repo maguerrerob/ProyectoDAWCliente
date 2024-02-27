@@ -29,19 +29,21 @@
                 <p>Descripción:  {{ datos.descripcion }}</p>
                 <p>Posición: {{ datos.posicion }}</p>
                 <p>Ubicación: {{ datos.ubicacion }}</p>
-                <a href="{% url 'datosusuario_ubicacion' datos.id %}">Editar ubicacion del usuario</a>
-                <form action="{% url 'datosusuario_put' datos.id %}" method="get">
-                    {% csrf_token %}
-                    <button type="submit">
-                        EDITAR
-                    </button>
-                </form>
-                <form action="{% url 'datosusuario_eliminar' datos.id %}" method="post">
-                    {% csrf_token %}
-                    <button onclick="return eliminar();" type="submit">
-                        ELIMINAR
-                    </button>
-                </form>
+                {% if request.session.usuario.rol == 2 %}
+                    <a href="{% url 'datosusuario_ubicacion' datos.id %}">Editar ubicacion del usuario</a>
+                    <form action="{% url 'datosusuario_put' datos.id %}" method="get">
+                        {% csrf_token %}
+                        <button type="submit">
+                            EDITAR
+                        </button>
+                    </form>
+                    <form action="{% url 'datosusuario_eliminar' datos.id %}" method="post">
+                        {% csrf_token %}
+                        <button onclick="return eliminar();" type="submit">
+                            ELIMINAR
+                        </button>
+                    </form>
+                {% endif %}
             </li>
         </ul>
     {% empty %}

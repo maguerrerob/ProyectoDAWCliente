@@ -26,22 +26,28 @@
     <ul>
         <li>
             <h4>{{ recinto.nombre }}</h4>
-            <a href="{% url 'recinto_patch_nombre' recinto.id %}">Modificar nombre</a>
+            {% if request.session.usuario.rol == 3 %}
+                <a href="{% url 'recinto_patch_nombre' recinto.id %}">Modificar nombre</a>            
+            {% endif %}
             <p>Ubicación: {{ recinto.ubicacion }}</p>
             <p>Teléfono: {{ recinto.telefono }}</p>
             <p>Dueño recinto: {{ recinto.dueño_recinto.usuario.username }}</p>
-            <form action="{% url 'recinto_put' recinto.id %}" method="get">
-                {% csrf_token %}
-                <button type="submit">
-                    EDITAR
-                </button>
-            </form>
-            <form action="{% url 'recinto_eliminar' recinto.id %}" method="post">
-                {% csrf_token %}
-                <button onclick="return eliminar();" type="submit">
-                    ELIMINAR
-                </button>
-            </form>
+            {% if request.session.usuario.rol == 3 %}
+                <form action="{% url 'recinto_put' recinto.id %}" method="get">
+                    {% csrf_token %}
+                    <button type="submit">
+                        EDITAR
+                    </button>
+                </form>
+            {% endif %}
+            {% if request.session.usuario.rol == 3 %}
+                <form action="{% url 'recinto_eliminar' recinto.id %}" method="post">
+                    {% csrf_token %}
+                    <button onclick="return eliminar();" type="submit">
+                        ELIMINAR
+                    </button>
+                </form>
+            {% endif %}
         </li>
     </ul>
     {% empty %}
