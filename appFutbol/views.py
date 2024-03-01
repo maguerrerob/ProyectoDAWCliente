@@ -752,6 +752,36 @@ def logout(request):
     request.session.clear()
     return redirect('index')
 
+
+#----FUNCIONALIDADES----
+#----Gabriela----
+def añadir_jugador_partido(request, partido_id):
+    datosFormulario = None
+
+    if request.method == "POST":
+        datosFormulario = request.POST
+    
+    partido = helper.obtener_partido(partido_id, request)
+    print(partido)
+    formulario = AnyadirJugadorForm(datosFormulario,
+            initial={
+                "partido":partido["id"]
+            }
+            , request_usuario=request)
+    
+    if (request.method == "POST"):
+        try:
+            formulario = AnyadirJugadorForm(request.POST)
+            headers = crear_cabecera_cliente(request)
+            datos = request.POST.copy()
+            response = requests.post(env("URL_API") + "anyadir_jugador", headers=headers, data=json.dumps(datos))
+
+            if (response.status_code == requests.codes.ok):
+                return redirect("partidos_api_mejorada")
+    
+    return render (request, "jugadores_partidos/anyadir_jugador_partido", {"formulario":formulario, "partido":partido})
+
+
 # Errores
 
 def mi_error_400(request,exception=None):
