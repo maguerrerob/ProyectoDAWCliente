@@ -155,3 +155,18 @@ class RegistroForm(UserCreationForm):
 class LoginForm(forms.Form):
     usuario = forms.CharField()
     password = forms.CharField(widget=forms.PasswordInput())
+
+
+class AnyadirJugadorForm(forms.Form):
+    ganar = forms.BooleanField(default=False, required=False)
+    
+    def __init__(self, *args, **kwargs):
+        self.request = kwargs.pop("request_usuario")
+        super(DatosUsuarioForm, self).__init__(*args, **kwargs)
+
+        clientesDisponibles = helper.obtener_clientes_select(self.request)
+        self.fields["cliente"] = forms.ChoiceField(
+            choices=clientesDisponibles,
+            widget=forms.Select,
+            required=False
+        )
