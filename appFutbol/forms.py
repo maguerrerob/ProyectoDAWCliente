@@ -158,11 +158,10 @@ class LoginForm(forms.Form):
 
 
 class AnyadirJugadorForm(forms.Form):
-    ganar = forms.BooleanField(default=False, required=False)
     
     def __init__(self, *args, **kwargs):
         self.request = kwargs.pop("request_usuario")
-        super(DatosUsuarioForm, self).__init__(*args, **kwargs)
+        super(AnyadirJugadorForm, self).__init__(*args, **kwargs)
 
         clientesDisponibles = helper.obtener_clientes_select(self.request)
         self.fields["cliente"] = forms.ChoiceField(
@@ -170,3 +169,7 @@ class AnyadirJugadorForm(forms.Form):
             widget=forms.Select,
             required=False
         )
+        
+class AnyadirResultadoForm(forms.Form):
+    goles_local = forms.CharField(required=True)
+    goles_visitante = forms.CharField(required=True)

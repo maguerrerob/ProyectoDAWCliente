@@ -742,7 +742,7 @@ def login(request):
             return render(request, 
                             'registration/login.html',
                             {"form":formulario})
-    else:  
+    else:
         formulario = LoginForm()
 
     return render(request, 'registration/login.html', {'form': formulario})
@@ -755,31 +755,161 @@ def logout(request):
 
 #----FUNCIONALIDADES----
 #----Gabriela----
-def añadir_jugador_partido(request, partido_id):
-    datosFormulario = None
-
-    if request.method == "POST":
-        datosFormulario = request.POST
-    
-    partido = helper.obtener_partido(partido_id, request)
-    print(partido)
-    formulario = AnyadirJugadorForm(datosFormulario,
-            initial={
-                "partido":partido["id"]
-            }
-            , request_usuario=request)
-    
+def añadir_jugador_partido(request, partido_id):    
     if (request.method == "POST"):
         try:
-            formulario = AnyadirJugadorForm(request.POST)
+            formulario = AnyadirJugadorForm(request.POST, request_usuario = request)
             headers = crear_cabecera_cliente(request)
-            datos = request.POST.copy()
+            datos = formulario.data.copy()
+            datos["partido"] = partido_id
             response = requests.post(env("URL_API") + "anyadir_jugador", headers=headers, data=json.dumps(datos))
 
             if (response.status_code == requests.codes.ok):
                 return redirect("partidos_api_mejorada")
+            else:
+                print(response.status_code)
+                response.raise_for_status()
+        except HTTPError as http_err:
+            print(f'Hubo un error en la petición: {http_err}')
+            if(response.status_code == 400):
+                errores = manejar_respuesta(response)
+                for error in errores:
+                    formulario.add_error(error,errores[error])
+                return render(request, 
+                            'jugadores_partidos/anyadir_jugador_partido.html',
+                            {"formulario":formulario})
+            else:
+                return mi_error_500(request)
+        except Exception as err:
+            print(f'Ocurrió un error: {err}')
+            return mi_error_500(request)
+    else:
+        datosFormulario = None
+        formulario = AnyadirJugadorForm(datosFormulario, request_usuario=request)
+        
+    return render (request, "jugadores_partidos/anyadir_jugador_partido.html", {"formulario":formulario,"partido_id":partido_id})
+
+#----Irene----
+def anyadir_resultado_partido(request, partido_id):    
+    if (request.method == "POST"):
+        try:
+            formulario = AnyadirResultadoForm(request.POST, request_usuario = request)
+            headers = crear_cabecera_cliente(request)
+            datos = formulario.data.copy()
+            datos["resultado_partido"] = partido_id
+            print("Datos")
+            print(datos)
+            response = requests.post(env("URL_API") + "anyadir_resultado", headers=headers, data=json.dumps(datos))
+            if (response.status_code == requests.codes.ok):
+                return redirect("partidos_api_mejorada")
+            else:
+                print(response.status_code)
+                response.raise_for_status()
+        except HTTPError as http_err:
+            print(f'Hubo un error en la petición: {http_err}')
+            if(response.status_code == 400):
+                errores = manejar_respuesta(response)
+                for error in errores:
+                    formulario.add_error(error,errores[error])
+                return render(request, 
+                            'resultado/anyadir_resultado_partido.html',
+                            {"formulario":formulario})
+            else:
+                return mi_error_500(request)
+        except Exception as err:
+            print(f'Ocurrió un error: {err}')
+            return mi_error_500(request)
+    else:
+        datosFormulario = None
+        formulario = AnyadirResultadoForm(datosFormulario, request_usuario=request)
+        
+    return render (request, "resultado/anyadir_resultado_partido.html", {"formulario":formulario,"partido_id":partido_id})
+
+
+
+# def recinto_create(request):
+#     if (request.method == "POST"):
+#         try:
+#             formulario = RecintoForm(request.POST, request_usuario = request)
+#             headers = crear_cabecera_cliente(request)
+#             datos = formulario.data.copy()
+            
+#             response = requests.post(env("URL_API") + "recinto/create",
+#                 headers=headers,
+#                 data=json.dumps(datos)
+#             )
+#             if(response.status_code == requests.codes.ok):
+#                 return redirect("recintos_lista_api")
+#             else:
+#                 print(response.status_code)
+#                 response.raise_for_status()
+#         except HTTPError as http_err:
+#             print(f'Hubo un error en la petición: {http_err}')
+#             if(response.status_code == 400):
+#                 errores = manejar_respuesta(response)
+#                 for error in errores:
+#                     formulario.add_error(error,errores[error])
+#                 return render(request, 
+#                             'recintos/create_api.html',
+#                             {"formulario":formulario})
+#             else:
+#                 return mi_error_500(request)
+#         except Exception as err:
+#             print(f'Ocurrió un error: {err}')
+#             return mi_error_500(request)
+        
+#     else:
+#          formulario = RecintoForm(None, request_usuario=request)
+
+#     return render(request, 'recintos/create_api.html',{"formulario":formulario})
+
+
+
+# def datosusuario_ubicacion(request, datosusuario_id):
+#     datosFormulario = None
     
-    return render (request, "jugadores_partidos/anyadir_jugador_partido", {"formulario":formulario, "partido":partido})
+#     if request.method == "POST":
+#         datosFormulario = request.POST
+    
+#     datosusuario = helper.obtener_datosusuario(datosusuario_id, request)
+#     formulario = DatosUsuarioPatchUbicacionForm(datosFormulario,
+#             initial={
+#                 'ubicacion': datosusuario['ubicacion'],
+#             }
+#     )
+#     if (request.method == "POST"):
+#         try:
+#             formulario = DatosUsuarioPatchUbicacionForm(request.POST)
+#             headers = crear_cabecera_cliente(request)
+#             datos = request.POST.copy()
+#             response = requests.patch(
+#                 env("URL_API") + 'datosusuario/actualizar_ubicacion/ubicacion/' + str(datosusuario_id),
+#                 headers=headers,
+#                 data=json.dumps(datos)
+#             )
+#             if(response.status_code == requests.codes.ok):
+#                 return redirect("datos_usuario")
+#             else:
+#                 print(response.status_code)
+#                 response.raise_for_status()
+#         except HTTPError as http_err:
+#             print(f'Hubo un error en la petición: {http_err}')
+#             if(response.status_code == 400):
+#                 errores = response.json()
+#                 for error in errores:
+#                     formulario.add_error(error,errores[error])
+#                 return render(request, 
+#                             'datosusuario/patch_ubicacion_api.html',
+#                             {"formulario":formulario,"datosusuario":datosusuario})
+#             else:
+#                 return mi_error_500(request)
+#         except Exception as err:
+#             print(f'Ocurrió un error: {err}')
+#             return mi_error_500(request)
+#     return render(request, 'datosusuario/patch_ubicacion_api.html',{"formulario":formulario,"datosusuario":datosusuario})
+
+
+
 
 
 # Errores

@@ -38,6 +38,12 @@
                 {% for usu in partido.usuarios_jugadores %}
                     <p>{{ usu.cliente.usuario.username }}</p>
                 {% endfor %}
+                <form action="{% url 'añadir_jugador_partido' partido.id %}" method="get">
+                    {% csrf_token %}
+                    <button type="submit">
+                        Añadir jugador
+                    </button>
+                </form>
                 <h4>Resultado</h4>
                 <p class="mt-3">Equipo Local: {{ partido.resultado_partido.goles_local }}</p>
                 <p>Equipo Visitante: {{ partido.resultado_partido.goles_visitante }}</p>

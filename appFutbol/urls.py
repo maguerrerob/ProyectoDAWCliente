@@ -48,4 +48,8 @@ urlpatterns = [
     path("registrar", views.registrar_usuario, name="registrar_usuario"),
     path('login',views.login,name='login'),
     path('logout',views.logout,name='logout'),
+    # FUNCIONALIDADES
+    #Gabi
+    path("anyadir_jugador/<int:partido_id>", views.añadir_jugador_partido, name="añadir_jugador_partido"),
+    path("anyadir_resultado_partido/<int:partido_id>", views.anyadir_resultado_partido, name="anyadir_resultado_partido")
 ]
