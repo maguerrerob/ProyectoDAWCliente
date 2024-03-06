@@ -51,5 +51,8 @@ urlpatterns = [
     # FUNCIONALIDADES
     #Gabi
     path("anyadir_jugador/<int:partido_id>", views.añadir_jugador_partido, name="añadir_jugador_partido"),
-    path("anyadir_resultado_partido/<int:partido_id>", views.anyadir_resultado_partido, name="anyadir_resultado_partido")
+    #Irene
+    path("anyadir_resultado_partido/<int:partido_id>", views.anyadir_resultado_partido, name="anyadir_resultado_partido"),
+    #Alberto
+    path("mapas", views.home, name="home")
 ]

@@ -826,10 +826,9 @@ def anyadir_resultado_partido(request, partido_id):
         
     return render (request, "resultado/anyadir_resultado_partido.html", {"formulario":formulario,"partido_id":partido_id})
 
-
-def resultado_obtener(request,resultado_id):
-    resultado = helper.obtener_partido(resultado_id)
-    return render(request, 'resultado/resultado_mostrar_api.html',{"resultado":resultado})
+def home(request):
+    context = ""
+    return render(request, "appFutbol/home.html", {"context":context})
 
 
 # def eliminar_resultado(request, resultado_id):
