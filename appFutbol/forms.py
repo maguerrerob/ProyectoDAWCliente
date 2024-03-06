@@ -157,8 +157,7 @@ class LoginForm(forms.Form):
     password = forms.CharField(widget=forms.PasswordInput())
 
 
-class AnyadirJugadorForm(forms.Form):
-    
+class AnyadirJugadorForm(forms.Form):    
     def __init__(self, *args, **kwargs):
         self.request = kwargs.pop("request_usuario")
         super(AnyadirJugadorForm, self).__init__(*args, **kwargs)
@@ -171,5 +170,6 @@ class AnyadirJugadorForm(forms.Form):
         )
         
 class AnyadirResultadoForm(forms.Form):
+    resultado_partido = forms.CharField(widget=forms.HiddenInput())
     goles_local = forms.CharField(required=True)
     goles_visitante = forms.CharField(required=True)

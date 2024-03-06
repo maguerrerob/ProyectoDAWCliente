@@ -62,6 +62,7 @@ def partidos_api_mejorada(request):
     headers = crear_cabecera_cliente(request)
     response = requests.get(env("URL_API") + "partidos_mejorada", headers=headers)
     partidos = manejar_respuesta(response)
+    print(partidos)
     return render(request, "partidos/partidos_api_mejorada.html", {"partidos_mostrar": partidos})
 
 
@@ -688,6 +689,8 @@ def registrar_usuario(request):
                 
                 if(response.status_code == requests.codes.ok):
                     usuario = response.json()
+                    print("usuariooooooo")
+                    print(usuario)
                     token_acceso = helper.obtener_token_session(
                             formulario.cleaned_data.get("username"),
                             formulario.cleaned_data.get("password1")
@@ -793,12 +796,10 @@ def añadir_jugador_partido(request, partido_id):
 def anyadir_resultado_partido(request, partido_id):    
     if (request.method == "POST"):
         try:
-            formulario = AnyadirResultadoForm(request.POST, request_usuario = request)
+            formulario = AnyadirResultadoForm(request.POST)
             headers = crear_cabecera_cliente(request)
             datos = formulario.data.copy()
             datos["resultado_partido"] = partido_id
-            print("Datos")
-            print(datos)
             response = requests.post(env("URL_API") + "anyadir_resultado", headers=headers, data=json.dumps(datos))
             if (response.status_code == requests.codes.ok):
                 return redirect("partidos_api_mejorada")
@@ -821,9 +822,36 @@ def anyadir_resultado_partido(request, partido_id):
             return mi_error_500(request)
     else:
         datosFormulario = None
-        formulario = AnyadirResultadoForm(datosFormulario, request_usuario=request)
+        formulario = AnyadirResultadoForm(datosFormulario)
         
     return render (request, "resultado/anyadir_resultado_partido.html", {"formulario":formulario,"partido_id":partido_id})
+
+
+def resultado_obtener(request,resultado_id):
+    resultado = helper.obtener_partido(resultado_id)
+    return render(request, 'resultado/resultado_mostrar_api.html',{"resultado":resultado})
+
+
+# def eliminar_resultado(request, resultado_id):
+#     try:
+#         headers = crear_cabecera_cliente(request)
+#         response = requests.delete(env("URL_API") + "resultado/eliminar/" + str(datosusuario_id), headers=headers)
+    
+    
+# def datosusuario_eliminar(request, datosusuario_id):
+#     try:
+#         headers = crear_cabecera_cliente(request)
+#         response = requests.delete(env("URL_API") + "datosusuario/eliminar/" + str(datosusuario_id), headers=headers)
+#         if(response.status_code == requests.codes.ok):
+#             return redirect("datos_usuario")
+#         else:
+#             print(response.status_code)
+#             response.raise_for_status()
+#     except Exception as err:
+#         print(f'Ocurrió un error: {err}')
+#         return mi_error_500(request)
+#     return redirect('datos_usuario')
+
 
 
 
