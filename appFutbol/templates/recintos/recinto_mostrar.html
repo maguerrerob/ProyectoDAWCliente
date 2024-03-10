@@ -18,7 +18,7 @@
         <li>
             <p>Ubicación: {{ recinto.ubicacion }}</p>
             <p>Teléfono: {{ recinto.telefono }}</p>
-            <p>Dueño recinto: {{ recinto.dueño_recinto.usuario.username }}</p>
+            <p>Dueño recinto: {{ recinto.duenyo_recinto.usuario.username }}</p>
             <form action="{% url 'recinto_put' recinto.id %}" method="post">
                 {% csrf_token %}
                 <button type="submit">

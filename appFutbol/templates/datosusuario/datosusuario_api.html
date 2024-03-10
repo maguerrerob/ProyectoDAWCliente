@@ -43,6 +43,21 @@
                             ELIMINAR
                         </button>
                     </form>
+                    <form action="{% 'sistema_amigos' datos.id %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit">
+                            Añadir a amigos
+                        </button>
+                    </form>
+                    <h4>Lista de amigos</h4>
+                    <ul>
+                        <!--DUDA datos.amigos.(ALL)-->
+                        {% for clienteamigo in datos.amigos.all %}
+                            <li>
+                                {{ clienteamigo.usuario.username }}
+                            </li>
+                        {% endfor %}
+                    </ul>
                 {% endif %}
             </li>
         </ul>

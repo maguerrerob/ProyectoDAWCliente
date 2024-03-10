@@ -39,6 +39,7 @@ class helper:
     
     def obtener_duenyosrecintos_select(request):
         headers = {'Authorization': 'Bearer '+ request.session["token"]}
+        print(request.session["token"])
         response = requests.get(env("URL_API") + "duenyosrecintos/listar",headers=headers)
         duenyosrecintos = response.json()
         print(duenyosrecintos)
@@ -52,6 +53,7 @@ class helper:
         headers = {'Authorization': 'Bearer '+ request.session["token"]} 
         response = requests.get(env("URL_API") + "recinto/" + str(recinto_id),headers=headers)
         recinto = response.json()
+        print(recinto)
         return recinto
     
     def obtener_datosusuario(datosusuario_id, request):

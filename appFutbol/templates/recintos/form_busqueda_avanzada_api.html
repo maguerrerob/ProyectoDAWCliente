@@ -9,7 +9,7 @@
     <form action="{% url 'recinto_busqueda_avanzada' %}" method="GET">
         {% csrf_token %}
 
-        {% for error in formulario.dueño_recinto.errors %}
+        {% for error in formulario.duenyo_recinto.errors %}
                 {{ error }}
         {% endfor %}
 

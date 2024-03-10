@@ -15,6 +15,7 @@ import os
 import environ
 from pathlib import Path
 import xml.etree.ElementTree as ET
+import folium
 
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -71,18 +72,13 @@ def crear_cabecera_cliente(request):
     return {'Authorization': 'Bearer '+ request.session["token"], "Content-Type": "application/json"}
 
 
-# Consulta mejorada con autenticación oauth2 en API
 def datos_usuario(request):
     headers = crear_cabecera_cliente(request)
     response = requests.get(env("URL_API") + "datosusuarios", headers=headers)
     datosusuarios = manejar_respuesta(response)
+    print(datosusuarios)
     return render(request, "datosusuario/datosusuario_api.html", {"datos_mostrar":datosusuarios})
 
-
-def recintos_lista_api(request):
-    response = requests.get(env("URL_API") + "recintos/listar")
-    recintos = response.json()
-    return render(request, "recintos/listar_recintos_api.html", {"recintos_mostrar":recintos})
 
 # Consulta mejorada con autenticación JWT
 def crear_cabecera_jwt():
@@ -432,7 +428,9 @@ def recinto_put(request, recinto_id):
                 'nombre': recinto['nombre'],
                 'ubicacion': recinto["ubicacion"],
                 'telefono': recinto["telefono"],
-                'dueño_recinto': recinto['dueño_recinto']['id']
+                'latitud': recinto["latitud"],
+                'longitud': recinto["longitud"],
+                'duenyo_recinto': recinto['duenyo_recinto']['id']
             }
             , request_usuario=request
     )
@@ -757,7 +755,7 @@ def logout(request):
 
 
 #----FUNCIONALIDADES----
-#----Gabriela----
+#----Gabriela añadir jugador partido----
 def añadir_jugador_partido(request, partido_id):    
     if (request.method == "POST"):
         try:
@@ -792,8 +790,8 @@ def añadir_jugador_partido(request, partido_id):
         
     return render (request, "jugadores_partidos/anyadir_jugador_partido.html", {"formulario":formulario,"partido_id":partido_id})
 
-#----Irene----
-def anyadir_resultado_partido(request, partido_id):    
+#----Irene---- añadir resultado partido
+def anyadir_resultado_partido(request, partido_id):
     if (request.method == "POST"):
         try:
             formulario = AnyadirResultadoForm(request.POST)
@@ -826,69 +824,25 @@ def anyadir_resultado_partido(request, partido_id):
         
     return render (request, "resultado/anyadir_resultado_partido.html", {"formulario":formulario,"partido_id":partido_id})
 
-def home(request):
-    context = ""
-    return render(request, "appFutbol/home.html", {"context":context})
+# Alberto - mapa de recintos
+def recintos_lista_api(request):
+    response = requests.get(env("URL_API") + "recintos/listar")
+    recintos = response.json()
 
-
-# def eliminar_resultado(request, resultado_id):
-#     try:
-#         headers = crear_cabecera_cliente(request)
-#         response = requests.delete(env("URL_API") + "resultado/eliminar/" + str(datosusuario_id), headers=headers)
+    initialMap = folium.Map(location=[37.374673, -5.981526], zoom_start=14)
     
-    
-# def datosusuario_eliminar(request, datosusuario_id):
-#     try:
-#         headers = crear_cabecera_cliente(request)
-#         response = requests.delete(env("URL_API") + "datosusuario/eliminar/" + str(datosusuario_id), headers=headers)
-#         if(response.status_code == requests.codes.ok):
-#             return redirect("datos_usuario")
-#         else:
-#             print(response.status_code)
-#             response.raise_for_status()
-#     except Exception as err:
-#         print(f'Ocurrió un error: {err}')
-#         return mi_error_500(request)
-#     return redirect('datos_usuario')
+    for recinto in recintos:
+        coordinates = (recinto['latitud'], recinto['longitud'])
+        folium.Marker(coordinates, tooltip="Recinto" + recinto["nombre"]).add_to(initialMap)
 
+    context = {'map':initialMap._repr_html_()}
+    return render(request, "recintos/listar_recintos_api.html", {"recintos_mostrar":recintos, "context":context})
 
+#----Luis - Clientes amigos----
+def sistema_amigos(request, datosusuario_id):
+    if request.method == "POST":
+        headers = crear_cabecera_cliente(request)
 
-
-# def recinto_create(request):
-#     if (request.method == "POST"):
-#         try:
-#             formulario = RecintoForm(request.POST, request_usuario = request)
-#             headers = crear_cabecera_cliente(request)
-#             datos = formulario.data.copy()
-            
-#             response = requests.post(env("URL_API") + "recinto/create",
-#                 headers=headers,
-#                 data=json.dumps(datos)
-#             )
-#             if(response.status_code == requests.codes.ok):
-#                 return redirect("recintos_lista_api")
-#             else:
-#                 print(response.status_code)
-#                 response.raise_for_status()
-#         except HTTPError as http_err:
-#             print(f'Hubo un error en la petición: {http_err}')
-#             if(response.status_code == 400):
-#                 errores = manejar_respuesta(response)
-#                 for error in errores:
-#                     formulario.add_error(error,errores[error])
-#                 return render(request, 
-#                             'recintos/create_api.html',
-#                             {"formulario":formulario})
-#             else:
-#                 return mi_error_500(request)
-#         except Exception as err:
-#             print(f'Ocurrió un error: {err}')
-#             return mi_error_500(request)
-        
-#     else:
-#          formulario = RecintoForm(None, request_usuario=request)
-
-#     return render(request, 'recintos/create_api.html',{"formulario":formulario})
 
 
 
@@ -934,6 +888,31 @@ def home(request):
 #             print(f'Ocurrió un error: {err}')
 #             return mi_error_500(request)
 #     return render(request, 'datosusuario/patch_ubicacion_api.html',{"formulario":formulario,"datosusuario":datosusuario})
+
+
+# def eliminar_resultado(request, resultado_id):
+#     try:
+#         headers = crear_cabecera_cliente(request)
+#         response = requests.delete(env("URL_API") + "resultado/eliminar/" + str(datosusuario_id), headers=headers)
+    
+    
+# def datosusuario_eliminar(request, datosusuario_id):
+#     try:
+#         headers = crear_cabecera_cliente(request)
+#         response = requests.delete(env("URL_API") + "datosusuario/eliminar/" + str(datosusuario_id), headers=headers)
+#         if(response.status_code == requests.codes.ok):
+#             return redirect("datos_usuario")
+#         else:
+#             print(response.status_code)
+#             response.raise_for_status()
+#     except Exception as err:
+#         print(f'Ocurrió un error: {err}')
+#         return mi_error_500(request)
+#     return redirect('datos_usuario')
+
+
+
+
 
 
 

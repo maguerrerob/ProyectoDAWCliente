@@ -8,7 +8,6 @@ urlpatterns = [
     # Consulta mejorada
     path("partidos_api/mejorada", views.partidos_api_mejorada, name="partidos_api_mejorada"),
     path("datosusuarios", views.datos_usuario, name="datos_usuario"),
-    path("recintos/lista", views.recintos_lista_api, name="recintos_lista_api"),
     # Consulta mejorada con JWT
     path("posts/listar", views.listar_post, name="listar_post"),
     path("recintos/busqueda_recinto", views.recinto_buscar_simple, name="recinto_buscar_simple"),
@@ -54,5 +53,7 @@ urlpatterns = [
     #Irene
     path("anyadir_resultado_partido/<int:partido_id>", views.anyadir_resultado_partido, name="anyadir_resultado_partido"),
     #Alberto
-    path("mapas", views.home, name="home")
+    path("recintos/lista", views.recintos_lista_api, name="recintos_lista_api"),
+    #Luis
+    path("añadir_amigo/<int:datosusuario_id>", views.sistema_amigos, name="sistema_amigos")
 ]

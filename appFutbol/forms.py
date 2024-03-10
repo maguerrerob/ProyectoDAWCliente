@@ -98,13 +98,15 @@ class RecintoForm(forms.Form):
     nombre = forms.CharField(required=False)
     ubicacion = forms.CharField(required=False)
     telefono = forms.CharField(required=False)
+    latitud = forms.FloatField(required=True)
+    longitud = forms.FloatField(required=True)
 
     def __init__(self, *args, **kwargs):
         self.request = kwargs.pop("request_usuario")
         super(RecintoForm, self).__init__(*args, **kwargs)
 
         duenyosrecintos = helper.obtener_duenyosrecintos_select(self.request)
-        self.fields["dueño_recinto"] = forms.ChoiceField(
+        self.fields["duenyo_recinto"] = forms.ChoiceField(
             choices=duenyosrecintos,
             widget=forms.Select,
             required=False)
@@ -143,7 +145,7 @@ class DatosUsuarioPatchUbicacionForm(forms.Form):
 class RegistroForm(UserCreationForm):
     roles = (
         (2, "CLIENTE"),
-        (3, "DUEÑORECINTO")
+        (3, "DUENYORECINTO")
     )
 
     rol = forms.ChoiceField(choices=roles)

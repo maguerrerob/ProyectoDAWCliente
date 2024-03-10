@@ -91,3 +91,8 @@ En el index principal, las vistas que he manejado están:
 - Recinto: Cientes -> sólo pueden ver recintos y realizar búsquedas y búsqedas avanzadas. Dueñosrecintos -> realizar búsquedas y búsquedas avanzadas, ver, crear, editar el recinto completo, editar el nombre o eliminarlo.
 - Partido: Clientes -> ver partidos, búsquedas avanzadas, crear uno, editarlos y cambiar la hora. Dueñosrecintos -> ver partidos o relizar búsquedas avanzadas.
 - DatosUsuario: Clientes -> verlos, búsqueda avanzada, crear, editar, cambiar la ubicación o eliminarlos. Dueñosrecintos -> verlos o realizar búsqueda avanzada
+- Duenyorecinto: Duenyorecinto -> view. Clientes -> view
+
+# Trabajo Final
+- Se recomienda hacer fixtures en servidor para traer los usuarios testeados y probar funcionalidades.
+- Los usuarios que he usado son pruebaDAW15 "1234probando" y duenyorecinto15 "1234probando"

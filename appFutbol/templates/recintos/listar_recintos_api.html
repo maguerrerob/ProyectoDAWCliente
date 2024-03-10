@@ -22,35 +22,44 @@
             </div>
         {% endfor %}
     {% endif %}
-    {% for recinto in recintos_mostrar %}
-    <ul>
-        <li>
-            <h4>{{ recinto.nombre }}</h4>
-            {% if request.session.usuario.rol == 3 %}
-                <a href="{% url 'recinto_patch_nombre' recinto.id %}">Modificar nombre</a>            
-            {% endif %}
-            <p>Ubicación: {{ recinto.ubicacion }}</p>
-            <p>Teléfono: {{ recinto.telefono }}</p>
-            <p>Dueño recinto: {{ recinto.dueño_recinto.usuario.username }}</p>
-            {% if request.session.usuario.rol == 3 %}
-                <form action="{% url 'recinto_put' recinto.id %}" method="get">
-                    {% csrf_token %}
-                    <button type="submit">
-                        EDITAR
-                    </button>
-                </form>
-            {% endif %}
-            {% if request.session.usuario.rol == 3 %}
-                <form action="{% url 'recinto_eliminar' recinto.id %}" method="post">
-                    {% csrf_token %}
-                    <button onclick="return eliminar();" type="submit">
-                        ELIMINAR
-                    </button>
-                </form>
-            {% endif %}
-        </li>
-    </ul>
-    {% empty %}
-        <p>Lo sentimos pero no hay recintos</p>
-    {% endfor %}
+    <div class="row">
+        <div class="col-md-5">
+            {% for recinto in recintos_mostrar %}
+            <ul>
+                <li>
+                    <h4>{{ recinto.nombre }}</h4>
+                    {% if request.session.usuario.rol == 3 %}
+                        <a href="{% url 'recinto_patch_nombre' recinto.id %}">Modificar nombre</a>            
+                    {% endif %}
+                    <p>Ubicación: {{ recinto.ubicacion }}</p>
+                    <p>Teléfono: {{ recinto.telefono }}</p>
+                    <p>Dueño recinto: {{ recinto.duenyo_recinto.usuario.username }}</p>
+                    <p>Latitud: {{ recinto.latitud }}</p>
+                    <p>Longitud: {{ recinto.longitud }}</p>
+                    {% if request.session.usuario.rol == 3 %}
+                        <form action="{% url 'recinto_put' recinto.id %}" method="get">
+                            {% csrf_token %}
+                            <button type="submit">
+                                EDITAR
+                            </button>
+                        </form>
+                    {% endif %}
+                    {% if request.session.usuario.rol == 3 %}
+                        <form action="{% url 'recinto_eliminar' recinto.id %}" method="post">
+                            {% csrf_token %}
+                            <button onclick="return eliminar();" type="submit">
+                                ELIMINAR
+                            </button>
+                        </form>
+                    {% endif %}
+                </li>
+            </ul>
+            {% empty %}
+                <p>Lo sentimos pero no hay recintos</p>
+            {% endfor %}
+        </div>
+        <div class="col-md-6">
+            {{ context.map|safe }}
+        </div>
+    </div>
 {% endblock %}
