@@ -43,12 +43,12 @@
                             ELIMINAR
                         </button>
                     </form>
-                    <form action="{% 'sistema_amigos' datos.id %}" method="post">
+                    {% comment %} <form action="{% 'sistema_amigos' datos.id %}" method="post">
                         {% csrf_token %}
                         <button type="submit">
                             Añadir a amigos
                         </button>
-                    </form>
+                    </form> {% endcomment %}
                     <h4>Lista de amigos</h4>
                     <ul>
                         <!--DUDA datos.amigos.(ALL)-->
